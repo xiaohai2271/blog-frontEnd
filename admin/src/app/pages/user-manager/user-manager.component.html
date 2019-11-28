@@ -1,0 +1,77 @@
+<!--标签-->
+<div class="admin-content" id="tag-manager">
+    <div class="admin-content-body">
+        <div>
+            <div><strong class="part-title">用户管理</strong></div>
+        </div>
+
+        <div class="g">
+            <div class="scrollable-horizontal" *ngIf="userService.currentUserPage">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>用户邮箱</th>
+                        <th>用户昵称</th>
+                        <th>用户角色</th>
+                        <th>管理</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let user of userService.currentUserPage.list">
+                        <td align="center">{{user.id}}</td>
+                        <td align="center" class="text-truncate">{{user.email}}</td>
+                        <td align="center">{{user.displayName}}</td>
+                        <td align="center"><span class="badge badge-success">{{user.role}}</span></td>
+                        <td>
+                            <a (click)="edit(user)"><i nz-icon nzType="tag" nzTheme="twotone"></i> 编辑</a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a nz-popconfirm nzTitle="是否要删除这名用户?" (nzOnConfirm)="delete(user.id)">
+                                <i nz-icon nzType="delete" nzTheme="twotone" nzTwotoneColor="#eb2f96"></i> 删除</a>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <nz-pagination align="center" [nzPageIndex]="pageNum" [nzHideOnSinglePage]="true"
+                               [nzTotal]="userService.currentUserPage.total" [nzPageSize]="pageSize"
+                               (nzPageIndexChange)="toPage($event)"></nz-pagination>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+<!--用户编辑-->
+<nz-modal [(nzVisible)]="showPupup" nzTitle="编辑" (nzOnCancel)="showPupup=!showPupup" (nzOnOk)="update()">
+    <form action="#">
+        <label for="email">邮箱：</label>
+        <input nz-input type="email" id="email" name="email" [(ngModel)]="editUser.email" (blur)="getEmailStatus()">
+        <ng-template [ngIf]="showError">
+            <span class="error">
+            <i nz-icon nzType="exclamation-circle" nzTheme="twotone" nzTwotoneColor="#eb2f96"></i>
+            邮箱已被占用！
+            </span>
+        </ng-template>
+        <label for="display-name">昵称：</label>
+        <input nz-input type="text" id="display-name" name="display-name" [(ngModel)]="editUser.displayName">
+        <label for="pwd">密码：<span style="font-weight: lighter;font-size: smaller">留空则不重设密码，反之则设置为输入的密码</span></label>
+        <input nz-input type="password" id="pwd" name="pwd" [(ngModel)]="editUser.pwd" placeholder="******">
+        <label for="user-role">角色：</label>
+        <nz-select name="user-role" style="width: 100%" id="user-role"
+                   [nzDisabled]="editUser.id==userService.userInfo.id" [(ngModel)]="editUser.role">
+            <nz-option nzValue="user" nzLabel="user"></nz-option>
+            <nz-option nzValue="admin" nzLabel="admin"></nz-option>
+        </nz-select>
+        <label for="email-status">邮箱验证状态：</label>
+        <br>
+        <nz-radio-group name="email-status" id="email-status" [(ngModel)]="editUser.emailStatus">
+            <label nz-radio [nzValue]="true">已验证</label>
+            <label nz-radio [nzValue]="false">未验证</label>
+        </nz-radio-group>
+        <br>
+        <label for="desc">描述：</label>
+        <textarea rows="4" id="desc" name="desc" nz-input [(ngModel)]="editUser.desc"></textarea>
+    </form>
+</nz-modal>

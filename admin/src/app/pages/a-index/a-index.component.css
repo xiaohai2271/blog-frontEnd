@@ -1,0 +1,50 @@
+.dashboardUl {
+    width: 100%;
+    padding: 1.6em;
+}
+
+.dashboardUl i {
+    font-size: 40px;
+}
+
+.dashboardUl li {
+    float: left;
+    border-right: 1px solid #ececec;
+    width: 25%;
+    text-align: center;
+}
+
+.dashboardUl li:last-child {
+    border-right: none;
+}
+
+.circle {
+    border-radius: 50%;
+    text-align: center;
+}
+
+p {
+    margin: 15px 0;
+}
+
+.log {
+    margin-top: 20px;
+    max-height: 500px;
+    padding: 10px;
+    background: #F8F8F8;
+}
+
+.reloadLog {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    z-index: 990;
+}
+
+.card {
+    text-align: center;
+}
+
+.card i {
+    font-size: 40px;
+}

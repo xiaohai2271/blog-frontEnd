@@ -1,0 +1,27 @@
+#main{
+    background: #ffffff;
+    border-radius: 5px;
+    width: 410px;
+    position: relative;
+    left: 50%;
+    top:  50%; 
+    transform: translate(-50%,-50%);
+    padding: 5px;
+}
+button{
+    display: block;
+    border: none;
+    border-radius: 5px;
+    background: #9FFE8E;
+    height: 40px;
+    width:  400px;
+}
+input{
+    border: none;
+    text-align: center;
+    width: 400px;
+    border-radius: 5px;
+    height: 40px;
+    margin-bottom: 10px;
+    background: #eeeeee
+}

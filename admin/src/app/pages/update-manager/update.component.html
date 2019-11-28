@@ -1,0 +1,54 @@
+<div class="admin-content" id="tag-manager">
+    <div class="admin-content-body">
+        <div>
+            <strong class="part-title">更新管理</strong>
+            <button nz-button nzType="primary" nzGhost="true" style="margin-left: 30px;" (click)="add()">新增</button>
+        </div>
+
+        <div>
+            <div class=" scrollable-horizontal" *ngIf="updateService.updateInfoList">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>更新内容</th>
+                        <th>更新日期</th>
+                        <th>管理</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let update of updateService.updateInfoList.list">
+                        <td>{{update.id}}</td>
+                        <td style="max-width: 150px" nz-tooltip [nzTitle]="update.info">
+                            {{update.info.length > 20 ? update.info.substr(0, 20) + '...' : update.info}}
+                        </td>
+                        <td>{{update.time}}</td>
+                        <td>
+                            <div class="btn-group">
+                                <a (click)="edit(update)">编辑</a>
+                                <nz-divider nzType="vertical"></nz-divider>
+                                <a nz-popconfirm nzTitle="是否要删除这条更新?" (nzOnConfirm)="doDel(update.id)">删除</a>
+                            </div>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <nz-pagination align="center" [nzPageIndex]="pageNum" [nzHideOnSinglePage]="true"
+                               [nzTotal]="updateService.updateInfoList.total"
+                               [nzPageSize]="pageSize" (nzPageIndexChange)="toPage($event)"></nz-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 带输入框的弹出层 -->
+
+<nz-modal [(nzVisible)]="showPupup" nzTitle="编辑" (nzOnCancel)="showPupup=!showPupup" (nzOnOk)="submit()">
+    <label style="margin-left: 10%;margin-bottom: 10px">更新内容:</label>
+    <textarea nz-input style="width: 80%;margin-left: 10%; height: 100px;"
+              [(ngModel)]="updateReqBody.info" placeholder="更新内容"
+              [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+
+</nz-modal>

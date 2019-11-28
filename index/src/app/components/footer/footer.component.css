@@ -1,0 +1,22 @@
+.footer {
+  clear: both;
+  width: 100%;
+  background-color: #eeeeee;
+  text-align: center;
+  color: #009688;
+  height: 50px;
+  position: relative;
+  left: 0;
+  bottom: 0;
+  /* 设置z-index 是为了write页面将footer隐藏*/
+  z-index: -1;
+}
+
+hr {
+  border: 1px solid #ffffff;
+  opacity: 0.6;
+}
+
+a {
+  color: #009688 !important;
+}

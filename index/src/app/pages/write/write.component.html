@@ -1,0 +1,62 @@
+<div style="margin-top: -80px;margin-bottom: -130px;z-index: 1000">
+  <div class="con">
+    <input type="text" [(ngModel)]="article.title" id="title">
+    <button id="submit" (click)="articleSubmit()">提交</button>
+  </div>
+
+  <div id="md" appEditorMd [editormdConfig]="conf" (onEditorChange)="syncModel($event)">
+    <textarea style="display: block;" [(ngModel)]="article.mdContent"></textarea>
+  </div>
+</div>
+
+<nz-modal [(nzVisible)]="showPupup" nzTitle="发布博文" (nzOnCancel)="showPupup=false" (nzOnOk)="publishArticle()">
+  <div class="am-modal-bd">
+    <div class="article-setting">
+
+      <div class="article-type row">
+        <label class="publish-tag">文章类型<strong>:</strong></label>
+        <div class="type">
+          <select id="select-type" [(ngModel)]="article.type">
+            <option>请选择</option>
+            <option [ngValue]="true">原创</option>
+            <option [ngValue]="false">转载</option>
+          </select>
+          <span class="required">*</span>
+        </div>
+      </div>
+
+      <div class="article-type row">
+        <label class="publish-tag">博客分类<strong>:</strong></label>
+        <div class="categories">
+          <select id="select-categories" [(ngModel)]="article.category">
+            <option class="categoriesOption" value="">请选择</option>
+            <option class="categoriesOption" *ngFor="let category of categoryService.categories"
+                    value={{category.name}}>{{category.name}}</option>
+          </select>
+          <span class="required">*</span>
+        </div>
+      </div>
+      <div class="article-tag row">
+        <div class="tags">
+          <div class="tag-inline">
+            <label class="publish-tag">文章标签<strong>:</strong></label>
+            <div class="tag">
+            </div>
+            <input class="taginput" placeholder="每个标签以英文','结束" [(ngModel)]="article.tags"><span
+            class="required">*</span>
+          </div>
+          <span style="display: block;margin-left:67px;" *ngIf="article.tags">
+            <span *ngFor="let tag of article.tags.split(',')" class="singleTag">{{tag}}</span>
+          </span>
+        </div>
+      </div>
+      <div class="articleUrlHide row" *ngIf="!article.type">
+        <label class="publish-tag" style="display: inline-block">原文链接<strong>:</strong></label>
+        <div class="url" style="display: inline-block">
+          <input type="text" id="articleUrl" [(ngModel)]="article.url" placeholder=" 请输入原文链接">
+          <span class="required">*</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</nz-modal>

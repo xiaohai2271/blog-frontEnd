@@ -1,0 +1,21 @@
+<app-header></app-header>
+<div style="height: 80px"></div>
+
+<router-outlet></router-outlet>
+
+<div style="height: 60px"></div>
+<app-footer></app-footer>
+
+<nz-modal [(nzVisible)]="userService.loginModalVisible" nzClosable="true"
+          (nzOnCancel)="userService.loginModalVisible=false" [nzFooter]="footerButton">
+  <ng-template [ngIf]="userService.loginModalType=='registration'">
+    <app-registration></app-registration>
+  </ng-template>
+  <ng-template [ngIf]="userService.loginModalType=='login'">
+    <app-login></app-login>
+  </ng-template>
+</nz-modal>
+
+<ng-template #footerButton>
+  <small style="width:100%;text-align: center">小海博客</small>
+</ng-template>

@@ -1,0 +1,136 @@
+header {
+  height: 50px;
+  background-color: #ffffff;
+  opacity: 0.8;
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+}
+
+div {
+  float: left;
+}
+
+header img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 5px 5px 5px 30px;
+  float: left;
+}
+
+ul {
+  list-style: none;
+}
+
+.headerButton {
+  border: none;
+  background: #3F66FF;
+  color: #ffffff !important;
+  margin-right: 10px;
+  border-radius: 5px;
+  padding: 8px 13px;
+  line-height: 50px
+}
+
+#landr {
+  float: right;
+}
+
+#loged {
+  float: right;
+  margin-right: 20px;
+  line-height: 50px;
+}
+
+#blogTitle,
+#desc {
+  display: block;
+  margin-left: 15px;
+}
+
+#blogTitle :hover {
+  text-decoration: none;
+  color: #797979;
+}
+
+#blogTitle {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+#blogTitle :hover {
+  font-size: 23px;
+}
+
+#desc {
+  font-size: 10px;
+}
+
+[nz-button] {
+  margin-right: 8px;
+  margin-top: 9px;
+  border-radius: 8px;
+}
+
+@media only screen and (min-width: 768px) {
+  /**导航栏*/
+  .nav-desktop {
+    position: absolute;
+    width: auto;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, 0);
+  }
+
+  .nav-phone {
+    display: none
+  }
+
+  a {
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-desktop li {
+    float: left;
+    padding: 0 10px;
+  }
+
+  .nav-desktop li:hover {
+    background: #ececec;
+    color: #797979;
+  }
+
+  .nav-desktop li a {
+    height: 100%;
+    line-height: 50px;
+  }
+}
+
+@media only screen and ( max-width: 768px) {
+  .nav-desktop {
+    display: none;
+  }
+
+  .nav-phone {
+    display: block;
+    float: right;
+  }
+
+  .ul {
+    width: 300px;
+    text-align: center
+  }
+
+  .ul li {
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid #ececec
+  }
+
+  #click-main {
+    line-height: 50px;
+    margin-right: 20px;
+  }
+}

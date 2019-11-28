@@ -1,0 +1,53 @@
+ul {
+    list-style: none;
+}
+
+.leaveMsg-input {
+    width: 60%;
+    margin-left: 20%;
+    text-align: center;
+}
+
+.leaveMsg-input textarea {
+    padding: 10px;
+    max-height: 400px;
+    min-height: 60px;
+    width: 500px;
+    height: 100px;
+    border: 1px solid #4398ED;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+#leaveMsg {
+    width: 70%;
+    height: 80%;
+    margin-top: 45px;
+    margin-left: 15%;
+}
+
+.submit-btn {
+    padding: 5px 10px;
+}
+
+.comment {
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+#leaveMsgs {
+    width: 60%;
+    margin: 15px auto
+}
+
+@media only screen and ( max-width:768px) {
+    #leaveMsgs {
+        width: 96%;
+        margin-left: 2%;
+    }
+    #input-area {
+        width: 80%;
+        margin-left: 10%;
+    }
+}

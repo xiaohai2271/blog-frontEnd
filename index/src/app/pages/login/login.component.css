@@ -1,0 +1,51 @@
+.main {
+}
+
+input {
+  margin-bottom: 20px;
+  padding-left: 6px;
+}
+
+h2 {
+  font-weight: bold;
+  text-align: center
+}
+
+.main-content {
+  width: 500px;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%)
+}
+
+#email, #password {
+  width: 100%;
+  border: 1px solid #999999;
+  border-radius: 5px;
+  height: 32px;
+  background: #ffffff
+}
+
+.br-text, .forget {
+  clear: both;
+  float: right;
+}
+
+.btn {
+  border: none;
+  padding: 4px 6px;
+  border-radius: 5px;
+}
+
+.login {
+  background: #0E90D2;
+  color: white
+}
+
+@media only screen and (max-width: 768px) {
+  .main-content {
+    width: 100%;
+    padding: 0 10px;
+  }
+}

@@ -1,0 +1,149 @@
+<ng-template [ngIf]="article">
+  <nz-spin [nzSpinning]="!loadOk">
+
+
+    <div class="article-content am-article" [ngClass]="{'noToc':!showToc}">
+      <div style="text-align: center;word-break: break-all">
+        <h1 class="article-title" id="title">{{article.title}}</h1>
+      </div>
+      <br>
+      <ul class="arUl">
+        <li>
+            <span class="arType"
+                  [ngClass]="{'arTypeOriginal': article.original,'arTypeReprint':!article.original}">{{article.original ? "原创" : "转载"}}</span>
+        </li>
+        <li><i nz-icon nzType="calendar" nzTheme="outline"></i>{{article.publishDateFormat}}</li>
+        <li><i nz-icon nzType="user" nzTheme="outline"></i>{{article.authorName}}</li>
+        <li><i nz-icon nzType="folder" nzTheme="outline"></i>
+          <a [routerLink]="['/category']" [queryParams]="{'name':article.category}">
+            <span>{{article.category}}</span></a>
+        </li>
+      </ul>
+      <hr/>
+      <div class="article-text am-text-break am-article-bd">
+        <!-- <div id="content" [innerHTML]="article.htmlContent">
+        </div> -->
+        <div class="article-toc-main" *ngIf="showToc">
+          <!--   fixme： 不同文章切换时 无法生效      -->
+          <span><strong>目录：</strong></span><br>
+          <div id="article-toc" class="markdown-body editormd-preview-container">
+          </div>
+        </div>
+        <div id="content">
+          <textarea></textarea>
+        </div>
+
+        <span id="over">over</span>
+      </div>
+      <!-- 文章版权 -->
+      <div id="copyright">
+        <p>本文作者：{{article.authorName}} </p>
+        <p>{{article.original ? "本文" : "原文"}}链接：{{article.original ? copyRightUrl : article.url}}</p>
+        <p>版权声明：转载请注明出处</p>
+      </div>
+
+
+      <div class="article-tag" id="tag">
+        <!-- TODO -->
+        <span *ngFor="let item of (article.tags||'')" class="tag">
+            <i nz-icon nzType="tag" nzTheme="fill"></i>
+            <a class="tag" [routerLink]="['/tag']" [queryParams]="{name:item}">{{item}}</a>
+        </span>
+      </div>
+      <hr/>
+      <div class="article-bAnda">
+        <span class="article-last">
+            <button (click)="toArticle(article.nextArticleId)" class="articleButton"
+                    [ngClass]="{'buttonDisable': article.nextArticleId==-1}">
+                <i nz-icon nzType="caret-up"
+                   nzTheme="outline"></i>&nbsp;&nbsp;上一篇文章：{{article.nextArticleTitle}}</button>
+        </span>
+        <span class="article-next">
+            <button (click)="toArticle(article.preArticleId)" class="articleButton"
+                    [ngClass]="{'buttonDisable': article.preArticleId==-1}">
+                <i nz-icon nzType="caret-down"
+                   nzTheme="outline"></i>&nbsp;&nbsp;下一篇文章篇文章：{{article.preArticleTitle}}</button>
+        </span>
+      </div>
+
+      <br/>
+
+      <span *ngIf="!userService.userInfo" style="display: block;text-align: center">若要评论，请先
+    <a style="color: blue !important;text-decoration: underline"
+       (click)="userService.showModal('login')">登录</a>哟~~~~</span>
+      <nz-comment *ngIf="userService.userInfo" style="width: 60%;margin:15px auto">
+        <nz-comment-content>
+          <nz-form-item>
+            <textarea [(ngModel)]="comment4submit" nz-input style="height: 130px;width: 100%;"></textarea>
+          </nz-form-item>
+          <nz-form-item>
+            <button nz-button nzType="primary" [disabled]="!comment4submit" (click)="submitComment()">评论</button>
+          </nz-form-item>
+        </nz-comment-content>
+      </nz-comment>
+
+      <!-- 展示 -->
+      <nz-card id="leaveMsgs" [nzLoading]="!commentService.commentPage.pageSize">
+        <ng-template [ngIf]="commentService.commentPage.pageSize">
+          <nz-comment *ngFor="let comment of commentService.commentPage.list; let i = index"
+                      [nzAuthor]="comment.authorName"
+                      [nzDatetime]="comment.date">
+            <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="comment.authorAvatarImgUrl"></nz-avatar>
+            <nz-comment-content class="comment">
+              <p>
+                {{comment.content}}
+              </p>
+            </nz-comment-content>
+            <nz-comment-action><span (click)="replyTo(comment.id,comment.authorName,i)">
+                    <i nz-icon nzType="message" nzTheme="fill"></i> 回复</span>
+            </nz-comment-action>
+
+            <!-- 二级评论 -->
+            <ng-container *ngIf="comment.child && comment.child.length">
+
+              <nz-comment *ngFor="let secComment of comment.child" [nzAuthor]="secComment.authorName"
+                          [nzDatetime]="secComment.date">
+                <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="secComment.authorAvatarImgUrl"></nz-avatar>
+                <nz-comment-content class="comment">
+                  <p>
+                    {{secComment.content}}
+                  </p>
+                </nz-comment-content>
+                <!-- <nz-comment-action><span (click)="replyTo(secComment.id,secComment.authorName,i)">
+                            <i nz-icon nzType="message" nzTheme="fill"></i> 回复</span>
+                </nz-comment-action> -->
+
+              </nz-comment>
+
+            </ng-container>
+            <!-- 二级评论的回复框 -->
+            <nz-comment *ngIf="responseComment.pid!=null&&relyIndex==i">
+              <nz-comment>
+                <nz-comment-content>
+                  <nz-form-item>
+                <textarea nz-input [(ngModel)]="responseComment.content"
+                          style="height: 130px;width: 80%;padding: 10px;border-radius: 5px;"></textarea>
+                  </nz-form-item>
+                  <nz-form-item>
+                    <button nz-button nzType="primary" [disabled]="!responseComment.content" (click)="reply()"> 回复
+                    </button>
+                    <button nz-button nzType="default" style="margin-left: 15px;" (click)="responseComment.pid=null"> 取消
+                    </button>
+                  </nz-form-item>
+                </nz-comment-content>
+              </nz-comment>
+            </nz-comment>
+          </nz-comment>
+
+          <nz-pagination style="text-align: center" [nzPageIndex]="pageNum"
+                         [nzTotal]="commentService.commentPage.total"
+                         [nzPageSize]="pageSize" [nzHideOnSinglePage]="true"
+                         (nzPageIndexChange)="toPage($event)"></nz-pagination>
+
+        </ng-template>
+      </nz-card>
+
+      <!-- </div> -->
+    </div>
+  </nz-spin>
+</ng-template>

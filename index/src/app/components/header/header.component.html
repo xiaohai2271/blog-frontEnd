@@ -1,0 +1,67 @@
+<header>
+  <a href="/">
+    <div>
+      <img src="https://56462271.oss-cn-beijing.aliyuncs.com/web/logo.png"/>
+    </div>
+  </a>
+  <div>
+    <a href="/" id="blogTitle"><span>小海博客</span></a>
+    <span id="desc">记录学习成长历程</span>
+  </div>
+
+
+  <ul class="nav-desktop">
+    <li><a class="top_bar" routerLink="/" style="cursor: pointer;"><i nz-icon nzType="home" nzTheme="fill"></i>&nbsp;首页</a></li>
+    <li><a class="top_bar" routerLink="/category" style="cursor: pointer;"><i nz-icon nzType="project" nzTheme="fill"></i>&nbsp;分类</a>
+    </li>
+    <li><a class="top_bar" routerLink="/tag" style="cursor: pointer;"><i nz-icon nzType="tags" nzTheme="fill"></i>&nbsp;标签</a>
+    </li>
+    <li><a class="top_bar" routerLink="/leaveMsg" style="cursor: pointer;"><i nz-icon nzType="profile" nzTheme="fill"></i>&nbsp;留言</a>
+    </li>
+    <li><a class="top_bar" routerLink="/update" style="cursor: pointer;"><i nz-icon nzType="up-square" nzTheme="fill"></i>&nbsp;更新</a>
+    </li>
+    <li><a class="top_bar" routerLink="/links" style="cursor: pointer;"><i nz-icon nzType="link" nzTheme="outline"></i>&nbsp;友链</a></li>
+  </ul>
+
+
+  <div class="nav-phone">
+    <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click" [nzClickHide]="false" [(nzVisible)]="visibleOfMenu"
+       id="click-main">
+      <i nz-icon nzType="menu" nzTheme="outline"></i>
+    </a>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu class="ul">
+        <li nz-menu-item><a class="top_bar" routerLink="/" style="cursor: pointer;"><i nz-icon nzType="home" nzTheme="fill"></i>&nbsp;首页</a></li>
+        <li nz-menu-item><a class="top_bar" routerLink="/category" style="cursor: pointer;"><i nz-icon nzType="project" nzTheme="fill"></i>&nbsp;分类</a></li>
+        <li nz-menu-item><a class="top_bar" routerLink="/tag" style="cursor: pointer;"><i nz-icon nzType="tags" nzTheme="fill"></i> 标签</a></li>
+        <li nz-menu-item><a class="top_bar" routerLink="/leaveMsg" style="cursor: pointer;"><i nz-icon nzType="profile" nzTheme="fill"></i>&nbsp;留言</a></li>
+        <li nz-menu-item><a class="top_bar" routerLink="/update" style="cursor: pointer;"><i nz-icon nzType="up-square" nzTheme="fill"></i>&nbsp;更新</a></li>
+        <li nz-menu-item><a class="top_bar" routerLink="/links" style="cursor: pointer;"><i nz-icon nzType="link" nzTheme="outline"></i>&nbsp;友链</a></li>
+      </ul>
+    </nz-dropdown-menu>
+  </div>
+
+
+  <div id="loged" *ngIf="userService.userInfo">
+    <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click" [nzClickHide]="false" [(nzVisible)]="visible">
+      {{userService.userInfo.displayName ? userService.userInfo.displayName : userService.userInfo.email}}
+      <i nz-icon nzType="down"></i>
+    </a>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item><a href="/admin/">{{userService.userInfo.role == 'admin' ? '网站后台管理' : '个人中心'}}</a></li>
+        <hr style="margin: 10px 0 5px 0;">
+        <li nz-menu-item>
+          <a (click)="logout()">退出登录</a>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+  </div>
+
+
+  <div id="landr" *ngIf="!userService.userInfo">
+    <button nz-button nzType="primary" (click)="userService.showModal('login')">登录</button>
+    <button nz-button nzType="primary" (click)="userService.showModal('registration')">注册</button>
+  </div>
+
+</header>

@@ -1,0 +1,13 @@
+<div style="height: 70%">
+    <div id="main">
+        <div *ngIf="iserror">
+            <nz-alert nzType="error" nzMessage="链接可能被修改了，请重新点击邮箱中的链接，或者重新发送邮件" nzShowIcon>
+            </nz-alert>
+        </div>
+        <div *ngIf="!iserror">
+            <input type="password" placeholder="新密码" [(ngModel)]="pwd" />
+            <input type="password" placeholder="确认密码" [(ngModel)]="rePwd" />
+            <button (click)="submit()">提交</button>
+        </div>
+
+    </div>
