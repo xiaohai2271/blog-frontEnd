@@ -1,0 +1,31 @@
+image: node:latest
+
+cache:
+  paths:
+    - node_modules/
+
+deploy:
+  script:
+    # build
+    - npm install -g @angular/cli
+    - cd index && npm install
+    - ng build --prod
+    - cd ./dist/index/ && tar -cf index.tar ./*
+    - cp index.tar ../../../
+    # build
+    - cd ../../../admin && npm install
+    - ng build --prod
+    - cd ./dist/admin/ && sed '6s/\"\/\"/\"\/admin\/\"/g' index.html > index.txt && cp index.txt index.html
+    - cd .. && tar -cf admin.tar ./admin/
+    - cp admin.tar ../../ && cd ../../
+    # deploy
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY" | base64 --decode)
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan celess.cn >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+
+    - scp index.tar admin.tar root@celess.cn:/www/wwwroot/celess.cn
+    - ssh root@celess.cn "cd /www/wwwroot/celess.cn && bash deploy.sh"
+
