@@ -42,6 +42,7 @@ export class AppRoutingModule {
             if (!this.userService.userInfo) {
                 this.userService.getUserInfo().subscribe(data => {
                     if (data.code === 0) {
+                        this.userService.userInfo = data.result;
                         this.checkPermission(event);
                     } else if (data.code === 301) {
                         window.location.href = '/login';

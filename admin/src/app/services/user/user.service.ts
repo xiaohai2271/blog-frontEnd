@@ -14,7 +14,6 @@ export class UserService {
     avatarHost: string = 'http://cdn.celess.cn';
 
     constructor(public http: HttpService) {
-        this.getUserInfo();
     }
 
     userPage: Page<User>[] = [];
@@ -24,13 +23,7 @@ export class UserService {
      * 获取用户信息
      */
     getUserInfo() {
-        const observable = this.http.get('/user/userInfo');
-        observable.subscribe((data: any) => {
-            if (data.code === 0) {
-                this.userInfo = data.result;
-            }
-        });
-        return observable;
+        return this.http.get('/user/userInfo');
     }
 
     /**
