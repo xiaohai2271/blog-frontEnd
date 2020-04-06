@@ -1,0 +1,26 @@
+<div [style.background-image]="'url(' +picUrl+')'" id="main">
+    <div id="op-Area">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+
+<nz-modal [(nzVisible)]="loginRegistrationService.showModal" [nzTitle]="title" [nzContent]="content" [nzFooter]="null"
+          (nzOnCancel)="loginRegistrationService.showModal = false">
+    <ng-template #title>
+        <h2>发送密码重置邮件</h2>
+    </ng-template>
+
+    <ng-template #content>
+
+        <form nz-form>
+            <nz-form-item>
+                <input nz-input placeholder="请输入你的邮箱地址" [(ngModel)]="email" name="email">
+            </nz-form-item>
+            <nz-form-item>
+                <button nz-button style="width: 100%" nzType="primary" type="submit" (click)="send()"
+                        [nzLoading]="submitting">发送邮件
+                </button>
+            </nz-form-item>
+        </form>
+    </ng-template>
+</nz-modal>

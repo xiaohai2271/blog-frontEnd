@@ -1,0 +1,20 @@
+<div class="tag-tag" nz-tooltip
+     style="cursor: pointer"
+     [nzTooltipTitle]="tag.name"
+     (click)="click()">
+    <span class="tag-name"
+          [style.background-color]="randColor.bgColor"
+          [style.color]="randColor.fontColor"
+          [style.font-size]="size=='large'?'large':''"
+          [style.padding]="size=='large'?'12px 15px':'5px 7px'"
+    >{{tag.name}}
+    </span>
+    <ng-template [ngIf]="enableCount">
+        <span class="tag-count"
+              [style.border-color]="randColor.bgColor"
+              [style.font-size]="size=='large'?'large':''"
+              [style.padding]="size=='large'?'11px 14px':'4px 6px'"
+        >{{tag.size}}
+         </span>
+    </ng-template>
+</div>

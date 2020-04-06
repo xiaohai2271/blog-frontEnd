@@ -1,0 +1,25 @@
+<div class="main">
+    <div class="con">
+        <input type="text" [(ngModel)]="article.title" id="title" placeholder="文章标题">
+        <button nz-button nzType="primary" id="submit" (click)="articleSubmit()">提交</button>
+    </div>
+
+    <div id="md" appEditorMd [editormdConfig]="conf" (onEditorChange)="syncModel($event)">
+        <textarea style="display: block;" [(ngModel)]="article.mdContent"></textarea>
+    </div>
+</div>
+
+<nz-modal [(nzVisible)]="modalVisible" [nzTitle]="title" [nzContent]="content" [nzFooter]="null"
+          (nzOnCancel)="modalVisible = false">
+
+    <ng-template #title>
+        <h3 style="text-align: center">文章发布</h3>
+    </ng-template>
+
+    <ng-template #content>
+        <c-publish-form [categoryList]="categoryList" [tagNacList]="tagNacList" [primaryData]="primaryData"
+                        (submitEvent)="publishArticle($event)">
+        </c-publish-form>
+    </ng-template>
+
+</nz-modal>

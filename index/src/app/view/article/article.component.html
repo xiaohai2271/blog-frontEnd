@@ -1,0 +1,109 @@
+<div id="main">
+
+    <div id="article-content"></div>
+    <ng-template [ngIf]="article">
+        <span id="over">over</span>
+
+        <!-- 文章版权 -->
+        <div id="copyright">
+            <p>本文作者：{{article.authorName}} </p>
+            <p>{{article.original ? "本文" : "原文"}}链接：{{article.original ? copyRightUrl : article.url}}</p>
+            <p>版权声明：转载请注明出处</p>
+        </div>
+
+        <nz-divider></nz-divider>
+        <div class="article-tag" id="tag">
+            <!-- TODO -->
+            <span *ngFor="let item of (article.tags||'')" class="tag">
+                        <i nz-icon nzType="tag" nzTheme="fill"></i>
+                        <a class="tag" [routerLink]="['/tags']" [queryParams]="{name:item}">{{item}}</a>
+                     </span>
+        </div>
+
+        <div class="article-bAnda">
+            <a (click)="toArticle(article.nextArticleId)" [class.disabled]="article.nextArticleId==-1">
+                <i nz-icon nzType="left" nzTheme="outline"></i> {{article.nextArticleTitle}}
+            </a>
+            <a (click)="toArticle(article.preArticleId)" [class.disabled]="article.preArticleId==-1"
+               style="float: right" id="pre">
+                {{article.preArticleTitle}} <i nz-icon nzType="right" nzTheme="outline"></i>
+            </a>
+        </div>
+
+        <!--       TODO:::评论列表             -->
+    </ng-template>
+
+    <nz-comment id="f-comment">
+        <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="avatarImgUrl"></nz-avatar>
+        <nz-comment-content>
+            <nz-form-item>
+                            <textarea [(ngModel)]="comment.content" nz-input rows="4" [disabled]="!user"
+                                      [nzAutosize]="{ minRows: 2, maxRows: user?6:2 }"></textarea>
+                <span *ngIf="!user">请先 <a routerLink="/user/login"
+                                          [queryParams]="{url:'/article/'+articleId}">登录</a></span>
+            </nz-form-item>
+            <nz-form-item>
+                <button nz-button nzType="primary" [nzLoading]="!user&&submitting"
+                        [disabled]="!comment.content"
+                        (click)="submitComment(true)">评论
+                </button>
+            </nz-form-item>
+        </nz-comment-content>
+    </nz-comment>
+
+    <div class="tab">评论</div>
+    <div class="tab-bottom"></div>
+    <div *ngIf="commentPage&&!commentPage.list.length" class="no-comment-tip">暂无评论，赶快去抢个沙发吧</div>
+    <ng-template [ngIf]="commentPage">
+
+        <nz-list [nzLoading]="!commentPage">
+            <nz-list-item *ngFor="let comment of commentPage.list">
+                <nz-comment [nzAuthor]="comment.authorName" [nzDatetime]="comment.date" style="width: 100%">
+                    <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="comment.authorAvatarImgUrl"></nz-avatar>
+                    <nz-comment-content>
+                        <p style="font-size: larger">{{ comment.content }}</p>
+                    </nz-comment-content>
+                    <nz-comment-action>
+                        <i nz-icon nzType="message" nzTheme="outline"></i>
+                        <button nz-button nzType="link" (click)="resp(comment.id,comment.authorName)">回复</button>
+                    </nz-comment-action>
+
+                    <nz-list-item *ngFor="let com of comment.respComment">
+                        <nz-comment [nzAuthor]="com.authorName" [nzDatetime]="com.date">
+                            <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="com.authorAvatarImgUrl"></nz-avatar>
+                            <nz-comment-content>
+                                <p style="font-size: larger">{{ com.content }}</p>
+                            </nz-comment-content>
+                            <!--<nz-comment-action>
+                                <i nz-icon nzType="message" nzTheme="outline"></i>
+                                <button nz-button nzType="link" (click)="resp(comment.id,com.authorName)">回复</button>
+                            </nz-comment-action>-->
+                        </nz-comment>
+                    </nz-list-item>
+
+                    <nz-form-item *ngIf="pid==comment.id">
+                        <nz-input-group [nzAddOnBefore]="respName">
+                            <textarea nz-input [(ngModel)]="content" placeholder="写出你的想法"
+                                      [nzAutosize]="{ minRows: 2, maxRows: 6 }" [disabled]="!user">
+                            </textarea>
+                            <ng-template #respName>
+                                <span>@{{name}}</span>
+                            </ng-template>
+                        </nz-input-group>
+                        <div *ngIf="!user">请先 <a routerLink="/user/login"
+                                                 [queryParams]="{url:'/article/'+articleId}">登录</a></div>
+                        <button nz-button (click)="pid=null" style="margin-top: 10px;">取消</button>
+                        <button nz-button nzType="primary" (click)="submitComment(false)"
+                                style="margin-left: 30px;margin-top: 10px;" [nzLoading]="!user&&submitting">回复
+                        </button>
+
+                    </nz-form-item>
+                </nz-comment>
+
+            </nz-list-item>
+        </nz-list>
+    </ng-template>
+
+
+</div>
+

@@ -5,7 +5,11 @@
   "projects": {
     "index": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "less"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -29,19 +33,20 @@
               }
             ],
             "styles": [
-              "src/assets/editor.md/css/editormd.css",
+              "src/assets/editor/css/editormd.css",
               "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
-              "src/styles.css"
+              "src/styles.less"
             ],
             "scripts": [
-              "src/assets/editor.md/lib/marked.min.js",
-              "src/assets/editor.md/lib/prettify.min.js",
-              "src/assets/editor.md/lib/raphael.min.js",
-              "src/assets/editor.md/lib/underscore.min.js",
-              "src/assets/editor.md/lib/sequence-diagram.min.js",
-              "src/assets/editor.md/lib/flowchart.min.js",
-              "src/assets/editor.md/lib/jquery.flowchart.min.js",
-              "src/assets/editor.md/editormd.min.js"
+              "./node_modules/jquery/dist/jquery.min.js",
+              "src/assets/editor/lib/marked.min.js",
+              "src/assets/editor/lib/prettify.min.js",
+              "src/assets/editor/lib/raphael.min.js",
+              "src/assets/editor/lib/underscore.min.js",
+              "src/assets/editor/lib/sequence-diagram.min.js",
+              "src/assets/editor/lib/flowchart.min.js",
+              "src/assets/editor/lib/jquery.flowchart.min.js",
+              "src/assets/editor/editormd.min.js"
             ]
           },
           "configurations": {
@@ -66,6 +71,11 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
                 }
               ]
             }
@@ -101,7 +111,7 @@
             ],
             "styles": [
               "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
-              "src/styles.css"
+              "src/styles.less"
             ],
             "scripts": []
           }
@@ -134,5 +144,8 @@
       }
     }
   },
-  "defaultProject": "index"
+  "defaultProject": "index",
+  "cli": {
+    "analytics": "f8f677a4-927d-4754-9267-533986f4ecb6"
+  }
 }

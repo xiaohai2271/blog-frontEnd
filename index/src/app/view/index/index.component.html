@@ -1,0 +1,100 @@
+<div nz-row id="index-container">
+    <div nz-col nzSpan="14" nzOffset="2" id="index-left">
+        <ng-template [ngIf]="articles&&articles.total">
+            <c-article-detail-card *ngFor="let item of articles.list" [data]="item">
+            </c-article-detail-card>
+        </ng-template>
+        <nz-pagination style="text-align: center"
+                       *ngIf="articles" [nzPageIndex]="articles.pageNum"
+                       [nzTotal]="articles.total"
+                       [nzPageSize]="articles.pageSize"
+                       (nzPageIndexChange)="getArticles($event)">
+
+        </nz-pagination>
+    </div>
+    <div nz-col nzSpan="5" nzOffset="1" id="index-right">
+        <!--   关于博主     -->
+        <c-card-detail title="关于博主">
+            <div id="index-bloger-container" title="">
+                <img id="index-bloger-pic"
+                     [src]="imgUrl" alt="pic">
+                <div id="index-bloger-desc">
+                    <p><span style="font-weight: bold;font-size: x-large;"
+                             [title]="desc"> 郑 海</span></p>
+                    <p><i nz-icon nzType="blog:location"></i> Location : 武汉</p>
+                    <p><i nz-icon nzType="github" nzTheme="outline"></i>
+                        Github : <a target="_blank" href="https://github.com/xiaohai2271"> link>></a>
+                    </p>
+                </div>
+            </div>
+            <div id="index-bloger-button-area" title="">
+                <div id="index-bloger-qq-btn">
+                    <i nz-icon nzType="qq" title="QQ二维码" nzTheme="outline"
+                       style="color: #ff8936;border-color: #ff8936;cursor: pointer"
+                       (mouseenter)="changeImg(qqQrImgUrl)" (mouseleave)="changeImg()"></i>
+                </div>
+                <div id="index-bloger-wx-btn">
+                    <i nz-icon nzType="wechat" title="微信二维码" nzTheme="outline"
+                       style="color: #7bcfa6;border-color: #7bcfa6;cursor: pointer"
+                       (mouseenter)="changeImg(wxQrImgUrl)" (mouseleave)="changeImg()"></i>
+                </div>
+            </div>
+        </c-card-detail>
+
+        <!--  分类云  -->
+        <c-card-detail title="分类云">
+            <div title="" style="text-align: center;user-select: none">
+                <c-tag-tag *ngFor="let category of categoryList"
+                           [tag]="{name:category.name,size:category.articles.length}"
+                           (tagClick)="toCategory(category.name)">
+                </c-tag-tag>
+            </div>
+        </c-card-detail>
+
+        <!--  标签云  -->
+        <c-card-detail title="标签云">
+            <div title="" style="text-align: center;user-select: none">
+                <c-tag-tag *ngFor="let tag of tagNameAndNumber" [tag]="tag" (tagClick)="toTag(tag.name)">
+                </c-tag-tag>
+            </div>
+        </c-card-detail>
+
+        <!--  网站信息  -->
+        <c-card-detail title="网站信息" id="index-site-info">
+            <p *ngIf="counts && counts.articleCount">
+                <i nz-icon nzType="info-circle" nzTheme="outline"></i>文章总数: {{counts.articleCount}}篇
+            </p>
+            <p *ngIf="counts && counts.categoryCount">
+                <i nz-icon nzType="info-circle" nzTheme="outline"></i>分类总数: {{counts.categoryCount}}个
+            </p>
+            <p *ngIf="counts && counts.tagCount">
+                <i nz-icon nzType="info-circle" nzTheme="outline"></i>标签总数: {{counts.tagCount}}个
+            </p>
+            <p *ngIf="counts && counts.visitorCount">
+                <i nz-icon nzType="info-circle" nzTheme="outline"></i>访客总数: {{counts.visitorCount}}次
+            </p>
+            <p *ngIf="lastestUpdateTime">
+                <i nz-icon nzType="info-circle" nzTheme="outline"></i>上次更新时间: {{lastestUpdateTime}}
+            </p>
+        </c-card-detail>
+
+        <c-card-detail class="index-words">
+            <p>何为遗憾?</p>
+            <p>鲥鱼多刺 海棠无香 红楼未完。</p>
+            <p>可否具体?</p>
+            <p>从别后 忆相逢 几回魂梦与伊同。</p>
+            <p>可否再具体?</p>
+            <p>终丢了你。</p>
+        </c-card-detail>
+
+        <c-card-detail class="index-words">
+            <p>何为放下?</p>
+            <p>喜你，成疾，药无医。</p>
+            <p>可否具体?</p>
+            <p>爱而，不得，终可惜。</p>
+            <p>可否再具体?</p>
+            <p>所有，来生，再相依。</p>
+        </c-card-detail>
+    </div>
+</div>
+

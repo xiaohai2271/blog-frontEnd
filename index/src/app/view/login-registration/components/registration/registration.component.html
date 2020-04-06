@@ -1,0 +1,26 @@
+<div class="bruce flex-ct-x">
+    <form class="bubble-distribution">
+        <h3>注册</h3>
+        <div class="emailDiv">
+            <input type="email" name="email" [(ngModel)]="email" placeholder="请输入邮箱"
+                   pattern="^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$"
+                   required>
+            <img class="img" src="https://oss.celess.cn/web/greeting.1415c1c.png" alt="">
+        </div>
+        <div class="pwdDiv">
+            <input type="password" [(ngModel)]="pwd" name="pwd" placeholder="请输入密码(6到16位字符)"
+                   pattern="^[\w_-]{6,16}$"
+                   required>
+            <img class="img" src="https://oss.celess.cn/web/blindfold.58ce423.png" alt="">
+        </div>
+        <div class="codeDiv">
+            <input type="text" name="code" placeholder="请输入验证码" pattern="^[\w]{4}$" maxLength="4"
+                   [(ngModel)]="imgCode" required>
+            <img [src]="imgCodeUrl" id="imgCode" alt="imgcode" (click)="changeImg()" title="点击更换验证码">
+            <img class="img" src="https://oss.celess.cn/web/greeting.1415c1c.png" alt="">
+        </div>
+        <img class="img" src="https://oss.celess.cn/web/normal.0447fe9.png" alt="">
+        <br>
+        <button nz-button nzType="primary" (click)="doRegistration()" [nzLoading]="submitting">注册</button>
+    </form>
+</div>

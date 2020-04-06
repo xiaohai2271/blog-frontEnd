@@ -1,0 +1,91 @@
+<form nz-form [formGroup]="formGroup" (ngSubmit)="publishArticle()">
+    <!--     文章类型       -->
+    <nz-form-item *ngIf="primaryData.id">
+        <nz-form-label nzSpan="4">发布为</nz-form-label>
+        <nz-form-control nzSpan="19" nzOffset="1" nzErrorTip="请选择文章发布类型">
+            <nz-radio-group formControlName="isUpdate">
+                <label nz-radio-button [nzValue]="false"><span>新文章</span></label>
+                <label nz-radio-button [nzValue]="true"><span>更新旧文章</span></label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
+
+    <!--     文章类型       -->
+    <nz-form-item>
+        <nz-form-label nzSpan="4">文章类型</nz-form-label>
+        <nz-form-control nzSpan="19" nzOffset="1" nzErrorTip="请选择文章的类型">
+            <nz-radio-group formControlName="type" (ngModelChange)="articleTypeChanged()">
+                <label nz-radio-button [nzValue]="true"><span>原创</span></label>
+                <label nz-radio-button [nzValue]="false"><span>转载</span></label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
+    <!--     标签       -->
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4" (click)="showTagInput()">文章标签</nz-form-label>
+        <nz-form-control [nzSpan]="19" [nzOffset]="1">
+            <input formControlName="tagList" style="display: none">
+            <nz-tag *ngFor="let t of tagTmpList" nzMode="closeable"
+                    (nzOnClose)="handleClose(t)">{{t}}</nz-tag>
+            <nz-tag *ngIf="!tagInputVisible&&tagTmpList.length<5" (click)="showTagInput()">
+                <i nz-icon nzType="plus"></i> New Tag
+            </nz-tag>
+            <input #inputElement nz-input nzSize="small" *ngIf="tagInputVisible" formControlName="tags"
+                   type="text" style="width: 78px;" (blur)="handleTagInputConfirm()"
+                   (keydown.enter)="handleTagInputConfirm()">
+
+            <div *ngIf="tagListTouched&&formGroup.get('tagList').hasError('required')"
+                 class="errTip">未选择或添加标签
+            </div>
+
+            <nz-card nzSize="small" nzTitle="已有标签" title="最多可选五个标签">
+                <nz-tag *ngFor="let tag of tagNacList"
+                        style="margin: 4px; border: 1px dashed #6A6A6A;user-select: none"
+                        [nzMode]="(tagTmpList.length<5||tagTmpList.indexOf(tag.name) > -1)?'checkable':'default'"
+                        [nzChecked]="tagTmpList.indexOf(tag.name) > -1"
+                        (nzCheckedChange)="tagChange($event,tag.name)">
+                    {{ tag.name }}
+                </nz-tag>
+            </nz-card>
+
+
+        </nz-form-control>
+    </nz-form-item>
+    <!--      文章分类      -->
+    <nz-form-item>
+        <nz-form-label nzSpan="4">文章分类</nz-form-label>
+        <nz-form-control nzSpan="19" nzOffset="1" nzErrorTip="文章的分类不可为空">
+            <nz-select nzAllowClear nzPlaceHolder="选择分类" formControlName="category">
+                <nz-option *ngFor="let option of categoryList" [nzValue]="option.name"
+                           [nzLabel]="option.name"></nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+
+    <!--     原文链接       -->
+    <nz-form-item *ngIf="!formGroup.value.type">
+        <nz-form-label nzSpan="4">原文链接</nz-form-label>
+        <nz-form-control nzSpan="19" nzOffset="1">
+            <nz-input-group [nzSuffix]="close">
+                <input nz-input type="url" placeholder="请输入原文连接" formControlName="url">
+            </nz-input-group>
+            <ng-template #close>
+                <i *ngIf="formGroup.value.url" nz-icon nzType="close-circle" nzTheme="fill"
+                   (click)="clearInput()"></i>
+            </ng-template>
+
+            <div *ngIf="formGroup.get('url').touched&&formGroup.get('url').hasError('required')"
+                 class="errTip">原文链接不可为空
+            </div>
+            <div *ngIf="formGroup.get('url').touched&&formGroup.get('url').hasError('pattern')"
+                 class="errTip">原文链接不合法
+            </div>
+        </nz-form-control>
+    </nz-form-item>
+
+    <button nz-button style="width: 100%" nzType="primary"
+            type="submit" [disabled]="!formGroup.valid">提交
+    </button>
+</form>
+
+

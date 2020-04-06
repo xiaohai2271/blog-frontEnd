@@ -1,0 +1,28 @@
+<div id="main">
+    <div id="category">
+        <ul *ngIf="tagList.length">
+            <c-tag-tag *ngFor="let tag of tagList"
+                       [tag]="tag"
+                       (tagClick)="changeTag(tag)">
+
+            </c-tag-tag>
+        </ul>
+        <h2 *ngIf="!tagList.length">暂时没有标签</h2>
+    </div>
+
+    <span id="tip">当前标签为 :
+        <span style="font-weight: bolder;">{{name}}</span>
+    </span>
+
+    <ul id="detail" *ngIf="articleList&&articleList.list.length">
+        <c-article-detail-card *ngFor="let article of articleList.list"
+                               [data]="article" [showMediaArea]="false" [showTagArea]="false">
+        </c-article-detail-card>
+    </ul>
+
+    <div *ngIf="!articleList||!articleList.list.length">
+        <h2 style="text-align: center">该标签暂无文章</h2>
+    </div>
+</div>
+
+

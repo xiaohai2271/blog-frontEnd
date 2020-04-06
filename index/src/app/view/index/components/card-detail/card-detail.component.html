@@ -1,0 +1,7 @@
+<nz-card [nzTitle]="title?titleTmp:null" style="margin-bottom: 50px;">
+    <ng-content></ng-content>
+</nz-card>
+
+<ng-template #titleTmp>
+    <div style="text-align: center">{{title}}</div>
+</ng-template>

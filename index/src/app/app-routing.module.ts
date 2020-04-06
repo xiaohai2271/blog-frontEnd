@@ -1,41 +1,32 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 
-import {IndexComponent} from './pages/index/index.component';
-import {UpdateComponent} from './pages/update/update.component';
-import {CategoryComponent} from './pages/categories/category.component';
-import {TagComponent} from './pages/tag/tag.component';
-import {LeaveMsgComponent} from './pages/leave-msg/leave-msg.component';
-import {PartnerSitesComponent} from './pages/partner-sites/partner-sites.component';
-import {ArticleComponent} from './pages/article/article.component';
-import {EmailVerifyComponent} from './pages/email-verify/email-verify.component';
-import {ResetPwdComponent} from './pages/reset-pwd/reset-pwd.component';
-import {NotFoundComponent} from './pages/not-found/not-found.component';
-import {WriteComponent} from './pages/write/write.component';
-import {LoginComponent} from './pages/login/login.component';
-import {RegistrationComponent} from './pages/registration/registration.component';
 
 const routes: Routes = [
-  {path: '', component: IndexComponent},
-  {path: 'update', component: UpdateComponent},
-  {path: 'category', component: CategoryComponent},
-  {path: 'tag', component: TagComponent},
-  {path: 'leaveMsg', component: LeaveMsgComponent},
-  {path: 'links', component: PartnerSitesComponent},
-  {path: 'article/:id', component: ArticleComponent},
-  {path: 'write', component: WriteComponent},
-  {path: 'resetPwd', component: ResetPwdComponent},
-  {path: 'emailVerify', component: EmailVerifyComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'registration', component: RegistrationComponent},
-  {path: '404', component: NotFoundComponent},
-  {path: '**', component: NotFoundComponent}
+    {path: '', pathMatch: 'full', loadChildren: () => import('./view/index/index.module').then(mod => mod.IndexModule)},
+    {path: 'update', loadChildren: () => import('./view/update/update.module').then(mod => mod.UpdateModule)},
+    {path: 'article/:id', loadChildren: () => import('./view/article/article.module').then(mod => mod.ArticleModule)},
+    {path: 'tags', loadChildren: () => import('./view/tag/tag.module').then(mod => mod.TagModule)},
+    {path: 'categories', loadChildren: () => import('./view/category/category.module').then(mod => mod.CategoryModule)},
+    // {path: 'leaveMsg', loadChildren: () => import('./view/leave-msg/leave-msg.module').then(mod => mod.LeaveMsgModule)},
+    {path: 'emailVerify', loadChildren: () => import('./view/email-verify/email-verify.module').then(mod => mod.EmailVerifyModule)},
+    {path: 'resetPwd', loadChildren: () => import('./view/reset-pwd/reset-pwd.module').then(mod => mod.ResetPwdModule)},
+    {path: 'write', loadChildren: () => import('./view/write/write.module').then(mod => mod.WriteModule)},
+    {path: 'links', loadChildren: () => import('./view/link/link.module').then(mod => mod.LinkModule)},
+    {
+        path: 'user', loadChildren: () => import('./view/login-registration/login-registration.module')
+            .then(mod => mod.LoginRegistrationModule)
+    },
+    {path: '**', loadChildren: () => import('./view/page-not-found/page-not-found.module').then(mod => mod.PageNotFoundModule)}
 ];
 
-// TODO lazyLoad
+
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+    imports: [
+        RouterModule.forRoot(routes)
+    ],
+    exports: [RouterModule]
 })
+
 export class AppRoutingModule {
 }

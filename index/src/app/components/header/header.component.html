@@ -1,67 +1,36 @@
-<header>
-  <a href="/">
-    <div>
-      <img src="https://56462271.oss-cn-beijing.aliyuncs.com/web/logo.png"/>
+<div id="header" nz-row [class.containBg]="size =='large'">
+    <div id="header-logo-title" nz-col nzSpan="6">
+        <img src="https://56462271.oss-cn-beijing.aliyuncs.com/web/logo.jpg"
+             alt="logo" id="logo">
+        <span id="header-title"><a routerLink="/">小海博客</a></span>
     </div>
-  </a>
-  <div>
-    <a href="/" id="blogTitle"><span>小海博客</span></a>
-    <span id="desc">记录学习成长历程</span>
-  </div>
-
-
-  <ul class="nav-desktop">
-    <li><a class="top_bar" routerLink="/" style="cursor: pointer;"><i nz-icon nzType="home" nzTheme="fill"></i>&nbsp;首页</a></li>
-    <li><a class="top_bar" routerLink="/category" style="cursor: pointer;"><i nz-icon nzType="project" nzTheme="fill"></i>&nbsp;分类</a>
-    </li>
-    <li><a class="top_bar" routerLink="/tag" style="cursor: pointer;"><i nz-icon nzType="tags" nzTheme="fill"></i>&nbsp;标签</a>
-    </li>
-    <li><a class="top_bar" routerLink="/leaveMsg" style="cursor: pointer;"><i nz-icon nzType="profile" nzTheme="fill"></i>&nbsp;留言</a>
-    </li>
-    <li><a class="top_bar" routerLink="/update" style="cursor: pointer;"><i nz-icon nzType="up-square" nzTheme="fill"></i>&nbsp;更新</a>
-    </li>
-    <li><a class="top_bar" routerLink="/links" style="cursor: pointer;"><i nz-icon nzType="link" nzTheme="outline"></i>&nbsp;友链</a></li>
-  </ul>
-
-
-  <div class="nav-phone">
-    <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click" [nzClickHide]="false" [(nzVisible)]="visibleOfMenu"
-       id="click-main">
-      <i nz-icon nzType="menu" nzTheme="outline"></i>
-    </a>
-    <nz-dropdown-menu #menu="nzDropdownMenu">
-      <ul nz-menu class="ul">
-        <li nz-menu-item><a class="top_bar" routerLink="/" style="cursor: pointer;"><i nz-icon nzType="home" nzTheme="fill"></i>&nbsp;首页</a></li>
-        <li nz-menu-item><a class="top_bar" routerLink="/category" style="cursor: pointer;"><i nz-icon nzType="project" nzTheme="fill"></i>&nbsp;分类</a></li>
-        <li nz-menu-item><a class="top_bar" routerLink="/tag" style="cursor: pointer;"><i nz-icon nzType="tags" nzTheme="fill"></i> 标签</a></li>
-        <li nz-menu-item><a class="top_bar" routerLink="/leaveMsg" style="cursor: pointer;"><i nz-icon nzType="profile" nzTheme="fill"></i>&nbsp;留言</a></li>
-        <li nz-menu-item><a class="top_bar" routerLink="/update" style="cursor: pointer;"><i nz-icon nzType="up-square" nzTheme="fill"></i>&nbsp;更新</a></li>
-        <li nz-menu-item><a class="top_bar" routerLink="/links" style="cursor: pointer;"><i nz-icon nzType="link" nzTheme="outline"></i>&nbsp;友链</a></li>
-      </ul>
-    </nz-dropdown-menu>
-  </div>
-
-
-  <div id="loged" *ngIf="userService.userInfo">
-    <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click" [nzClickHide]="false" [(nzVisible)]="visible">
-      {{userService.userInfo.displayName ? userService.userInfo.displayName : userService.userInfo.email}}
-      <i nz-icon nzType="down"></i>
-    </a>
-    <nz-dropdown-menu #menu="nzDropdownMenu">
-      <ul nz-menu>
-        <li nz-menu-item><a href="/admin/">{{userService.userInfo.role == 'admin' ? '网站后台管理' : '个人中心'}}</a></li>
-        <hr style="margin: 10px 0 5px 0;">
-        <li nz-menu-item>
-          <a (click)="logout()">退出登录</a>
-        </li>
-      </ul>
-    </nz-dropdown-menu>
-  </div>
-
-
-  <div id="landr" *ngIf="!userService.userInfo">
-    <button nz-button nzType="primary" (click)="userService.showModal('login')">登录</button>
-    <button nz-button nzType="primary" (click)="userService.showModal('registration')">注册</button>
-  </div>
-
-</header>
+    <ul id="nav" nz-col nzSpan="12" [ngStyle]="{'display':showList?'block':'none'}">
+        <ng-template *ngFor="let item of pageList" [ngIf]="item.show">
+            <li (click)="dealLink(item.path)" style="user-select: none;cursor: pointer">
+                <i nz-icon [nzType]="item.icon" [nzTheme]="item.iconType"></i>
+                {{item.name}}
+            </li>
+        </ng-template>
+    </ul>
+    <div id="header-user-login" *ngIf="!userInfo">
+        <button nz-button nzType="primary" (click)="login()">登录</button>
+        <button nz-button nzType="primary" (click)="registration()">注册</button>
+    </div>
+    <div *ngIf="userInfo" id="info">
+        <img [src]="userInfo.avatarImgUrl" alt="avatar" id="avatar">
+        <button nz-button nzType="link" class="info-name"
+                nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomRight" nzTrigger="click">
+            {{userInfo.displayName}}<i nz-icon nzType="caret-down" nzTheme="outline"></i>
+        </button>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu nzSelectable>
+                <li nz-menu-item (click)="toAdminPage()"><i nz-icon nzType="info-circle" nzTheme="outline"></i>管理后台</li>
+                <hr style="opacity: 0.5">
+                <li nz-menu-item (click)="logout()"><i nz-icon nzType="logout" nzTheme="outline"></i>注销登录</li>
+            </ul>
+        </nz-dropdown-menu>
+    </div>
+    <button id="header-menu" nz-button [style.top.px]="size=='large'?25:10" (click)="changeMenuStatus()">
+        <i nz-icon [nzType]="showList?'arrow-left':'menu'" nzTheme="outline"></i>
+    </button>
+</div>

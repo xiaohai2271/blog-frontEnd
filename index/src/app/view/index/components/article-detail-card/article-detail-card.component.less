@@ -1,0 +1,65 @@
+@import "../../../../global-variables";
+
+#article-card {
+  border-radius: 3px;
+  margin-bottom: 45px;
+
+  h1, p, a {
+    word-break: break-all;
+    color: black;
+  }
+
+  h1 {
+    //border-bottom: 1px solid #ececec;
+    width: auto;
+  }
+
+  span {
+    margin-right: 20px;
+  }
+
+  .badge {
+
+    i {
+      padding: 3px 5px;
+    }
+
+    span {
+      padding: 1px 5px;
+    }
+  }
+
+  p {
+    margin-top: 20px;
+    font-size: 1.1em;
+    line-height: 2em;
+    margin-bottom: 0;
+  }
+
+  #article-original {
+    padding: 3px 6px;
+    color: white;
+    border-radius: 5px;
+  }
+
+  .original {
+    background: #5eb95e;;
+  }
+
+  .reproduced {
+    background: #f37b1d;;
+  }
+}
+
+/* max-width:910px */
+@media screen and (max-width: @max-width) {
+  span {
+    margin-right: 0 !important;
+    padding: 1px 3px !important;
+  }
+
+  i {
+    padding: 3px !important;
+  }
+
+}

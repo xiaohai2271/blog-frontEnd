@@ -1,0 +1,96 @@
+@import "../../global-variables";
+
+#index-container {
+  margin-top: 30px;
+
+  #index-bloger-container {
+
+    #index-bloger-pic {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto;
+    }
+
+    #index-bloger-desc {
+      display: inline-block;
+      height: 120px;
+      padding-left: 10px;
+      vertical-align: top;
+      padding-top: 20px;
+      word-break: break-all;
+    }
+  }
+
+  #index-bloger-button-area {
+    margin-top: 20px;
+
+    #index-bloger-qq-btn, #index-bloger-wx-btn {
+      display: inline-block;
+      width: 50%;
+      font-size: large;
+      text-align: center;
+
+      i {
+        border: 1px solid black;
+        padding: 10px;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  #index-site-info {
+    p {
+      i {
+        margin-right: 15px;
+      }
+
+      padding-left: 5%;
+    }
+  }
+
+  .index-tag {
+    margin: 0 5px;
+    color: #333333;
+    width: 100%;
+    word-break: break-word;
+  }
+
+  .index-words p {
+    margin-left: 10%;
+    font-weight: lighter;
+    font-size: medium;
+  }
+}
+
+@media screen  and (max-width: @max-width) {
+  #index-container {
+    #index-bloger-container {
+      text-align: center;
+      width: 100%;
+
+
+      #index-bloger-desc {
+        width: 100%;
+      }
+    }
+
+    #index-left {
+      position: relative;
+      width: 90%;
+      margin: 0 5%;
+    }
+
+    #index-right {
+      position: relative;
+      width: 90%;
+      margin: 0 5%;
+    }
+  }
+}
+
+// 关于博主 栏小于1420会错位故提前将其设置为居中
+@media screen  and (max-width: 1420px) {
+  #index-bloger-container {
+    text-align: center;
+  }
+}

@@ -1,0 +1,30 @@
+<div class="bruce flex-ct-x">
+    <form class="bubble-distribution">
+        <h3>登录</h3>
+        <div class="emailDiv">
+            <input type="email" name="email" [(ngModel)]="loginReq.email" placeholder="请输入邮箱"
+                   pattern="^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$"
+                   required>
+            <img class="img" src="https://oss.celess.cn/web/greeting.1415c1c.png" alt="">
+        </div>
+        <div class="pwdDiv">
+            <input type="password" [(ngModel)]="loginReq.password" name="pwd" placeholder="请输入密码(6到16位字符)"
+                   pattern="^[\w_-]{6,16}$"
+                   required>
+            <img class="img" src="https://oss.celess.cn/web/blindfold.58ce423.png" alt="">
+        </div>
+        <br>
+        <input type="checkbox" id="isRemember" name="isRemember" [(ngModel)]="loginReq.isRememberMe"> <label
+            for="isRemember"> 记住密码</label>
+        <span id="sendEmail" *ngIf="showSendEmail" (click)="sendEmail()">找回密码</span>
+
+        <span [style]="{display: showSendEmail?'block':'inline',float:showSendEmail?null:'right'}" class="to-reg">还没有账号，去
+                <a [routerLink]="'/user/registration'"
+                   (click)="loginStatus.emit(true)">注册</a>
+            </span>
+        <img class="img" src="https://oss.celess.cn/web/normal.0447fe9.png" alt="">
+
+        <button nz-button nzType="primary" (click)="doLogin()" [nzLoading]="submitting">登录</button>
+
+    </form>
+</div>

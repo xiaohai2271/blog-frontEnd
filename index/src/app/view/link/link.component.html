@@ -1,0 +1,52 @@
+<div class="site-middle am-animation-slide-top">
+    <div class="title">
+        <i nz-icon nzType="smile" nzTheme="outline" class="titleTag"></i><span class="title">友情链接</span>
+    </div>
+    <ul class="partner-sites">
+        <li *ngFor="let link of linkList">
+            <i nz-icon nzType="link" nzTheme="outline"></i>
+            <a [href]="link.url" target="_blank" [title]="link.name">{{link.name}}</a>
+        </li>
+        <li class="applylink" (click)="showModal=!showModal">申请友链</li>
+    </ul>
+
+
+</div>
+<div class="placard am-animation-slide-bottom">
+    <div class="title">
+        <i nz-icon nzType="smile" nzTheme="outline" class="titleTag"></i><span class="title">友链公告</span>
+    </div>
+    <ul class="placard-content">
+        <li>请确认贵站可正常访问</li>
+        <li>原创博客、技术博客、游记博客优先</li>
+        <li>博客内容时常更新</li>
+        <li><strong>提交申请时若为https链接请带上https否则将视为http</strong></li>
+    </ul>
+</div>
+
+<nz-modal [(nzVisible)]="showModal" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter"
+          (nzOnCancel)="cancel()">
+    <ng-template #modalTitle>
+        <h2 style="text-align: center">申请友链</h2>
+    </ng-template>
+
+    <ng-template #modalContent>
+        <div class="am-modal-bd">
+            <div class="article-setting">
+                <label>网站名称：
+                    <input nz-input placeholder="请输入网站名称" nzSize="large" [(ngModel)]="link.name">
+                </label>
+                <br>
+                <br>
+                <label>网站链接：
+                    <input nz-input placeholder="请输入网站链接" nzSize="large" [(ngModel)]="link.url">
+                </label>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #modalFooter>
+        <button nz-button (click)="cancel()">取消</button>
+        <button nz-button nzType="primary" (click)="apply()">提交</button>
+    </ng-template>
+</nz-modal>

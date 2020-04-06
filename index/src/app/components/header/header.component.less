@@ -1,0 +1,160 @@
+@import "../../global-variables";
+
+.containBg {
+  background-image: url("src/assets/img/bg_header.jpg") !important;
+  color: #ffffff !important;
+  min-height: @header-min-height;
+  background-position: center center !important;
+  background-size: cover !important;
+  opacity: 1 !important;
+  padding-top: 15px !important;
+
+  .info-name {
+    color: white !important;
+  }
+  a {
+    color: white !important;
+  }
+
+}
+
+#header {
+  // 设置header背景
+  background: rgba(255, 255, 255, 0.55);
+  color: black;
+  font-family: -apple-system, BlinkMacSystemFont, opensans, Optima, "Microsoft Yahei", sans-serif;
+  padding-top: 0px;
+  position: relative;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+
+  div {
+    display: inline-block;
+  }
+
+  #avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid #bdbdbd;
+  }
+
+  #logo {
+    // 设置logo的宽高
+    width: @header-logo-width;
+    height: @header-logo-height;
+    border-radius: 50%;
+    //position: relative;
+    //top: 0;
+    //left: 30px;
+  }
+
+  #header-title {
+    //position: relative;
+    //top: 0;
+    //left: @logo_wh;
+    font-size: xx-large;
+    font-weight: lighter;
+    min-width: 130px;
+    max-width: 50%;
+    vertical-align: middle;
+
+    a {
+      color: black;
+    }
+  }
+
+  #header-user-login, #info {
+    float: right;
+    margin-right: 15px;
+    line-height: 50px;
+
+
+    [nz-button] {
+      margin-right: 30px;
+    }
+  }
+
+  .info-name {
+    color: black;
+    margin-right: 0 !important;
+  }
+
+  #header-menu {
+    display: none;
+  }
+
+  #nav {
+    @item-width: 80px;
+    width: auto;
+    list-style: none;
+
+    li:hover {
+      background: #ececec;
+      //color: black;
+    }
+
+    li {
+      float: left;
+      height: 50px;
+      width: @item-width;
+      line-height: 50px;
+      //color: white;
+      text-align: center;
+    }
+  }
+
+}
+
+/* max-width:910px */
+@media screen and (max-width: @max-width) {
+  #header {
+    #header-logo-title {
+      position: static;
+      width: 75%;
+    }
+
+    #nav {
+      display: none;
+      background: white;
+      opacity: 0.5;
+      position: relative;
+      left: 0;
+      top: 0;
+      width: 100%;
+
+
+      li {
+        clear: both;
+        width: 100%;
+        line-height: 40px;
+        height: 40px;
+        text-align: center;
+        color: black;
+      }
+
+      li:hover {
+        background: #bce672;
+      }
+    }
+
+    #header-user-login {
+      display: none;
+    }
+
+    #header-menu {
+      display: block !important;
+      position: absolute;
+      right: 30px;
+      top: 25px
+    }
+
+    #info {
+      display: block !important;
+      position: absolute;
+      right: 40px;
+      top: 15px
+    }
+  }
+}

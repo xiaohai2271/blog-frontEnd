@@ -1,4 +1,5 @@
 export const environment = {
-  production: true,
-  host: 'https://api.celess.cn'
+    production: true,
+    logger: false,
+    host: 'https://api.celess.cn'
 };
