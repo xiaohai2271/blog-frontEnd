@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Category} from '../../class/Category';
-import {PageList} from '../../class/pageList';
+import {PageList} from '../../class/HttpReqAndResp';
 import {Article} from '../../class/Article';
-import {Tag} from '../../class/Tag';
 import {ApiService} from '../../api/api.service';
 import {NzMessageService} from 'ng-zorro-antd';
 import {Location} from '@angular/common';

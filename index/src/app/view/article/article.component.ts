@@ -4,8 +4,8 @@ import {ApiService} from '../../api/api.service';
 import {Article} from '../../class/Article';
 import {Title} from '@angular/platform-browser';
 import {User} from '../../class/User';
-import {CommentReq} from '../../class/CommentReq';
-import {PageList} from '../../class/pageList';
+import {CommentReq} from '../../class/Comment';
+import {PageList} from '../../class/HttpReqAndResp';
 import {Comment} from '../../class/Comment';
 
 declare var editormd;

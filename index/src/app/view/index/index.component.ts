@@ -3,11 +3,11 @@ import {ApiService} from '../../api/api.service';
 import {Article} from '../../class/Article';
 import {NzIconService, NzMessageService} from 'ng-zorro-antd';
 import {SvgIconUtil} from '../../utils/svgIconUtil';
-import {PageList} from '../../class/pageList';
+import {PageList} from '../../class/HttpReqAndResp';
 import {ErrDispatch} from '../../class/ErrDispatch';
-import {RequestObj} from '../../class/Request';
+import {RequestObj} from '../../class/HttpReqAndResp';
 import {Router} from '@angular/router';
-import {Category} from '../../class/Category';
+import {Tag} from '../../class/Tag';
 import {Title} from '@angular/platform-browser';
 
 @Component({
@@ -36,7 +36,7 @@ export class IndexComponent implements OnInit, ErrDispatch {
     desc: string;
     articles: PageList<Article>;
     tagNameAndNumber: { name: string, size: number }[];
-    categoryList: Category[];
+    categoryList: Tag[];
     counts: {
         articleCount: number,
         visitorCount: number,

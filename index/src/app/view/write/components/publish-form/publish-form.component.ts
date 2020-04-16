@@ -1,7 +1,6 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ApiService} from '../../../../api/api.service';
-import {Category} from '../../../../class/Category';
+import {Tag} from '../../../../class/Tag';
 
 @Component({
     selector: 'c-publish-form',
@@ -16,7 +15,7 @@ export class PublishFormComponent implements OnInit {
     @ViewChild('inputElement', {static: false}) tagInputElement: ElementRef;
 
     @Input() tagNacList: { name: string, size: number }[];
-    @Input() categoryList: Category[];
+    @Input() categoryList: Tag[];
     @Input() primaryData: { id: number, type: boolean, tags: string, category: string, url?: string };
     @Output() submitEvent = new EventEmitter<{ id: number, type: boolean, tags: string, category: string, url?: string }>();
 

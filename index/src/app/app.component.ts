@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {LoginReq} from './class/LoginReq';
+import {LoginReq} from './class/User';
 import {HeaderComponent} from './components/header/header.component';
 
 @Component({
@@ -14,14 +14,14 @@ export class AppComponent {
 
     registration() {
         // todo :: 登录
-        console.log('registration');
+        // console.log('registration');
         this.regModal = true;
 
     }
 
     login() {
         // TODO :: 注册
-        console.log('login');
+        // console.log('login');
         this.loginModal = true;
     }
 

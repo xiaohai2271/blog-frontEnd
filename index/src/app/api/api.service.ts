@@ -1,19 +1,21 @@
 import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable, Observer, of} from 'rxjs';
+
 import {Article} from '../class/Article';
 import {HttpService} from './http/http.service';
-import {PageList} from '../class/pageList';
+import {PageList} from '../class/HttpReqAndResp';
 import {ErrDispatch} from '../class/ErrDispatch';
-import {ArticleReq} from '../class/ArticleReq';
-import {Category} from '../class/Category';
+import {ArticleReq} from '../class/Article';
+import {Tag} from '../class/Tag';
 import {Comment} from '../class/Comment';
-import {CommentReq} from '../class/CommentReq';
+import {CommentReq} from '../class/Comment';
 import {Link} from '../class/Link';
 import {User} from '../class/User';
-import {LoginReq} from '../class/LoginReq';
-import {Observable, Observer, of} from 'rxjs';
-import {Response} from '../class/Response';
-import {HttpClient} from '@angular/common/http';
-import {LocalStorageService} from '../utils/local-storage.service';
+import {LoginReq} from '../class/User';
+import {Response} from '../class/HttpReqAndResp';
+
+import {LocalStorageService} from '../services/local-storage.service';
 
 @Injectable({
     providedIn: 'root'
@@ -90,14 +92,14 @@ export class ApiService extends HttpService {
     }
 
     categories() {
-        return super.Service<Category[]>({
+        return super.Service<Tag[]>({
             path: '/categories',
             method: 'GET'
         });
     }
 
     tags(pageNumber: number = 1, pageSize: number = 10) {
-        return super.Service<Category[]>({
+        return super.Service<Tag[]>({
             path: '/tags',
             method: 'GET',
             queryParam: {

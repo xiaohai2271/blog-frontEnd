@@ -1,12 +1,11 @@
 import {Injectable} from '@angular/core';
-import {RequestObj} from '../../class/Request';
+import {RequestObj} from '../../class/HttpReqAndResp';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
-import {LocalStorageService} from '../../utils/local-storage.service';
-import {Response} from '../../class/Response';
+import {LocalStorageService} from '../../services/local-storage.service';
+import {Response} from '../../class/HttpReqAndResp';
 import {Observable, Observer, Subject} from 'rxjs';
 import {ErrDispatch} from '../../class/ErrDispatch';
-import {multicast} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'

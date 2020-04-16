@@ -1,11 +1,11 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ArticleReq} from '../../class/ArticleReq';
+import {ArticleReq} from '../../class/Article';
 import {EditorConfig} from '../../class/EditorConfig';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from '../../api/api.service';
 import {NzMessageService} from 'ng-zorro-antd';
 import {User} from '../../class/User';
-import {Category} from '../../class/Category';
+import {Tag} from '../../class/Tag';
 import {Title} from '@angular/platform-browser';
 
 @Component({
@@ -31,7 +31,7 @@ export class WriteComponent implements OnInit {
     public article: ArticleReq = new ArticleReq();
 
     userInfo: User;
-    categoryList: Category[];
+    categoryList: Tag[];
     tagNacList: { name: string, size: number }[];
     primaryData = {};
     // 发布新文章时，文章相同会被拦回 此处判断一下

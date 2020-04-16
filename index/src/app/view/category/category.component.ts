@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../../api/api.service';
-import {Category} from '../../class/Category';
+import {Tag} from '../../class/Tag';
 import {NzMessageService} from 'ng-zorro-antd';
-import {PageList} from '../../class/pageList';
+import {PageList} from '../../class/HttpReqAndResp';
 import {Article} from '../../class/Article';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
@@ -22,8 +22,8 @@ export class CategoryComponent implements OnInit {
                 private title: Title) {
     }
 
-    categoryList: Category[] = [];
-    private category: Category;
+    categoryList: Tag[] = [];
+    private category: Tag;
     articleList: PageList<Article>;
 
     name: string;
@@ -58,7 +58,7 @@ export class CategoryComponent implements OnInit {
         });
     }
 
-    changeCategory(category: Category) {
+    changeCategory(category: Tag) {
         if (this.name === category.name) {
             return;
         }

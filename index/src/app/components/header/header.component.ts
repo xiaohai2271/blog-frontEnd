@@ -4,7 +4,6 @@ import {NavigationEnd, Router, RouterEvent} from '@angular/router';
 import {filter} from 'rxjs/operators';
 import {ApiService} from '../../api/api.service';
 import {User} from '../../class/User';
-import {LocalStorageService} from '../../utils/local-storage.service';
 
 @Component({
     selector: 'app-header',

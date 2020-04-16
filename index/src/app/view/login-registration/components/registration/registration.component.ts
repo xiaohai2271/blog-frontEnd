@@ -4,8 +4,8 @@ import {ApiService} from '../../../../api/api.service';
 import {NzMessageService} from 'ng-zorro-antd';
 import {Router} from '@angular/router';
 import {ErrDispatch} from '../../../../class/ErrDispatch';
-import {RequestObj} from '../../../../class/Request';
-import {LoginReq} from '../../../../class/LoginReq';
+import {RequestObj} from '../../../../class/HttpReqAndResp';
+import {LoginReq} from '../../../../class/User';
 import {Title} from '@angular/platform-browser';
 
 @Component({

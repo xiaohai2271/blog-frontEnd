@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd';
 import {ApiService} from '../../../../api/api.service';
-import {LoginReq} from '../../../../class/LoginReq';
-import {LocalStorageService} from '../../../../utils/local-storage.service';
+import {LoginReq} from '../../../../class/User';
+import {LocalStorageService} from '../../../../services/local-storage.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LoginRegistrationService} from '../../service/login-registration.service';
 import {Title} from '@angular/platform-browser';
