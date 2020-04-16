@@ -22,7 +22,7 @@
                         <td>{{tag.id}}</td>
                         <td class="text-truncate" style="max-width: 150px" [title]="tag.name">{{tag.name}}</td>
                         <td>{{tag.articles}}</td>
-                        <td><span class="badge badge-success">{{tag.articles.split(',').length - 1}}</span></td>
+                        <td><span class="badge badge-success">{{tag.articles.length}}</span></td>
                         <td>
 
                             <a [href]="'../tag?name='+tag.name">

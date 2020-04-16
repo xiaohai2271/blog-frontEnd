@@ -1,6 +1,6 @@
 export class Tag {
   id?: number;
   name: string;
-  articles?: string;
+  articles?: number[];
   size: number;
 }
