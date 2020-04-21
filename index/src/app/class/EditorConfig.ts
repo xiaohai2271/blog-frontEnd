@@ -19,7 +19,7 @@ export class EditorConfig {
     public markdown = '';
     public flowChart = true;
     public syncScrolling = true;
-    public sequenceDiagram = true;
+    public sequenceDiagram = false; // 时序图/序列图
     public imageUpload = true;
     public imageFormats = ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'];
     public imageUploadURL = environment.host + '/imgUpload';

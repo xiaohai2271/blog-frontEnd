@@ -41,9 +41,7 @@
               "./node_modules/jquery/dist/jquery.min.js",
               "src/assets/editor/lib/marked.min.js",
               "src/assets/editor/lib/prettify.min.js",
-              "src/assets/editor/lib/raphael.min.js",
               "src/assets/editor/lib/underscore.min.js",
-              "src/assets/editor/lib/sequence-diagram.min.js",
               "src/assets/editor/lib/flowchart.min.js",
               "src/assets/editor/lib/jquery.flowchart.min.js",
               "src/assets/editor/editormd.min.js"
