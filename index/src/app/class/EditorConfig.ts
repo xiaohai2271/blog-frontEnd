@@ -23,5 +23,5 @@ export class EditorConfig {
     public imageUpload = true;
     public imageFormats = ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'];
     public imageUploadURL = environment.host + '/imgUpload';
-
+    public useAjaxToUploadImg = true
 }

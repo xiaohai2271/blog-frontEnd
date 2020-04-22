@@ -153,6 +153,34 @@
 
                     loading(true);
 
+                    if (settings.useAjaxToUploadImg) {
+                        var formData = new FormData();
+                        //获取需要上传的文件，追加到formData中以json的方式提交
+                        formData.append("editormd-image-file", fileInput[0].files[0]);
+                        $.ajax({
+                            type: 'post',
+                            url: action,
+                            data: formData,
+                            dataType: "json",
+                            async: false,
+                            processData: false,
+                            contentType: false,
+                            success: data => {
+                                loading(false);
+                                if (data.success === 1) {
+                                    dialog.find("[data-url]").val(data.url);
+                                } else {
+                                    alert(data.message);
+                                }
+                            },
+                            error:() =>{
+                                loading(false);
+                            }
+                        })
+
+                        return false
+                    }
+
                     var submitHandler = function() {
 
                         var uploadIframe = document.getElementById(iframeName);
