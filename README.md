@@ -66,6 +66,8 @@
 > > 4. ng build --prod
 > > 5. 修改index.html将` <base href="/">`改为 ` <base href="/admin/">`
 >
+>可使用项目根目录的`build.sh` 脚本进行构建，但是 两个项目中的环境里面的变量仍需自己修改
+>
 > 
 
 ##### 发布
