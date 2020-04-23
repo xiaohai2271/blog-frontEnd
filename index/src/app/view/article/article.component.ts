@@ -60,7 +60,6 @@ export class ArticleComponent implements OnInit {
             emoji: true,
             taskList: true,
             flowChart: true,  // 默认不解析
-            sequenceDiagram: true,  // 默认不解析
         });
     }
 
