@@ -45,7 +45,14 @@ export class IndexComponent implements OnInit, ErrDispatch {
         tagCount: number,
         commentCount: number
     };
-    lastestUpdateTime: string;
+    lastestUpdate: {
+        lastUpdateTime: string;
+        lastUpdateInfo: string;
+        lastCommit: string;
+        committerAuthor: string;
+        committerDate: string;
+        commitUrl: string
+    };
 
     ngOnInit() {
         this.imgUrl = this.logoImgUrl;
@@ -62,8 +69,8 @@ export class IndexComponent implements OnInit, ErrDispatch {
             error: error => {
             }
         });
-        this.apiService.lastestUpdateTime().subscribe({
-            next: data => this.lastestUpdateTime = data.result,
+        this.apiService.lastestUpdate().subscribe({
+            next: data => this.lastestUpdate = data.result,
             error: error => {
             }
         });

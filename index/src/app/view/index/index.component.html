@@ -73,8 +73,11 @@
             <p *ngIf="counts && counts.visitorCount">
                 <i nz-icon nzType="info-circle" nzTheme="outline"></i>访客总数: {{counts.visitorCount}}次
             </p>
-            <p *ngIf="lastestUpdateTime">
-                <i nz-icon nzType="info-circle" nzTheme="outline"></i>上次更新时间: {{lastestUpdateTime}}
+            <p *ngIf="lastestUpdate">
+                <i nz-icon nzType="info-circle" nzTheme="outline"></i>上次更新时间: {{lastestUpdate.lastUpdateTime}}
+            </p>
+            <p *ngIf="lastestUpdate&&lastestUpdate.committerDate">
+                <i nz-icon nzType="info-circle" nzTheme="outline"></i>上次提交代码时间: {{lastestUpdate.committerDate}}
             </p>
         </c-card-detail>
 
