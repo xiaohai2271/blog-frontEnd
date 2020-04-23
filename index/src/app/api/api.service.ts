@@ -330,9 +330,16 @@ export class ApiService extends HttpService {
         });
     }
 
-    lastestUpdateTime() {
-        return super.Service<string>({
-            path: '/lastestUpdateTime',
+    lastestUpdate() {
+        return super.Service<{
+            lastUpdateTime: string;
+            lastUpdateInfo: string;
+            lastCommit: string;
+            committerAuthor: string;
+            committerDate: string;
+            commitUrl: string
+        }>({
+            path: '/lastestUpdate',
             method: 'GET'
         });
     }
