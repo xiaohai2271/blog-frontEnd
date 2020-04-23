@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {filter} from 'rxjs/operators';
-import {NavigationEnd, Route, Router, RouterEvent} from '@angular/router';
+import {ComponentStateService} from '../../services/component-state.service';
 
 @Component({
     selector: 'app-footer',
@@ -8,22 +7,13 @@ import {NavigationEnd, Route, Router, RouterEvent} from '@angular/router';
     styleUrls: ['./footer.component.less']
 })
 export class FooterComponent implements OnInit {
-    show: boolean;
 
-    constructor(private router: Router) {
-        this.show = true;
+    constructor(public componentStateService: ComponentStateService) {
     }
 
     readonly gName: string;
 
     ngOnInit() {
-        this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe((e: RouterEvent) => {
-            const indexOf = e.url.lastIndexOf('/');
-            const prefix = e.url.substr(0, indexOf === 0 ? e.url.length : indexOf);
-            if (prefix === '/user' || prefix === '/write') {
-                this.show = false;
-            }
-        });
     }
 
 }

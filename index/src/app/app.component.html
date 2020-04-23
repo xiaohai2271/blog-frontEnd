@@ -1,11 +1,13 @@
-<app-header (loginEvent)="login()" (registrationEvent)="registration()" #headerComponent></app-header>
+<ng-container *ngIf="componentStateService.visible.header">
+    <app-header (loginEvent)="login()" (registrationEvent)="registration()" #headerComponent></app-header>
+</ng-container>
 
 <router-outlet></router-outlet>
+<ng-container *ngIf="componentStateService.visible.footer">
+    <app-footer></app-footer>
+</ng-container>
 
-<app-footer></app-footer>
-
-
-<nz-back-top [nzTemplate]="backToTop"></nz-back-top>
+<nz-back-top [nzTemplate]="backToTop" *ngIf="componentStateService.visible.globalBackToTop"></nz-back-top>
 
 <ng-template #backToTop>
     <button style=" height: 60px;width: 60px;border-radius: 50%;" nz-button title="回到顶部">

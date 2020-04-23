@@ -13,7 +13,6 @@ import {AdminVisitorComponent} from './admin-visitor/admin-visitor.component';
 
 
 const routes: Routes = [
-    {path: '', pathMatch: 'full', component: AdminIndexComponent},
     {path: 'article', component: AdminArticleComponent},
     {path: 'comment', component: AdminCommentComponent},
     {path: 'category', component: AdminCategoryComponent},
@@ -23,6 +22,7 @@ const routes: Routes = [
     {path: 'user', component: AdminUserComponent},
     {path: 'userInfo', component: AdminUserinfoComponent},
     {path: 'visitor', component: AdminVisitorComponent},
+    {path: '**', component: AdminIndexComponent}
 ];
 
 @NgModule({

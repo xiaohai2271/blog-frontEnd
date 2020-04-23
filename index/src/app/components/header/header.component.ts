@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Router} from '@angular/router';
 import {windowWidthChange} from '../../utils/util';
-import {NavigationEnd, Router, RouterEvent} from '@angular/router';
-import {filter} from 'rxjs/operators';
 import {ApiService} from '../../api/api.service';
 import {User} from '../../class/User';
+import {ComponentStateService} from '../../services/component-state.service';
 
 @Component({
     selector: 'app-header',
@@ -13,7 +13,8 @@ import {User} from '../../class/User';
 export class HeaderComponent implements OnInit {
 
     constructor(private router: Router,
-                private apiService: ApiService) {
+                private apiService: ApiService,
+                public componentStateService: ComponentStateService) {
         this.pageList = [
             {name: '首页', path: '/', icon: 'home', iconType: 'fill', show: true},
             {name: '分类', path: '/categories', icon: 'project', iconType: 'fill', show: true},
@@ -33,15 +34,8 @@ export class HeaderComponent implements OnInit {
             this.showList = window.innerWidth > this.mobileMaxWidth;
             this.changeLoginButtonV();
         });
-
-        this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe((e: RouterEvent) => {
-            // indexOf ==>  -1/index
-            const indexOfParam = e.url.indexOf('?');
-            const path = e.url.substr(0, indexOfParam === -1 ? e.url.length : indexOfParam);
-            // lastIndexOf ==> 0/index
-            const indexOf = path.lastIndexOf('/');
-            const prefix = path.substr(0, indexOf === 0 ? path.length : indexOf);
-            this.currentPath = prefix;
+        // 订阅一级路由的变化
+        componentStateService.watchRouterChange().subscribe(prefix => {
             if (prefix === '/user' || prefix === '/write' || prefix === '/update') {
                 this.size = 'default';
             } else {
