@@ -4,9 +4,31 @@
         <div class="container">
             <div class="zh-update">
                 <div class="zh-update-log">
-                    <div class="zh-update-log-title">
+                    <div class="zh-update-log-title" *ngIf="lastUpdate">
                         <h1>更新日志</h1>
-                        <p>最后更新于 {{lastUpdateTime}}</p>
+                        <p>最后更新于:
+                            <nz-tag nzColor="red">{{lastUpdate.lastUpdateTime}}</nz-tag>
+                        </p>
+                        <p>最后更新内容:
+                            <nz-tag nzColor="volcano">{{lastUpdate.lastUpdateInfo}}</nz-tag>
+                        </p>
+                        <p>最后提交代码于:
+                            <nz-tag nzColor="purple">{{lastUpdate.committerDate}}</nz-tag>
+                        </p>
+                        <p>最后提交内容:
+                            <a [href]="lastUpdate.commitUrl" target="_blank">
+                                <nz-tag nzColor="#f50" class="pointer">{{lastUpdate.lastCommit}}</nz-tag>
+                            </a>
+                            By
+                            <a href="https://github.com/xiaohai2271" target="_blank">
+                                <nz-tag nzColor="cyan" class="pointer">{{lastUpdate.committerAuthor}}</nz-tag>
+                            </a>
+                        </p>
+                        <p>
+                            <span>最后构建状态&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <img alt="build Status"
+                                 src="https://img.shields.io/github/workflow/status/xiaohai2271/blog-frontEnd/Node.js CI">
+                        </p>
                     </div>
                     <div class="zh-update-log-content">
 

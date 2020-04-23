@@ -14,12 +14,19 @@ export class UpdateComponent implements OnInit {
         titleService.setTitle('小海博客 | 网站更新记录');
     }
 
-    lastUpdateTime: string;
+    lastUpdate: {
+        lastUpdateTime: string;
+        lastUpdateInfo: string;
+        lastCommit: string;
+        committerAuthor: string;
+        committerDate: string;
+        commitUrl:string
+    } ;
     webUpdate: { id: number, info: string, time: string }[] = [];
 
     ngOnInit() {
-        this.apiService.lastestUpdateTime().subscribe(data => {
-            this.lastUpdateTime = data.result;
+        this.apiService.lastestUpdate().subscribe(data => {
+            this.lastUpdate = data.result;
         });
         this.apiService.webUpdate().subscribe(data => {
             this.webUpdate = data.result.reverse();
