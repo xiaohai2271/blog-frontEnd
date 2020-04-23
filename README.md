@@ -1,5 +1,5 @@
 # 小海博客前端页面
-![Node.js CI](https://github.com/xiaohai2271/blog-frontEnd/workflows/Node.js%20CI/badge.svg)
+![BuildProject](https://github.com/xiaohai2271/blog-frontEnd/workflows/BuildProject/badge.svg)
 
 基于angular的前端展示页面
 
