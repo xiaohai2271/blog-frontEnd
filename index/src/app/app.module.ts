@@ -11,6 +11,7 @@ import {HeaderComponent} from './components/header/header.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {AppRoutingModule} from './app-routing.module';
 import {LoginRegistrationModule} from './view/login-registration/login-registration.module';
+import {AdminModule} from './view/admin/admin.module';
 
 
 registerLocaleData(zh);
@@ -28,7 +29,8 @@ registerLocaleData(zh);
         FormsModule,
         HttpClientModule,
         BrowserAnimationsModule,
-        LoginRegistrationModule
+        LoginRegistrationModule,
+        AdminModule
     ],
     providers: [{provide: NZ_I18N, useValue: zh_CN}],
     exports: [],

@@ -17,6 +17,7 @@ const routes: Routes = [
         path: 'user', loadChildren: () => import('./view/login-registration/login-registration.module')
             .then(mod => mod.LoginRegistrationModule)
     },
+    {path: 'admin', loadChildren: () => import('./view/admin/admin.module').then(mod => mod.AdminModule)},
     {path: '**', loadChildren: () => import('./view/page-not-found/page-not-found.module').then(mod => mod.PageNotFoundModule)}
 ];
 
