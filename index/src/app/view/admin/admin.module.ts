@@ -11,6 +11,7 @@ import {AdminUpdateComponent} from './admin-update/admin-update.component';
 import {AdminUserComponent} from './admin-user/admin-user.component';
 import {AdminUserinfoComponent} from './admin-userinfo/admin-userinfo.component';
 import {AdminVisitorComponent} from './admin-visitor/admin-visitor.component';
+import { AdminComponent } from './admin.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import {AdminVisitorComponent} from './admin-visitor/admin-visitor.component';
         AdminUpdateComponent,
         AdminUserComponent,
         AdminUserinfoComponent,
-        AdminVisitorComponent
+        AdminVisitorComponent,
+        AdminComponent
     ],
     imports: [
         CommonModule,

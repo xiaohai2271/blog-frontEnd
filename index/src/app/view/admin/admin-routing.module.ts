@@ -10,19 +10,27 @@ import {AdminUpdateComponent} from './admin-update/admin-update.component';
 import {AdminUserComponent} from './admin-user/admin-user.component';
 import {AdminUserinfoComponent} from './admin-userinfo/admin-userinfo.component';
 import {AdminVisitorComponent} from './admin-visitor/admin-visitor.component';
+import {AdminComponent} from './admin.component';
+import {AuthGuard} from './auth.guard';
 
 
 const routes: Routes = [
-    {path: 'article', component: AdminArticleComponent},
-    {path: 'comment', component: AdminCommentComponent},
-    {path: 'category', component: AdminCategoryComponent},
-    {path: 'link', component: AdminLinkComponent},
-    {path: 'tag', component: AdminTagComponent},
-    {path: 'update', component: AdminUpdateComponent},
-    {path: 'user', component: AdminUserComponent},
-    {path: 'userInfo', component: AdminUserinfoComponent},
-    {path: 'visitor', component: AdminVisitorComponent},
-    {path: '**', component: AdminIndexComponent}
+    {
+        path: '',
+        component: AdminComponent,
+        children: [
+            {path: 'article', component: AdminArticleComponent, canActivate: [AuthGuard]},
+            {path: 'comment', component: AdminCommentComponent, canActivate: [AuthGuard]},
+            {path: 'category', component: AdminCategoryComponent, canActivate: [AuthGuard]},
+            {path: 'link', component: AdminLinkComponent, canActivate: [AuthGuard]},
+            {path: 'tag', component: AdminTagComponent, canActivate: [AuthGuard]},
+            {path: 'update', component: AdminUpdateComponent, canActivate: [AuthGuard]},
+            {path: 'user', component: AdminUserComponent, canActivate: [AuthGuard]},
+            {path: 'userInfo', component: AdminUserinfoComponent, canActivate: [AuthGuard]},
+            {path: 'visitor', component: AdminVisitorComponent, canActivate: [AuthGuard]},
+            {path: '**', component: AdminIndexComponent, canActivate: [AuthGuard]}
+        ]
+    }
 ];
 
 @NgModule({
