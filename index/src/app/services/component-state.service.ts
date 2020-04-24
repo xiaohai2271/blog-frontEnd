@@ -33,7 +33,7 @@ export class ComponentStateService {
             const prefix = path.substr(0, indexOf === 0 ? path.length : indexOf);
             this.dealWithPathChange(prefix)
             this.currentPath = prefix;
-            subscriber.next(prefix)
+            if (subscriber) subscriber.next(prefix)
         });
         return ob;
     }
