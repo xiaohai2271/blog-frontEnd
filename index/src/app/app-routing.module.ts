@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
-
 const routes: Routes = [
     {path: '', pathMatch: 'full', loadChildren: () => import('./view/index/index.module').then(mod => mod.IndexModule)},
     {path: 'update', loadChildren: () => import('./view/update/update.module').then(mod => mod.UpdateModule)},
@@ -9,16 +8,25 @@ const routes: Routes = [
     {path: 'tags', loadChildren: () => import('./view/tag/tag.module').then(mod => mod.TagModule)},
     {path: 'categories', loadChildren: () => import('./view/category/category.module').then(mod => mod.CategoryModule)},
     // {path: 'leaveMsg', loadChildren: () => import('./view/leave-msg/leave-msg.module').then(mod => mod.LeaveMsgModule)},
-    {path: 'emailVerify', loadChildren: () => import('./view/email-verify/email-verify.module').then(mod => mod.EmailVerifyModule)},
     {path: 'resetPwd', loadChildren: () => import('./view/reset-pwd/reset-pwd.module').then(mod => mod.ResetPwdModule)},
     {path: 'write', loadChildren: () => import('./view/write/write.module').then(mod => mod.WriteModule)},
     {path: 'links', loadChildren: () => import('./view/link/link.module').then(mod => mod.LinkModule)},
     {
+        path: 'emailVerify',
+        loadChildren: () => import('./view/email-verify/email-verify.module').then(mod => mod.EmailVerifyModule)
+    },
+    {
         path: 'user', loadChildren: () => import('./view/login-registration/login-registration.module')
             .then(mod => mod.LoginRegistrationModule)
     },
-    {path: 'admin', loadChildren: () => import('./view/admin/admin.module').then(mod => mod.AdminModule)},
-    {path: '**', loadChildren: () => import('./view/page-not-found/page-not-found.module').then(mod => mod.PageNotFoundModule)}
+    {
+        path: 'admin',
+        loadChildren: () => import('./view/admin/admin.module').then(mod => mod.AdminModule),
+    },
+    {
+        path: '**',
+        loadChildren: () => import('./view/page-not-found/page-not-found.module').then(mod => mod.PageNotFoundModule)
+    }
 ];
 
 
