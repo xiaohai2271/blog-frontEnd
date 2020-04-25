@@ -24,7 +24,7 @@ export class HttpService {
 
     Service<T>(request: RequestObj) {
         // 设置默认值
-        request.contentType = request.contentType == null ? 'application/x-www-form-urlencoded' : 'application/json';
+        request.contentType = request.contentType == null ? 'application/x-www-form-urlencoded' : request.contentType;
         request.header = {
             'Content-Type': request.contentType
         };
