@@ -1,0 +1,46 @@
+<header>
+    <a href="/">
+        <div>
+            <img src="https://56462271.oss-cn-beijing.aliyuncs.com/web/logo.png"/>
+        </div>
+    </a>
+    <div>
+        <a routerLink="/" id="blogTitle"><span>小海博客</span></a>
+        <span id="desc">记录学习成长历程</span>
+    </div>
+
+
+    <div id="loged" *ngIf="user">
+        <nz-avatar [nzSrc]="user.avatarImgUrl"></nz-avatar>
+        <button nz-button nzType="link" nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click" [nzClickHide]="false">
+            {{user.displayName}}
+            <i nz-icon nzType="down"></i>
+        </button>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+                <li nz-menu-item><a routerLink="/">博客首页</a></li>
+                <hr style="opacity: 0.6">
+                <li nz-menu-item>
+                    <a (click)="logout()">退出登录</a>
+                </li>
+            </ul>
+        </nz-dropdown-menu>
+    </div>
+
+
+    <div id="landr" *ngIf="!user">
+        <nz-space>
+            <nz-space-item>
+                <a routerLink="/user/login">
+                    <button nz-button nzType="primary">登录</button>
+                </a>
+            </nz-space-item>
+            <nz-space-item>
+                <a routerLink="/user/registration">
+                    <button nz-button nzType="primary">注册</button>
+                </a>
+            </nz-space-item>
+        </nz-space>
+    </div>
+
+</header>
