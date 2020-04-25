@@ -14,6 +14,8 @@ export class UserService {
                 private localStorageService: LocalStorageService) {
     }
 
+    private lastRequestTime: number;
+
     // 存储订阅者
     private userObserverArray: Observer<Response<User>>[] = [];
 
@@ -29,8 +31,16 @@ export class UserService {
                 }
             }
         }
+        if (this.lastRequestTime && Date.now() - this.lastRequestTime < 1000) {
+            return {
+                unsubscribe() {
+                    observer.complete();
+                }
+            }
+        }
         // 不符合 请求网络数据并更新缓存
         // 向订阅者传数据
+        this.lastRequestTime = Date.now();
         const subscription = this.apiService.userInfo().subscribe({
             next: o => {
                 this.localStorageService.setUser(o.result);
@@ -38,6 +48,10 @@ export class UserService {
             },
             error: err => {
                 // console.debug('登录过期 token错误 等等');
+                if (err.code === -1) {
+                    // 请求重复
+                    return
+                }
                 this.localStorageService.removeToken();
                 observer.next(new Response<User>(null));
                 observer.error(err);
