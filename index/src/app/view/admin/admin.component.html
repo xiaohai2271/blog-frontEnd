@@ -1,12 +1,93 @@
-<p>admin works!</p>
-<a routerLink="/admin">indec</a>
-<a routerLink="/admin/article">article</a>
-<a routerLink="/admin/category">category</a>
-<a routerLink="/admin/comment">comment</a>
-<a routerLink="/admin/link">link</a>
-<a routerLink="/admin/tag">tag</a>
-<a routerLink="/admin/update">update</a>
-<a routerLink="/admin/user">user</a>
-<a routerLink="/admin/userInfo">userInfo</a>
-<a routerLink="/admin/visitor">visitor</a>
-<router-outlet></router-outlet>
+<c-admin-header></c-admin-header>
+<nz-layout class="layout">
+    <nz-sider nzCollapsible
+              [(nzCollapsed)]="isCollapsed"
+              [nzBreakpoint]="'lg'"
+              [nzCollapsedWidth]="0"
+              [nzZeroTrigger]="zeroTrigger"
+              nzTheme="light"
+              *ngIf="user">
+        <ul nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+            <li nz-menu-item routerLink="/admin">
+                <i nz-icon nzType="desktop" nzTheme="outline"></i>
+                <span>后台首页</span>
+            </li>
+
+            <li nz-submenu nzTitle="文章管理" nzIcon="file" *ngIf="user.role=='admin'">
+                <ul>
+                    <li nz-menu-item>
+                        <a routerLink="/write">
+                            <i nz-icon nzType="form" nzTheme="outline"></i>
+                            <span>新增文章</span>
+                        </a>
+                    </li>
+                    <li nz-menu-item routerLink="/admin/article">
+                        <i nz-icon nzType="ordered-list" nzTheme="outline"></i>
+                        <span>文章列表</span>
+                    </li>
+                </ul>
+            </li>
+
+            <li nz-menu-item routerLink="/admin/comment">
+                <i nz-icon nzType="message" nzTheme="outline"></i>
+                <span>评论管理</span>
+            </li>
+
+            <li nz-menu-item routerLink="/admin/tag" *ngIf="user.role=='admin'">
+                <i nz-icon nzType="tags" nzTheme="outline"></i>
+                <span>标签管理</span>
+            </li>
+
+            <li nz-menu-item routerLink="/admin/category" *ngIf="user.role=='admin'">
+                <i nz-icon nzType="appstore" nzTheme="outline"></i>
+                <span>分类管理</span>
+            </li>
+
+            <li nz-menu-item routerLink="/admin/userInfo">
+                <i nz-icon nzType="idcard" nzTheme="outline"></i>
+                <span>修改信息</span>
+            </li>
+
+            <li nz-menu-item routerLink="/admin/user" *ngIf="user.role=='admin'">
+                <i nz-icon nzType="user" nzTheme="outline"></i>
+                <span>用户管理</span>
+            </li>
+
+            <li nz-menu-item routerLink="/admin/link" *ngIf="user.role=='admin'">
+                <i nz-icon nzType="link" nzTheme="outline"></i>
+                <span>友链管理</span>
+            </li>
+
+            <li nz-menu-item routerLink="/admin/visitor" *ngIf="user.role=='admin'">
+                <i nz-icon nzType="chrome" nzTheme="outline"></i>
+                <span>访问管理</span>
+            </li>
+
+            <li nz-menu-item routerLink="/admin/update" *ngIf="user.role=='admin'">
+                <i nz-icon nzType="arrow-up" nzTheme="outline"></i>
+                <span>更新管理</span>
+            </li>
+
+            <!--TODO : do something here ..... -->
+            <nz-card class="myCard" *ngIf="!isCollapsed&&user.role=='admin'">
+                <p>别管别人言语</p>
+                <p>做最好的自己</p>
+            </nz-card>
+            <nz-card class="myCard" *ngIf="!isCollapsed&&user.role=='user'">
+                <p>欢迎来访小海博客</p>
+            </nz-card>
+
+        </ul>
+    </nz-sider>
+    <nz-layout>
+        <nz-content>
+            <div class="inner-content">
+                <router-outlet></router-outlet>
+            </div>
+        </nz-content>
+        <nz-footer>© <a href="https://www.celess.cn">小海博客</a> - Design by 小海</nz-footer>
+    </nz-layout>
+</nz-layout>
+<ng-template #zeroTrigger>
+    <i nz-icon nzType="menu-fold" nzTheme=outline></i>
+</ng-template>

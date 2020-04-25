@@ -11,11 +11,15 @@ import {AdminUpdateComponent} from './admin-update/admin-update.component';
 import {AdminUserComponent} from './admin-user/admin-user.component';
 import {AdminUserinfoComponent} from './admin-userinfo/admin-userinfo.component';
 import {AdminVisitorComponent} from './admin-visitor/admin-visitor.component';
-import { AdminComponent } from './admin.component';
+import {AdminComponent} from './admin.component';
+import {NgZorroAntdModule} from 'ng-zorro-antd';
+import {NzSpaceModule} from 'ng-zorro-antd/space';
+import {AdminHeaderComponent} from '../../components/admin-header/admin-header.component';
 
 
 @NgModule({
     declarations: [
+        AdminHeaderComponent,
         AdminIndexComponent,
         AdminArticleComponent,
         AdminCategoryComponent,
@@ -30,7 +34,9 @@ import { AdminComponent } from './admin.component';
     ],
     imports: [
         CommonModule,
-        AdminRoutingModule
+        AdminRoutingModule,
+        NgZorroAntdModule,
+        NzSpaceModule
     ]
 })
 export class AdminModule {
