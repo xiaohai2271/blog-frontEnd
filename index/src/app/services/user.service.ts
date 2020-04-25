@@ -44,7 +44,7 @@ export class UserService {
         const subscription = this.apiService.userInfo().subscribe({
             next: o => {
                 this.localStorageService.setUser(o.result);
-                observer.next(o);
+                this.userObserverArray.forEach(ob => ob.next(o));
             },
             error: err => {
                 // console.debug('登录过期 token错误 等等');
@@ -53,8 +53,8 @@ export class UserService {
                     return
                 }
                 this.localStorageService.removeToken();
-                observer.next(new Response<User>(null));
-                observer.error(err);
+                this.userObserverArray.forEach(ob => ob.next(new Response<User>(null)));
+                this.userObserverArray.forEach(ob => ob.error(err));
             }
         });
         return {
