@@ -7,6 +7,7 @@ import {User} from '../../class/User';
 import {CommentReq} from '../../class/Comment';
 import {PageList} from '../../class/HttpReqAndResp';
 import {Comment} from '../../class/Comment';
+import {UserService} from '../../services/user.service';
 
 declare var editormd;
 declare var $;
@@ -20,6 +21,7 @@ export class ArticleComponent implements OnInit {
 
     constructor(private activatedRoute: ActivatedRoute,
                 private apiService: ApiService,
+                private userService: UserService,
                 private titleService: Title,
                 private router: Router) {
         this.articleId = +activatedRoute.snapshot.paramMap.get('id');
@@ -41,10 +43,13 @@ export class ArticleComponent implements OnInit {
 
     ngOnInit() {
         this.toArticle(this.articleId);
-        this.apiService.userInfo().subscribe(data => {
-            this.user = data.result;
-            this.avatarImgUrl = data.result.avatarImgUrl;
-        }, error => {
+        this.userService.watchUserInfo({
+            complete: () => null,
+            error: (err) => null,
+            next: data => {
+                this.user = data.result;
+                this.avatarImgUrl = data.result.avatarImgUrl;
+            }
         });
         this.comment = new CommentReq(true);
     }

@@ -7,6 +7,7 @@ import {NzMessageService} from 'ng-zorro-antd';
 import {User} from '../../class/User';
 import {Tag} from '../../class/Tag';
 import {Title} from '@angular/platform-browser';
+import {UserService} from '../../services/user.service';
 
 @Component({
     selector: 'view-write',
@@ -18,6 +19,7 @@ export class WriteComponent implements OnInit {
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private apiService: ApiService,
+                private userService: UserService,
                 private message: NzMessageService,
                 private titleService: Title) {
         this.titleService.setTitle('小海博客 | 创作');
@@ -37,6 +39,8 @@ export class WriteComponent implements OnInit {
     // 发布新文章时，文章相同会被拦回 此处判断一下
     title: string;
 
+    private lastShowTime: number;
+
     // 同步属性内容
     syncModel(str): void {
         this.article.mdContent = str;
@@ -54,17 +58,23 @@ export class WriteComponent implements OnInit {
         }
         this.setSuitableHeight();
         // 用户权限判断
-        this.apiService.userInfo().subscribe({
-            next: data => {
-                this.userInfo = data.result;
-                if (data.result.role !== 'admin') {
-                    this.message.info('你暂时无发布文章的权限,所写文章将暂存在本地');
+        this.userService.watchUserInfo({
+            complete: () => null,
+            error: (err) => {
+                if (!this.lastShowTime || Date.now() - this.lastShowTime > 1000) {
+                    this.message.info('你暂时还没有登录，请点击右上角登录后开始创作');
+                    this.lastShowTime = Date.now();
                 }
             },
-            error: e => {
-                this.message.info('你暂时还没有登录，请点击右上角登录后开始创作');
+            next: data => {
+                this.userInfo = data.result;
+                if ((!data.result || data.result.role !== 'admin')
+                    && (!this.lastShowTime || Date.now() - this.lastShowTime > 1000)) {
+                    this.message.info('你暂时无发布文章的权限,所写文章将暂存在本地');
+                }
             }
-        });
+        })
+        ;
         this.apiService.tagsNac().subscribe(data => {
             this.tagNacList = data.result;
             this.tagNacList.sort((a, b) => a.name.length - b.name.length);

@@ -1,11 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd';
-import {ApiService} from '../../../../api/api.service';
 import {LoginReq} from '../../../../class/User';
-import {LocalStorageService} from '../../../../services/local-storage.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LoginRegistrationService} from '../../service/login-registration.service';
 import {Title} from '@angular/platform-browser';
+import {UserService} from '../../../../services/user.service';
 
 @Component({
     selector: 'c-login',
@@ -15,7 +14,7 @@ import {Title} from '@angular/platform-browser';
 export class LoginComponent implements OnInit {
 
     constructor(private nzMessageService: NzMessageService,
-                private apiService: ApiService,
+                private userService: UserService,
                 private activatedRoute: ActivatedRoute,
                 private router: Router,
                 private loginRegistrationService: LoginRegistrationService,
@@ -54,20 +53,24 @@ export class LoginComponent implements OnInit {
             return;
         }
 
-        this.apiService.login(this.loginReq).subscribe(
-            data => {
-                this.submitting = false;
-                this.nzMessageService.success('登录成功，欢迎你' + data.result.displayName);
-                this.loginStatus.emit(true);
-                if (this.url) {
-                    this.router.navigateByUrl(this.url);
-                } else {
-                    window.location.href = '/admin/';
+        this.userService.login(this.loginReq, {
+                complete: () => null,
+                error: (err) => {
+                    this.nzMessageService.error(err.msg);
+                    this.submitting = false;
+                    this.loginStatus.emit(false);
+                },
+                next: data => {
+                    this.submitting = false;
+                    this.nzMessageService.success('登录成功，欢迎你' + data.result.displayName);
+                    this.loginStatus.emit(true);
+                    if (this.url) {
+                        this.router.navigateByUrl(this.url);
+                    } else {
+                        // window.location.href = '/admin/';
+                        this.router.navigateByUrl('/admin')
+                    }
                 }
-            }, error => {
-                this.nzMessageService.error(error.msg);
-                this.submitting = false;
-                this.loginStatus.emit(false);
             }
         );
     }

@@ -4,6 +4,7 @@ import {windowWidthChange} from '../../utils/util';
 import {ApiService} from '../../api/api.service';
 import {User} from '../../class/User';
 import {ComponentStateService} from '../../services/component-state.service';
+import {UserService} from '../../services/user.service';
 
 @Component({
     selector: 'app-header',
@@ -13,8 +14,8 @@ import {ComponentStateService} from '../../services/component-state.service';
 export class HeaderComponent implements OnInit {
 
     constructor(private router: Router,
-                private apiService: ApiService,
-                public componentStateService: ComponentStateService) {
+                public componentStateService: ComponentStateService,
+                private userService: UserService) {
         this.pageList = [
             {name: '首页', path: '/', icon: 'home', iconType: 'fill', show: true},
             {name: '分类', path: '/categories', icon: 'project', iconType: 'fill', show: true},
@@ -26,7 +27,7 @@ export class HeaderComponent implements OnInit {
             {name: '注册', path: '/registration', icon: 'user', iconType: 'outline', show: false}
         ];
 
-
+        this.getInfo();
         this.showList = window.innerWidth > this.mobileMaxWidth;
         this.changeLoginButtonV();
         // 监听宽度变化
@@ -41,7 +42,6 @@ export class HeaderComponent implements OnInit {
             } else {
                 this.size = 'large';
             }
-            this.getInfo();
         });
     }
 
@@ -116,27 +116,27 @@ export class HeaderComponent implements OnInit {
     }
 
     getInfo() {
-        this.apiService.userInfo().subscribe(data => {
-                this.userInfo = data.result;
-                this.changeLoginButtonV();
-            },
-            error => {
+        this.userService.watchUserInfo({
+                complete: () => null,
+                error: (err) => null,
+                next: data => {
+                    this.userInfo = data.result;
+                    this.changeLoginButtonV();
+                }
             }
         );
     }
 
     logout() {
-        this.apiService.logout().subscribe(data => {
-                location.reload();
-            },
-            error => {
-            }
-        );
-        this.userInfo = null;
+        this.userService.logout({
+            next: data => null,
+            error: err => null,
+            complete: () => null
+        });
     }
 
     toAdminPage() {
-        window.location.href = '/admin';
+        this.router.navigateByUrl('/admin')
     }
 }
 
