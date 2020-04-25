@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable, Observer, of} from 'rxjs';
 
 import {Article} from '../class/Article';
 import {HttpService} from './http/http.service';
@@ -13,7 +12,6 @@ import {CommentReq} from '../class/Comment';
 import {Link} from '../class/Link';
 import {User} from '../class/User';
 import {LoginReq} from '../class/User';
-import {Response} from '../class/HttpReqAndResp';
 
 import {LocalStorageService} from '../services/local-storage.service';
 
@@ -202,34 +200,15 @@ export class ApiService extends HttpService {
 
 
     login(loginReq: LoginReq) {
-        const observable = super.Service<User>({
+        return super.Service<User>({
             path: '/login',
             method: 'POST',
             contentType: 'application/json',
             data: loginReq
         });
-        let observer: Observer<Response<User>>;
-        const oob = new Observable<Response<User>>(o => observer = o);
-        observable.subscribe({
-            next: o => {
-                if (o.code === 0) {
-                    // 登录成功
-                    this.localStorageService.setToken(o.result.token);
-                    this.localStorageService.setUser(o.result);
-                }
-                observer.next(o);
-                observer.complete();
-            },
-            error: err => {
-                observer.error(err);
-                observer.complete();
-            }
-        });
-        return oob;
     }
 
     logout() {
-        this.localStorageService.clear();
         return super.Service<string>({
             path: '/logout',
             method: 'GET',
@@ -288,32 +267,10 @@ export class ApiService extends HttpService {
     }
 
     userInfo() {
-        // 判断本地缓存的用户信息是否符合要求，符合要求返回本地缓存
-        const user = this.localStorageService.getUser();
-        if (this.localStorageService.isLogin() && user && !this.localStorageService.checkNeedNet()) {
-            return of<Response<User>>(new Response<User>(user));
-        }
-        // 不符合 请求网络数据并更新缓存
-        const observable = super.Service<User>({
+        return super.Service<User>({
             path: '/user/userInfo',
             method: 'GET',
         });
-        let observer: Observer<Response<User>>;
-        const oob = new Observable<Response<User>>(o => observer = o);
-        observable.subscribe({
-            next: o => {
-                this.localStorageService.setUser(o.result);
-                observer.next(o);
-                observer.complete();
-            },
-            error: err => {
-                // console.debug('登录过期 token错误 等等');
-                this.localStorageService.removeToken();
-                observer.error(err);
-                observer.complete();
-            }
-        });
-        return oob;
     }
 
     visit() {
