@@ -3,10 +3,11 @@ export class User {
     email: string;
     displayName: string;
     emailStatus: boolean;
-    avatarImgUrl: string;
+    avatarImgUrl?: string;
     desc: string;
     role: string;
     token?: string;
+    pwd?: string;
 }
 
 export class LoginReq {
