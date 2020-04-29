@@ -12,7 +12,9 @@ export class AuthGuard implements CanActivate {
     constructor(private userService: UserService) {
         userService.watchUserInfo({
             complete: () => null,
-            error: (err) => null,
+            error: (err) => {
+                // 未登录 重定向
+            },
             next: data => {
                 this.userInfo = data.result
                 console.log(this.path);

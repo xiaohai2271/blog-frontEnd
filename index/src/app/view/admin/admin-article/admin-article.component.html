@@ -1,1 +1,32 @@
-<p>admin-article works!</p>
+<nz-table *ngIf="pageList" [nzData]="pageList.list" [nzTotal]="pageList.total" [(nzPageIndex)]="page"
+          [nzPageSize]="pageSize" nzBordered="true" nzHideOnSinglePage="false" nzSimple="false"
+          nzFrontPagination="false" (nzPageIndexChange)="getArticle()" [nzScroll]="{x:'0px'}" [nzLoading]="loading">
+    <thead>
+    <tr>
+        <th>标题</th>
+        <th>发布日期</th>
+        <th>更新日期</th>
+        <th>阅读量</th>
+        <th>文章状态</th>
+        <th>管理</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of pageList.list">
+        <td nz-tooltip [nzTooltipTitle]="data.id+' . '+data.title" nzTooltipPlacement="topLeft">{{ data.title }}</td>
+        <td>{{ data.publishDateFormat }}</td>
+        <td>{{ data.updateDateFormat }}</td>
+        <td>{{ data.readingNumber }}</td>
+        <td>
+            <nz-tag [nzColor]="data.open?'#87d068':'#f50'">{{ data.open ? '可见' : '不可见' }}</nz-tag>
+        </td>
+        <td>
+            <a [routerLink]="'/write?id='+data.id">编辑</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a [routerLink]="'/article/'+data.id">查看</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="deleteArticle(data.id)">删除</a>
+        </td>
+    </tr>
+    </tbody>
+</nz-table>
