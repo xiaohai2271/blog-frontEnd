@@ -111,7 +111,7 @@ export class ApiService extends HttpService {
     }
 
     categories() {
-        return super.Service<Tag[]>({
+        return super.Service<Category[]>({
             path: '/categories',
             method: 'GET'
         });
