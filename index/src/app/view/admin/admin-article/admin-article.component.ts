@@ -17,7 +17,7 @@ export class AdminArticleComponent implements OnInit {
     page: number = 1;
     pageSize: number = 10;
 
-    pageList: PageList<Article>;
+    pageList: PageList<Article> = new PageList<Article>();
 
     loading: boolean = true;
 

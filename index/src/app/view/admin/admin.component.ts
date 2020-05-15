@@ -61,6 +61,7 @@ export class AdminComponent implements OnInit {
 
     showEditInfoModal() {
         this.editInfoModalVisible = true;
+        this.infoDrawerVisible = false;
         this.editInfoFormGroup.patchValue(this.user);
     }
 
