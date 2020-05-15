@@ -142,7 +142,7 @@ export class ApiService extends HttpService {
     }
 
     tags(pageNumber: number = 1, pageSize: number = 10) {
-        return super.Service<Tag[]>({
+        return super.Service<PageList<Tag>>({
             path: '/tags',
             method: 'GET',
             queryParam: {

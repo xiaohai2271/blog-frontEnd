@@ -1,1 +1,88 @@
-<p>admin-tag works!</p>
+<div class="inner-content">
+    <nz-card nzTitle="" nzSize="small">
+        <nz-tabset>
+            <nz-tab nzTitle="分类管理" (nzClick)="editInfo.editFocus=false">
+                <div style="margin-bottom: 15px;">
+                    <nz-input-group *ngIf="editInfo.editFocus&&editInfo.isAdd" [nzPrefix]="tagIcon"
+                                    style="width: 200px">
+                        <input type="text" nz-input [(ngModel)]="editInfo.name" (keyup.enter)="addCategory()"
+                               [autofocus]="editInfo.editFocus"
+                               (blur)="editInfo.editFocus=false">
+                    </nz-input-group>
+                    <button nz-button (click)="addCategory()">新增分类</button>
+                    <button nz-button (click)="editInfo.editFocus=false" *ngIf="editInfo.editFocus&&editInfo.isAdd">取消
+                    </button>
+                </div>
+                <nz-table #table [nzData]="categoryList" [nzTotal]="categoryList.length"
+                          (nzPageIndexChange)="getCategory()"
+                          nzFrontPagination="false" [nzLoading]="loading">
+                    <thead>
+                    <th>分类名</th>
+                    <th>分类文章数量</th>
+                    <th>操作</th>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let data of table.data">
+                        <td>
+                            <span *ngIf="!editInfo.editFocus||data.id!==editInfo.id">{{data.name}}</span>
+                            <nz-input-group *ngIf="!editInfo.isAdd&&editInfo.editFocus&&data.id===editInfo.id"
+                                            [nzPrefix]="tagIcon" style="width: 300px">
+                                <input type="text" nz-input [(ngModel)]="editInfo.name" nzSize="small"
+                                       [autofocus]="editInfo.editFocus&&data.id===editInfo.id"
+                                       (keyup.enter)="edit('category')" (blur)="editInfo.editFocus=false">
+                                <button nz-button (click)="edit('category')" nzSize="small">更新</button>
+                                <button nz-button (click)="editInfo.editFocus=false" nzSize="small">取消</button>
+                            </nz-input-group>
+                        </td>
+                        <td>{{data.articles ? data.articles.length : 0}}</td>
+                        <td>
+                            <a (click)="editFocus(data)" class="edit-opr">编辑</a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a [routerLink]="'/categories/'+data.name" class="show-opr">查看</a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a nz-popconfirm nzPopconfirmTitle="确定要删除这个分类吗?" nzOkText="删除" nzCancelText="点错了"
+                               (nzOnConfirm)="delete(data.id,'category')" class="del-opr">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </nz-table>
+            </nz-tab>
+            <nz-tab nzTitle="标签管理" (nzClick)="editInfo.editFocus=false">
+                <nz-table #tagTable [nzData]="tagPageList.list" [nzTotal]="tagPageList.total"
+                          [(nzPageIndex)]="pageIndex"
+                          [nzPageSize]="pageSize" (nzPageIndexChange)="getTag()" nzFrontPagination="false">
+                    <thead>
+                    <th>标签名</th>
+                    <th>分类文章数量</th>
+                    <th>操作</th>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let data of tagTable.data">
+                        <td>
+                            <span *ngIf="!editInfo.editFocus||data.id!==editInfo.id">{{data.name}}</span>
+                            <nz-input-group *ngIf="!editInfo.isAdd&&editInfo.editFocus&&data.id===editInfo.id"
+                                            [nzPrefix]="tagIcon" style="width: 300px">
+                                <input type="text" nz-input [(ngModel)]="editInfo.name" nzSize="small"
+                                       [autofocus]="editInfo.editFocus&&data.id===editInfo.id"
+                                       (keyup.enter)="edit('tag')" (blur)="editInfo.editFocus=false">
+                                <button nz-button (click)="edit('tag')" nzSize="small">更新</button>
+                                <button nz-button (click)="editInfo.editFocus=false" nzSize="small">取消</button>
+                            </nz-input-group>
+                        </td>
+                        <td>{{data.articles ? data.articles.length : 0}}</td>
+                        <td>
+                            <a (click)="editFocus(data)" class="edit-opr">编辑</a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a [routerLink]="'/tags/'+data.name" class="show-opr">查看</a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a nz-popconfirm nzPopconfirmTitle="确定要删除这个标签吗?" nzOkText="删除" nzCancelText="点错了"
+                               (nzOnConfirm)="delete(data.id,'tag')" class="del-opr">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </nz-table>
+            </nz-tab>
+        </nz-tabset>
+    </nz-card>
+</div>
+<ng-template #tagIcon><i nz-icon nzType="tag" nzTheme="outline"></i></ng-template>

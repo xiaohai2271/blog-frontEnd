@@ -36,9 +36,9 @@ export class AdminArticleComponent implements OnInit {
         this.apiService.deleteArticle(id).subscribe({
             next: data => {
                 this.nzMessage.success('删除成功')
+                this.loading = false;
                 this.getArticle();
             },
-            complete: () => this.loading = false,
             error: err => {
                 this.nzMessage.error(err.msg)
                 this.loading = false
