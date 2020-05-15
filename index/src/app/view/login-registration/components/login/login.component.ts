@@ -4,7 +4,7 @@ import {LoginReq} from '../../../../class/User';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LoginRegistrationService} from '../../service/login-registration.service';
 import {Title} from '@angular/platform-browser';
-import {UserService} from '../../../../services/user.service';
+import {GlobalUserService} from '../../../../services/global-user.service';
 
 @Component({
     selector: 'c-login',
@@ -14,7 +14,7 @@ import {UserService} from '../../../../services/user.service';
 export class LoginComponent implements OnInit {
 
     constructor(private nzMessageService: NzMessageService,
-                private userService: UserService,
+                private userService: GlobalUserService,
                 private activatedRoute: ActivatedRoute,
                 private router: Router,
                 private loginRegistrationService: LoginRegistrationService,

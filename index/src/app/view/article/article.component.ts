@@ -7,7 +7,7 @@ import {User} from '../../class/User';
 import {CommentReq} from '../../class/Comment';
 import {PageList} from '../../class/HttpReqAndResp';
 import {Comment} from '../../class/Comment';
-import {UserService} from '../../services/user.service';
+import {GlobalUserService} from '../../services/global-user.service';
 
 declare var editormd;
 declare var $;
@@ -21,7 +21,7 @@ export class ArticleComponent implements OnInit {
 
     constructor(private activatedRoute: ActivatedRoute,
                 private apiService: ApiService,
-                private userService: UserService,
+                private userService: GlobalUserService,
                 private titleService: Title,
                 private router: Router) {
         this.articleId = +activatedRoute.snapshot.paramMap.get('id');

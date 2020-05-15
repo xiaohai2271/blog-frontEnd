@@ -4,7 +4,7 @@ import {windowWidthChange} from '../../utils/util';
 import {ApiService} from '../../api/api.service';
 import {User} from '../../class/User';
 import {ComponentStateService} from '../../services/component-state.service';
-import {UserService} from '../../services/user.service';
+import {GlobalUserService} from '../../services/global-user.service';
 
 @Component({
     selector: 'app-header',
@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit {
 
     constructor(private router: Router,
                 public componentStateService: ComponentStateService,
-                private userService: UserService) {
+                private userService: GlobalUserService) {
         this.pageList = [
             {name: '首页', path: '/', icon: 'home', iconType: 'fill', show: true},
             {name: '分类', path: '/categories', icon: 'project', iconType: 'fill', show: true},

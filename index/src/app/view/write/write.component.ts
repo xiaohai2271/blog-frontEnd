@@ -7,7 +7,7 @@ import {NzMessageService} from 'ng-zorro-antd';
 import {User} from '../../class/User';
 import {Tag} from '../../class/Tag';
 import {Title} from '@angular/platform-browser';
-import {UserService} from '../../services/user.service';
+import {GlobalUserService} from '../../services/global-user.service';
 
 @Component({
     selector: 'view-write',
@@ -19,7 +19,7 @@ export class WriteComponent implements OnInit {
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private apiService: ApiService,
-                private userService: UserService,
+                private userService: GlobalUserService,
                 private message: NzMessageService,
                 private titleService: Title) {
         this.titleService.setTitle('小海博客 | 创作');

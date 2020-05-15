@@ -2,14 +2,14 @@ import {Injectable} from '@angular/core';
 import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
 import {User} from '../../class/User';
-import {UserService} from '../../services/user.service';
+import {GlobalUserService} from '../../services/global-user.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
-    constructor(private userService: UserService) {
+    constructor(private userService: GlobalUserService) {
         userService.watchUserInfo({
             complete: () => null,
             error: (err) => {
