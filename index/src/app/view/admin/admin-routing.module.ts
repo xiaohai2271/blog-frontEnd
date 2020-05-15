@@ -20,11 +20,6 @@ const routes: Routes = [
                 loadChildren: () => import('./admin-comment/admin-comment.module').then(mod => mod.AdminCommentModule),
                 canActivate: [AuthGuard]
             },
-            // {
-            //     path: 'category',
-            //     loadChildren: () => import('./admin-category/admin-category.module').then(mod => mod.AdminCategoryModule),
-            //     canActivate: [AuthGuard]
-            // },
             {
                 path: 'link',
                 loadChildren: () => import('./admin-link/admin-link.module').then(mod => mod.AdminLinkModule),
@@ -43,11 +38,6 @@ const routes: Routes = [
             {
                 path: 'user',
                 loadChildren: () => import('./admin-user/admin-user.module').then(mod => mod.AdminUserModule),
-                canActivate: [AuthGuard]
-            },
-            {
-                path: 'userInfo',
-                loadChildren: () => import('./admin-userInfo/admin-userInfo.module').then(mod => mod.AdminUserinfoModule),
                 canActivate: [AuthGuard]
             },
             {
