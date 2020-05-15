@@ -37,7 +37,7 @@ export class AdminComponent implements OnInit {
         this.editInfoFormGroup = new FormGroup({
             desc: new FormControl(),
             displayName: new FormControl(),
-            email: new FormControl()
+            email: new FormControl({value: null, disabled: true})
         });
         this.initHelloWords()
     }
@@ -74,6 +74,7 @@ export class AdminComponent implements OnInit {
             },
             error: err => {
                 this.messageService.error(err.msg);
+                this.gUserService.refreshUserInfo();
             },
             complete: null
         });
