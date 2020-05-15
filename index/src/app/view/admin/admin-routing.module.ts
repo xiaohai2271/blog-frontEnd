@@ -1,15 +1,5 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {AdminIndexComponent} from './admin-index/admin-index.component';
-import {AdminCommentComponent} from './admin-comment/admin-comment.component';
-import {AdminArticleComponent} from './admin-article/admin-article.component';
-import {AdminCategoryComponent} from './admin-category/admin-category.component';
-import {AdminLinkComponent} from './admin-link/admin-link.component';
-import {AdminTagComponent} from './admin-tag/admin-tag.component';
-import {AdminUpdateComponent} from './admin-update/admin-update.component';
-import {AdminUserComponent} from './admin-user/admin-user.component';
-import {AdminUserinfoComponent} from './admin-userinfo/admin-userinfo.component';
-import {AdminVisitorComponent} from './admin-visitor/admin-visitor.component';
 import {AdminComponent} from './admin.component';
 import {AuthGuard} from './auth.guard';
 
@@ -19,16 +9,56 @@ const routes: Routes = [
         path: '',
         component: AdminComponent,
         children: [
-            {path: 'article', component: AdminArticleComponent, canActivate: [AuthGuard]},
-            {path: 'comment', component: AdminCommentComponent, canActivate: [AuthGuard]},
-            {path: 'category', component: AdminCategoryComponent, canActivate: [AuthGuard]},
-            {path: 'link', component: AdminLinkComponent, canActivate: [AuthGuard]},
-            {path: 'tag', component: AdminTagComponent, canActivate: [AuthGuard]},
-            {path: 'update', component: AdminUpdateComponent, canActivate: [AuthGuard]},
-            {path: 'user', component: AdminUserComponent, canActivate: [AuthGuard]},
-            {path: 'userInfo', component: AdminUserinfoComponent, canActivate: [AuthGuard]},
-            {path: 'visitor', component: AdminVisitorComponent, canActivate: [AuthGuard]},
-            {path: '**', component: AdminIndexComponent, canActivate: [AuthGuard]}
+            {
+                path: 'article',
+                loadChildren: () => import('./admin-article/admin-article.module').then(mod => mod.AdminArticleModule),
+                canActivate: [AuthGuard]
+            },
+            {
+                path: 'comment',
+                loadChildren: () => import('./admin-comment/admin-comment.module').then(mod => mod.AdminCommentModule),
+                canActivate: [AuthGuard]
+            },
+            {
+                path: 'category',
+                loadChildren: () => import('./admin-category/admin-category.module').then(mod => mod.AdminCategoryModule),
+                canActivate: [AuthGuard]
+            },
+            {
+                path: 'link',
+                loadChildren: () => import('./admin-link/admin-link.module').then(mod => mod.AdminLinkModule),
+                canActivate: [AuthGuard]
+            },
+            {
+                path: 'tag',
+                loadChildren: () => import('./admin-tag/admin-tag.module').then(mod => mod.AdminTagModule),
+                canActivate: [AuthGuard]
+            },
+            {
+                path: 'update',
+                loadChildren: () => import('./admin-update/admin-update.module').then(mod => mod.AdminUpdateModule),
+                canActivate: [AuthGuard]
+            },
+            {
+                path: 'user',
+                loadChildren: () => import('./admin-user/admin-user.module').then(mod => mod.AdminUserModule),
+                canActivate: [AuthGuard]
+            },
+            {
+                path: 'userInfo',
+                loadChildren: () => import('./admin-userInfo/admin-userInfo.module').then(mod => mod.AdminUserinfoModule),
+                canActivate: [AuthGuard]
+            },
+            {
+                path: 'visitor',
+                loadChildren: () => import('./admin-visitor/admin-visitor.module').then(mod => mod.AdminVisitorModule),
+                canActivate: [AuthGuard]
+            },
+            {
+                path: '**',
+                loadChildren: () => import('./admin-index/admin-index.module').then(mod => mod.AdminIndexModule),
+                canActivate: [AuthGuard]
+            }
         ]
     }
 ];
