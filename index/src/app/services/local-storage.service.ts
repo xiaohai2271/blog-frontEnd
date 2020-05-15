@@ -9,8 +9,8 @@ export class LocalStorageService {
     constructor() {
     }
 
-    // 1分钟
-    readonly place = 60 * 1000;
+    // 30s
+    readonly place = 30 * 1000;
 
     getToken(): string {
         return localStorage.getItem('token');
