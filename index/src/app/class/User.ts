@@ -8,6 +8,7 @@ export class User {
     role: string;
     token?: string;
     pwd?: string;
+    recentlyLandedDate?: string
 }
 
 export class LoginReq {

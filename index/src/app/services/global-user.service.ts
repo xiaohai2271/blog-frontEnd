@@ -8,7 +8,7 @@ import {LocalStorageService} from './local-storage.service';
 @Injectable({
     providedIn: 'root'
 })
-export class UserService {
+export class GlobalUserService {
 
     constructor(private apiService: ApiService,
                 private localStorageService: LocalStorageService) {
