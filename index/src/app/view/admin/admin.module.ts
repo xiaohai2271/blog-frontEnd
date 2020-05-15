@@ -5,6 +5,7 @@ import {AdminComponent} from './admin.component';
 import {NgZorroAntdModule} from 'ng-zorro-antd';
 import {NzSpaceModule} from 'ng-zorro-antd/space';
 import {AdminHeaderComponent} from '../../components/admin-header/admin-header.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import {AdminHeaderComponent} from '../../components/admin-header/admin-header.c
         CommonModule,
         AdminRoutingModule,
         NgZorroAntdModule,
-        NzSpaceModule
+        NzSpaceModule,
+        ReactiveFormsModule
     ]
 })
 export class AdminModule {

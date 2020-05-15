@@ -41,28 +41,19 @@ export class GlobalUserService {
         // 不符合 请求网络数据并更新缓存
         // 向订阅者传数据
         this.lastRequestTime = Date.now();
-        const subscription = this.apiService.userInfo().subscribe({
-            next: o => {
-                this.localStorageService.setUser(o.result);
-                this.userObserverArray.forEach(ob => ob.next(o));
-            },
-            error: err => {
-                // console.debug('登录过期 token错误 等等');
-                if (err.code === -1) {
-                    // 请求重复
-                    return
-                }
-                this.localStorageService.removeToken();
-                this.userObserverArray.forEach(ob => ob.next(new Response<User>(null)));
-                this.userObserverArray.forEach(ob => ob.error(err));
-            }
-        });
+        // 获取数据
+        const subscription = this.getUserInfoFromServer();
         return {
             unsubscribe() {
                 observer.complete();
                 subscription.unsubscribe()
             }
         }
+    }
+
+    // 刷新用户信息
+    refreshUserInfo(): void {
+        this.getUserInfoFromServer();
     }
 
     login(loginReq: LoginReq, observer: Observer<Response<User>>) {
@@ -106,5 +97,24 @@ export class GlobalUserService {
                     observer.complete();
                 }
             })
+    }
+
+    private getUserInfoFromServer() {
+        return this.apiService.userInfo().subscribe({
+            next: o => {
+                this.localStorageService.setUser(o.result);
+                this.userObserverArray.forEach(ob => ob.next(o));
+            },
+            error: err => {
+                // console.debug('登录过期 token错误 等等');
+                if (err.code === -1) {
+                    // 请求重复
+                    return
+                }
+                this.localStorageService.removeToken();
+                this.userObserverArray.forEach(ob => ob.next(new Response<User>(null)));
+                this.userObserverArray.forEach(ob => ob.error(err));
+            }
+        });
     }
 }

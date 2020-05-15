@@ -1,4 +1,4 @@
-<c-admin-header></c-admin-header>
+<c-admin-header (infoClicked)="showInfoDrawer()"></c-admin-header>
 <nz-layout class="layout">
     <nz-sider nzCollapsible
               [(nzCollapsed)]="isCollapsed"
@@ -88,6 +88,60 @@
         <nz-footer>© <a href="https://www.celess.cn">小海博客</a> - Design by 小海</nz-footer>
     </nz-layout>
 </nz-layout>
+<nz-drawer [nzClosable]="false" [nzVisible]="infoDrawerVisible" nzPlacement="right"
+           [nzTitle]="sayHelloTemp" (nzOnClose)="infoDrawerVisible = false">
+    <p>您最近一次登录是在:</p>
+    <p>{{user.recentlyLandedDate}}</p>
+    <br><br>
+    <nz-descriptions [nzColumn]="1">
+        <nz-descriptions-item nzTitle="邮箱">
+            <i nz-icon nzType="mail" class="icon" nzTheme="twotone"></i>
+            <span>{{user.email}}</span>
+            <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="昵称">
+            <i nz-icon nzType="crown" class="icon" nzTheme="twotone"></i>
+            <span>{{user.displayName}}</span>
+            <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="描述" *ngIf="user.desc">
+            <i nz-icon nzType="info-circle" class="icon" nzTheme="twotone"></i>
+            <span>{{user.desc}}</span>
+            <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
+        </nz-descriptions-item>
+    </nz-descriptions>
+    <!--  TODO: 展示更多信息  -->
+</nz-drawer>
+
+<nz-modal [(nzVisible)]="editInfoModalVisible" (nzOnOk)="modalConfirm()" (nzOnCancel)="editInfoModalVisible=false"
+          nzTitle="编辑信息">
+    <form nz-form [formGroup]="editInfoFormGroup" (ngSubmit)="modalConfirm()">
+        <nz-form-item>
+            <nz-form-label>邮箱</nz-form-label>
+            <nz-form-control>
+                <input nz-input disabled formControlName="email">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>昵称</nz-form-label>
+            <nz-form-control>
+                <input nz-input formControlName="displayName" placeholder="默认为你的邮箱地址">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>描述</nz-form-label>
+            <nz-form-control>
+                <input nz-input formControlName="desc" placeholder="请输入自我介绍">
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>
+
 <ng-template #zeroTrigger>
     <i nz-icon nzType="menu-fold" nzTheme=outline></i>
+</ng-template>
+
+<ng-template #sayHelloTemp>
+    <span>{{sayHelloContent}}</span>
+    <i nz-icon [nzType]="'smile'" [nzTheme]="'twotone'" nzTwotoneColor="#52c41a" style="margin-left: 5px"></i>
 </ng-template>

@@ -10,21 +10,9 @@
     </div>
 
 
-    <div id="loged" *ngIf="user">
+    <div id="loged" *ngIf="user" (click)="infoClickedEvent()">
         <nz-avatar [nzSrc]="user.avatarImgUrl"></nz-avatar>
-        <button nz-button nzType="link" nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click" [nzClickHide]="false">
-            {{user.displayName}}
-            <i nz-icon nzType="down"></i>
-        </button>
-        <nz-dropdown-menu #menu="nzDropdownMenu">
-            <ul nz-menu>
-                <li nz-menu-item><a routerLink="/">博客首页</a></li>
-                <hr style="opacity: 0.6">
-                <li nz-menu-item>
-                    <a (click)="logout()">退出登录</a>
-                </li>
-            </ul>
-        </nz-dropdown-menu>
+        <span>{{user.displayName}}</span>
     </div>
 
 

@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {NzMessageService} from 'ng-zorro-antd';
 import {GlobalUserService} from '../../services/global-user.service';
 import {User} from '../../class/User';
 import {ApiService} from '../../api/api.service';
@@ -10,13 +12,17 @@ import {ApiService} from '../../api/api.service';
 })
 export class AdminComponent implements OnInit {
 
-    constructor(public gUserService: GlobalUserService, private apiService: ApiService) {
+    constructor(public gUserService: GlobalUserService, private apiService: ApiService, private messageService: NzMessageService) {
     }
 
     user: User;
     isCollapsed: boolean = false;
     infoDrawerVisible: boolean = false;
     sayHelloContent: string;
+    editInfoModalVisible: boolean = false;
+    editInfoFormGroup: FormGroup;
+
+    showInfoDrawer = () => this.infoDrawerVisible = !this.infoDrawerVisible;
 
     ngOnInit(): void {
         this.gUserService.watchUserInfo({
@@ -28,6 +34,15 @@ export class AdminComponent implements OnInit {
                 }
             }
         )
+        this.editInfoFormGroup = new FormGroup({
+            desc: new FormControl(),
+            displayName: new FormControl(),
+            email: new FormControl()
+        });
+        this.initHelloWords()
+    }
+
+    private initHelloWords() {
         const hours = new Date().getHours();
         if (hours < 6) {
             this.sayHelloContent = `夜深了，注意早点休息哦！${this.user.displayName}`
@@ -44,7 +59,24 @@ export class AdminComponent implements OnInit {
         }
     }
 
-    showInfoDrawer() {
-        this.infoDrawerVisible = !this.infoDrawerVisible;
+    showEditInfoModal() {
+        this.editInfoModalVisible = true;
+        this.editInfoFormGroup.patchValue(this.user);
+    }
+
+    modalConfirm() {
+        const desc = this.editInfoFormGroup.value.desc;
+        const displayName = this.editInfoFormGroup.value.displayName;
+        this.apiService.updateUserInfo(desc, displayName).subscribe({
+            next: data => {
+                this.messageService.success('修改信息成功')
+                this.gUserService.refreshUserInfo();
+            },
+            error: err => {
+                this.messageService.error(err.msg);
+            },
+            complete: null
+        });
+        this.editInfoModalVisible = false;
     }
 }
