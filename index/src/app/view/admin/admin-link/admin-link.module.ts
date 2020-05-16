@@ -10,8 +10,8 @@ import {
     NzModalModule,
     NzPopconfirmModule, NzSelectModule,
     NzTableModule
-} from "ng-zorro-antd";
-import {ReactiveFormsModule} from "@angular/forms";
+} from 'ng-zorro-antd';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({

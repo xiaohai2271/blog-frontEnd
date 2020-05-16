@@ -4,7 +4,7 @@ import {Link} from '../../../class/Link';
 import {ApiService} from '../../../api/api.service';
 import {NzMessageService} from 'ng-zorro-antd';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs';
 
 @Component({
     selector: 'app-admin-link',
