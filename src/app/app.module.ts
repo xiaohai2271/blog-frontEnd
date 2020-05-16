@@ -12,6 +12,8 @@ import {FooterComponent} from './components/footer/footer.component';
 import {AppRoutingModule} from './app-routing.module';
 import {LoginRegistrationModule} from './view/login-registration/login-registration.module';
 import {AdminModule} from './view/admin/admin.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 registerLocaleData(zh);
@@ -30,7 +32,8 @@ registerLocaleData(zh);
         HttpClientModule,
         BrowserAnimationsModule,
         LoginRegistrationModule,
-        AdminModule
+        AdminModule,
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ],
     providers: [{provide: NZ_I18N, useValue: zh_CN}],
     exports: [],
