@@ -4,6 +4,7 @@ export class Comment {
     authorAvatarImgUrl?: string;
     content: string;
     articleID: number;
+    articleTitle: string;
     date?: string;
     responseId: string;
     pid: number;

@@ -10,7 +10,7 @@ import {GlobalUserService} from '../../services/global-user.service';
 export class AuthGuard implements CanActivate {
 
     constructor(private userService: GlobalUserService, private router: Router) {
-        this.userService.refreshUserInfo();
+        // this.userService.refreshUserInfo();
     }
 
     userInfo: User;

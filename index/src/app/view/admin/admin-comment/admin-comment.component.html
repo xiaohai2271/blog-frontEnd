@@ -1,1 +1,40 @@
-<p>admin-comment works!</p>
+<div class="inner-content">
+    <nz-card nzTitle="评论管理" nzSize="small">
+        <nz-table #table [nzData]="pageList.list" [nzTotal]="pageList.total" [(nzPageIndex)]="pageIndex"
+                  [nzPageSize]="pageSize" [nzLoading]="loading"
+                  (nzPageIndexChange)="getComment()" nzFrontPagination="false">
+            <thead>
+            <th>文章标题</th>
+            <th>评论内容</th>
+            <th>评论日期</th>
+            <th>操作</th>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of pageList.list">
+                <td nz-typography nzEllipsis="true" [nzTooltipTitle]="data.articleTitle" nzTooltipPlacement="right"
+                    nz-tooltip>{{data.articleTitle}}</td>
+                <td nz-typography nzEllipsis="true" [nzTooltipTitle]="data.content" nzTooltipPlacement="right"
+                    nz-tooltip style="min-width: 100px;max-width: 400px">
+                    <span *ngIf="!editInfo.editFocus||data.id!==editInfo.id">{{data.content}}</span>
+                    <nz-input-group *ngIf="editInfo.editFocus&&data.id===editInfo.id"
+                                    [nzPrefix]="tagIcon" style="width: 50%" (blur)="editInfo.editFocus=false">
+                        <input type="text" nz-input [(ngModel)]="editInfo.content.content" nzSize="small"
+                               [autofocus]="editInfo.editFocus&&data.id===editInfo.id"
+                               (keyup.enter)="edit()">
+                        <button nz-button (click)="edit()" nzSize="small">更新</button>
+                        <button nz-button (click)="editInfo.editFocus=false" nzSize="small">取消</button>
+                    </nz-input-group>
+                </td>
+                <td>{{data.date}}</td>
+                <td>
+                    <a (click)="editFocus(data)" class="edit-opr">编辑</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a nz-popconfirm nzPopconfirmTitle="确定要删除这篇文章吗?" nzOkText="删除" nzCancelText="点错了"
+                       (nzOnConfirm)="deleteComment(data.id)" class="del-opr">删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </nz-table>
+    </nz-card>
+</div>
+<ng-template #tagIcon><i nz-icon nzType="message" nzTheme="outline"></i></ng-template>
