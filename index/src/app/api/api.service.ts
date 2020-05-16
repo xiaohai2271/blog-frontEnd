@@ -429,7 +429,7 @@ export class ApiService extends HttpService {
 
     deleteUser(id: number) {
         return super.Service<boolean>({
-            path: `/admin/user/del/${id}`,
+            path: `/admin/user/delete/${id}`,
             method: 'DELETE',
         });
     }
