@@ -11,9 +11,6 @@ import {User} from '../../../class/User';
 })
 export class AdminDashboardComponent implements OnInit {
     constructor(private apiService: ApiService, private userService: GlobalUserService, private http: HttpClient) {
-        this.getLog();
-        this.getCounts();
-        this.getDayVisitCount();
         this.getUserInfo();
     }
 
@@ -50,7 +47,14 @@ export class AdminDashboardComponent implements OnInit {
     })
 
     getUserInfo = () => this.userService.watchUserInfo({
-        next: data => this.userInfo = data.result,
+        next: data => {
+            this.userInfo = data.result
+            if (data.result && data.result.role === 'admin') {
+                this.getLog();
+                this.getCounts();
+                this.getDayVisitCount();
+            }
+        },
         error: null,
         complete: null
     })

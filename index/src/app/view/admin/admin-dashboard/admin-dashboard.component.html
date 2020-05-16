@@ -1,42 +1,67 @@
-<div nz-row>
-    <nz-card nzTitle="统计" nz-col nzSpan="12" nzSize="small">
-        <nz-row [nzGutter]="24">
-            <nz-col [nzSpan]="6">
-                <nz-statistic [nzValue]="(counts.articleCount | number)!" nzTitle="文章数量"></nz-statistic>
-            </nz-col>
-            <nz-col [nzSpan]="6">
-                <nz-statistic [nzValue]="(counts.tagCount | number)!" nzTitle="标签量"></nz-statistic>
-            </nz-col>
-            <nz-col [nzSpan]="6">
-                <nz-statistic [nzValue]="(counts.categoryCount | number)!" nzTitle="分类数量"></nz-statistic>
-            </nz-col>
-            <nz-col [nzSpan]="6">
-                <nz-statistic [nzValue]="(counts.commentCount | number)!" nzTitle="评论量"></nz-statistic>
-            </nz-col>
-        </nz-row>
-    </nz-card>
-    <nz-card nzTitle="信息" nz-col nzSpan="11" nzOffset="1" nzSize="small">
-        <nz-row [nzGutter]="24">
-            <nz-col [nzSpan]="8">
-                <nz-statistic [nzValue]="(counts.visitorCount | number)!" nzTitle="总访问量"></nz-statistic>
-            </nz-col>
-            <nz-col [nzSpan]="8">
-                <nz-statistic [nzValue]="(dayVisitCount | number)!" nzTitle="日访问量"></nz-statistic>
-            </nz-col>
-            <nz-col [nzSpan]="8">
-                <nz-statistic [nzValue]="userInfo.recentlyLandedDate?userInfo.recentlyLandedDate:''"
-                              nzTitle="上次登录"></nz-statistic>
-            </nz-col>
-        </nz-row>
-    </nz-card>
+<div *ngIf="userInfo&&userInfo.role==='admin'">
+    <div nz-row>
+        <nz-card nzTitle="统计" nz-col nzSpan="12" nzSize="small">
+            <nz-row [nzGutter]="24">
+                <nz-col [nzSpan]="6">
+                    <nz-statistic [nzValue]="(counts.articleCount | number)!" nzTitle="文章数量"></nz-statistic>
+                </nz-col>
+                <nz-col [nzSpan]="6">
+                    <nz-statistic [nzValue]="(counts.tagCount | number)!" nzTitle="标签量"></nz-statistic>
+                </nz-col>
+                <nz-col [nzSpan]="6">
+                    <nz-statistic [nzValue]="(counts.categoryCount | number)!" nzTitle="分类数量"></nz-statistic>
+                </nz-col>
+                <nz-col [nzSpan]="6">
+                    <nz-statistic [nzValue]="(counts.commentCount | number)!" nzTitle="评论量"></nz-statistic>
+                </nz-col>
+            </nz-row>
+        </nz-card>
+        <nz-card nzTitle="信息" nz-col nzSpan="11" nzOffset="1" nzSize="small">
+            <nz-row [nzGutter]="24">
+                <nz-col [nzSpan]="8">
+                    <nz-statistic [nzValue]="(counts.visitorCount | number)!" nzTitle="总访问量"></nz-statistic>
+                </nz-col>
+                <nz-col [nzSpan]="8">
+                    <nz-statistic [nzValue]="(dayVisitCount | number)!" nzTitle="日访问量"></nz-statistic>
+                </nz-col>
+                <nz-col [nzSpan]="8">
+                    <nz-statistic [nzValue]="userInfo.recentlyLandedDate?userInfo.recentlyLandedDate:''"
+                                  nzTitle="上次登录"></nz-statistic>
+                </nz-col>
+            </nz-row>
+        </nz-card>
+    </div>
+    <div nz-row style="margin-top: 30px">
+        <nz-card style="width:100%;" nzSize="small" nzTitle="日志" [nzExtra]="reload">
+            <ng-template #reload>
+                <a (click)="getLog()" title="刷新"><i nz-icon nzType="reload" nzTheme="outline"></i></a>
+            </ng-template>
+            <nz-spin [nzSpinning]="logLoading" style="width: 100%;">
+                <pre style="width: 100%;max-height: 500px;overflow: auto;">{{logText}}</pre>
+            </nz-spin>
+        </nz-card>
+    </div>
 </div>
-<div nz-row style="margin-top: 30px">
-    <nz-card style="width:100%;" nzSize="small" nzTitle="日志" [nzExtra]="reload">
-        <ng-template #reload>
-            <a (click)="getLog()" title="刷新"><i nz-icon nzType="reload" nzTheme="outline"></i></a>
-        </ng-template>
-        <nz-spin [nzSpinning]="logLoading" style="width: 100%;">
-            <pre style="width: 100%;max-height: 500px;overflow: auto;">{{logText}}</pre>
-        </nz-spin>
-    </nz-card>
+<div *ngIf="userInfo&&userInfo.role==='user'">
+    <div nz-row>
+        <nz-card nzTitle="信息" nz-col nzSpan="6" nzOffset="1" nzSize="small">
+            <nz-statistic [nzValue]="userInfo.recentlyLandedDate?userInfo.recentlyLandedDate:''"
+                          nzTitle="上次登录"></nz-statistic>
+        </nz-card>
+        <nz-card nzTitle="关于此博客" nzSize="small" nz-col nzSpan="6" nzOffset="2">
+            <p>此博客由 <a href="https://github.com/xiaohai2271" target="_blank">禾几海(郑海)</a> 设计并实现的</p>
+            <p>博客自2019年3月开始开发编写 5月开始正式运行至今</p>
+            <p>博客所有代码都是开源的，你可以随意修改，运行和发布</p>
+            <p>
+                <a href="https://github.com/xiaohai2271/blog-backEnd" target="_blank">后端代码可以在此处找到</a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a href="https://github.com/xiaohai2271/blog-frontEnd" target="_blank">前端代码可以在此处找到</a>
+            </p>
+            <p>如果觉得博客还不错，请前往Github支持我，给我点一个star吧</p>
+        </nz-card>
+        <nz-card nz-col nzSpan="6" nzOffset="2">
+            <p style="font-style: italic">坚强的信心，能使平凡的人做出惊人的事业。</p>
+            <p style="text-align: right"> ——马尔顿</p>
+        </nz-card>
+    </div>
 </div>

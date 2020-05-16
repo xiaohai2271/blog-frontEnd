@@ -3,6 +3,7 @@ import {NzMessageService} from 'ng-zorro-antd';
 import {ApiService} from '../../../api/api.service';
 import {PageList} from '../../../class/HttpReqAndResp';
 import {Comment, CommentReq} from '../../../class/Comment';
+import {GlobalUserService} from '../../../services/global-user.service';
 
 @Component({
     selector: 'app-admin-comment',
@@ -11,7 +12,23 @@ import {Comment, CommentReq} from '../../../class/Comment';
 })
 export class AdminCommentComponent implements OnInit {
 
-    constructor(private apiService: ApiService, private  messageService: NzMessageService) {
+    constructor(private apiService: ApiService, private  messageService: NzMessageService, private userService: GlobalUserService) {
+        this.userService.watchUserInfo({
+            next: data => {
+                if (data.result) {
+                    if (data.result.role === 'admin') {
+                        this.getComment = this.getCommentForAdmin;
+                    } else {
+                        this.getComment = this.getCommentForUser;
+                    }
+                } else {
+                    this.getComment = this.getCommentForUser;
+                }
+                this.getComment()
+            },
+            error: null,
+            complete: null
+        })
     }
 
     loading: boolean = true;
@@ -23,12 +40,20 @@ export class AdminCommentComponent implements OnInit {
         content: new CommentReq(true),
         editFocus: false,
     }
+    getComment: any;// 存放获取评论的方法
+
 
     ngOnInit(): void {
-        this.getComment();
     }
 
-    getComment = () => this.apiService.getCommentByTypeForAdmin(true, this.pageIndex, this.pageSize).subscribe({
+
+    getCommentForAdmin = () => this.apiService.getCommentByTypeForAdmin(true, this.pageIndex, this.pageSize).subscribe({
+        next: data => this.pageList = data.result,
+        complete: () => this.loading = false,
+        error: err => this.loading = false
+    })
+
+    getCommentForUser = () => this.apiService.getCommentByTypeForUser(true, this.pageIndex, this.pageSize).subscribe({
         next: data => this.pageList = data.result,
         complete: () => this.loading = false,
         error: err => this.loading = false

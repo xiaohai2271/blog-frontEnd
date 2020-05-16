@@ -43,10 +43,10 @@
             <!--                <span>分类管理</span>-->
             <!--            </li>-->
 
-            <!--            <li nz-menu-item routerLink="/admin/userInfo">-->
-            <!--                <i nz-icon nzType="idcard" nzTheme="outline"></i>-->
-            <!--                <span>修改信息</span>-->
-            <!--            </li>-->
+            <li nz-menu-item (click)="infoDrawerVisible = true">
+                <i nz-icon nzType="idcard" nzTheme="outline"></i>
+                <span>查看信息</span>
+            </li>
 
             <li nz-menu-item routerLink="/admin/user" *ngIf="user.role=='admin'">
                 <i nz-icon nzType="user" nzTheme="outline"></i>
@@ -95,19 +95,26 @@
     <br><br>
     <nz-descriptions [nzColumn]="1">
         <nz-descriptions-item nzTitle="邮箱">
-            <i nz-icon nzType="mail" class="icon" nzTheme="twotone"></i>
-            <span>{{user.email}}</span>
-            <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
+            <!--      抽屉的宽度是256px      -->
+            <div style="width: 256px">
+                <i nz-icon nzType="mail" class="icon" nzTheme="twotone"></i>
+                <span>{{user.email}}</span>
+                <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
+            </div>
         </nz-descriptions-item>
         <nz-descriptions-item nzTitle="昵称">
-            <i nz-icon nzType="crown" class="icon" nzTheme="twotone"></i>
-            <span>{{user.displayName}}</span>
-            <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
+            <div style="width: 256px">
+                <i nz-icon nzType="crown" class="icon" nzTheme="twotone"></i>
+                <span>{{user.displayName}}</span>
+                <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
+            </div>
         </nz-descriptions-item>
         <nz-descriptions-item nzTitle="描述" *ngIf="user.desc">
-            <i nz-icon nzType="info-circle" class="icon" nzTheme="twotone"></i>
-            <span>{{user.desc}}</span>
-            <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
+            <div style="width: 256px">
+                <i nz-icon nzType="info-circle" class="icon" nzTheme="twotone"></i>
+                <span>{{user.desc}}</span>
+                <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
+            </div>
         </nz-descriptions-item>
     </nz-descriptions>
 

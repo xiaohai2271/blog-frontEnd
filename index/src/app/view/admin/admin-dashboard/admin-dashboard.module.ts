@@ -2,7 +2,15 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AdminDashboardComponent} from './admin-dashboard.component';
 import {RouterModule} from '@angular/router';
-import {NzButtonModule, NzCardModule, NzGridModule, NzIconModule, NzSpinModule, NzStatisticModule} from 'ng-zorro-antd';
+import {
+    NzButtonModule,
+    NzCardModule,
+    NzDividerModule,
+    NzGridModule,
+    NzIconModule,
+    NzSpinModule,
+    NzStatisticModule
+} from 'ng-zorro-antd';
 
 
 @NgModule({
@@ -15,7 +23,8 @@ import {NzButtonModule, NzCardModule, NzGridModule, NzIconModule, NzSpinModule, 
         NzButtonModule,
         NzSpinModule,
         NzIconModule,
-        NzStatisticModule
+        NzStatisticModule,
+        NzDividerModule
     ]
 })
 export class AdminDashboardModule {
