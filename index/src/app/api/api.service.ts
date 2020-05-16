@@ -527,6 +527,17 @@ export class ApiService extends HttpService {
         });
     }
 
+    webUpdatePage(pageSize: number = 10, pageNumber: number = 1) {
+        return super.Service<PageList<{ id: number, info: string, time: string }>>({
+            path: '/webUpdate/pages',
+            method: 'GET',
+            queryParam: {
+                count: pageSize,
+                page: pageNumber,
+            }
+        });
+    }
+
     lastestUpdate() {
         return super.Service<{
             lastUpdateTime: string;
