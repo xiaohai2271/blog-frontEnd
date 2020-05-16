@@ -1,5 +1,5 @@
 <div class="inner-content">
-    <nz-card nzTitle="文章管理" nzSize="small">
+    <nz-card nzTitle="用户管理" nzSize="small">
         <nz-table #table [nzData]="pageList.list" [nzTotal]="pageList.total" [(nzPageIndex)]="pageIndex"
                   [nzPageSize]="pageSize" [nzLoading]="loading"
                   (nzPageIndexChange)="getUser()" nzFrontPagination="false">
@@ -11,7 +11,7 @@
             <th>操作</th>
             </thead>
             <tbody>
-            <tr *ngFor="let data of pageList.list">
+            <tr *ngFor="let data of table.data">
                 <td>{{data.email}}</td>
                 <td>{{data.displayName}}</td>
                 <td>

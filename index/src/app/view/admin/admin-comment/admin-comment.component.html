@@ -10,7 +10,7 @@
             <th>操作</th>
             </thead>
             <tbody>
-            <tr *ngFor="let data of pageList.list">
+            <tr *ngFor="let data of table.data">
                 <td nz-typography nzEllipsis="true" [nzTooltipTitle]="data.articleTitle" nzTooltipPlacement="right"
                     nz-tooltip>{{data.articleTitle}}</td>
                 <td nz-typography nzEllipsis="true" [nzTooltipTitle]="data.content" nzTooltipPlacement="right"
