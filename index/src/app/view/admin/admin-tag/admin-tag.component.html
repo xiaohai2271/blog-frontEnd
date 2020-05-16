@@ -34,7 +34,9 @@
                                 <button nz-button (click)="editInfo.editFocus=false" nzSize="small">取消</button>
                             </nz-input-group>
                         </td>
-                        <td>{{data.articles ? data.articles.length : 0}}</td>
+                        <td>
+                            <nz-tag [nzColor]="'purple'">{{data.articles ? data.articles.length : 0}}</nz-tag>
+                        </td>
                         <td>
                             <a (click)="editFocus(data)" class="edit-opr">编辑</a>
                             <nz-divider nzType="vertical"></nz-divider>
@@ -69,7 +71,9 @@
                                 <button nz-button (click)="editInfo.editFocus=false" nzSize="small">取消</button>
                             </nz-input-group>
                         </td>
-                        <td>{{data.articles ? data.articles.length : 0}}</td>
+                        <td>
+                            <nz-tag [nzColor]="'purple'">{{data.articles ? data.articles.length : 0}}</nz-tag>
+                        </td>
                         <td>
                             <a (click)="editFocus(data)" class="edit-opr">编辑</a>
                             <nz-divider nzType="vertical"></nz-divider>

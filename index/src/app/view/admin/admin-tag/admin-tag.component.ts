@@ -3,6 +3,7 @@ import {NzMessageService} from 'ng-zorro-antd';
 import {Category, Tag} from '../../../class/Tag';
 import {ApiService} from '../../../api/api.service';
 import {PageList} from '../../../class/HttpReqAndResp';
+import {Title} from '@angular/platform-browser';
 
 @Component({
     selector: 'app-admin-tag',
@@ -11,7 +12,7 @@ import {PageList} from '../../../class/HttpReqAndResp';
 })
 export class AdminTagComponent implements OnInit {
 
-    constructor(private apiService: ApiService, private nzMessageService: NzMessageService) {
+    constructor(private apiService: ApiService, private nzMessageService: NzMessageService, private title: Title) {
     }
 
     loading: boolean = true;
@@ -30,6 +31,7 @@ export class AdminTagComponent implements OnInit {
 
 
     ngOnInit(): void {
+        this.title.setTitle('小海博客 | 标签分类管理')
         this.getCategory();
         this.getTag();
     }

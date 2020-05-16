@@ -3,6 +3,7 @@ import {NzMessageService} from 'ng-zorro-antd';
 import {ApiService} from '../../../api/api.service';
 import {PageList} from '../../../class/HttpReqAndResp';
 import {Article} from '../../../class/Article';
+import {Title} from '@angular/platform-browser';
 
 @Component({
     selector: 'app-admin-article',
@@ -11,7 +12,7 @@ import {Article} from '../../../class/Article';
 })
 export class AdminArticleComponent implements OnInit {
 
-    constructor(private apiService: ApiService, private nzMessage: NzMessageService) {
+    constructor(private apiService: ApiService, private nzMessage: NzMessageService, private title: Title) {
     }
 
     page: number = 1;
@@ -22,6 +23,7 @@ export class AdminArticleComponent implements OnInit {
     loading: boolean = true;
 
     ngOnInit(): void {
+        this.title.setTitle('小海博客 | 文章管理')
         this.getArticle();
     }
 

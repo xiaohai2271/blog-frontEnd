@@ -18,8 +18,13 @@
                     nz-tooltip>{{data.title}}</td>
                 <td>{{data.publishDateFormat}}</td>
                 <td>{{data.updateDateFormat}}</td>
-                <td>{{data.original ? '原创' : '转载'}}</td>
-                <td>{{data.readingNumber}}</td>
+                <td>
+                    <nz-tag nzColor="green" *ngIf="data.original">原创</nz-tag>
+                    <nz-tag nzColor="#ff5500" *ngIf="!data.original">转载</nz-tag>
+                </td>
+                <td>
+                    <nz-tag [nzColor]="'purple'">{{data.readingNumber}}</nz-tag>
+                </td>
                 <td><input type="checkbox" [checked]="data.open" disabled></td>
                 <td>
                     <a routerLink="/write" [queryParams]="{id:data.id}" class="edit-opr">编辑</a>

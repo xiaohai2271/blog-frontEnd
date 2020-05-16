@@ -7,7 +7,7 @@ import {
     NzCardModule,
     NzDividerModule, NzIconModule,
     NzInputModule, NzPopconfirmModule,
-    NzTableModule, NzTabsModule,
+    NzTableModule, NzTabsModule, NzTagModule,
 } from 'ng-zorro-antd';
 import {FormsModule} from '@angular/forms';
 
@@ -28,6 +28,7 @@ import {FormsModule} from '@angular/forms';
         NzPopconfirmModule,
         NzButtonModule,
         NzIconModule,
+        NzTagModule,
     ]
 })
 export class AdminTagModule {

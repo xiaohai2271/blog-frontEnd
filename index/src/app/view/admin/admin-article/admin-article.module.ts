@@ -6,7 +6,7 @@ import {
     NzCardModule,
     NzDividerModule,
     NzPopconfirmModule,
-    NzTableModule,
+    NzTableModule, NzTagModule,
     NzToolTipModule,
     NzTypographyModule
 } from 'ng-zorro-antd';
@@ -24,6 +24,7 @@ import {
         NzCardModule,
         NzDividerModule,
         NzPopconfirmModule,
+        NzTagModule,
     ]
 })
 export class AdminArticleModule {
