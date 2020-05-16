@@ -31,7 +31,7 @@ export class GlobalUserService {
                 }
             }
         }
-        if (this.lastRequestTime && Date.now() - this.lastRequestTime < 1000) {
+        if (this.lastRequestTime && Date.now() - this.lastRequestTime < 500) {
             return {
                 unsubscribe: () => {
                     this.userObserverArray.splice(this.userObserverArray.indexOf(observer), 1);
