@@ -1,0 +1,41 @@
+<div nz-row>
+    <nz-card nzTitle="统计" nz-col nzSpan="12" nzSize="small">
+        <nz-row [nzGutter]="24">
+            <nz-col [nzSpan]="6">
+                <nz-statistic [nzValue]="(counts.articleCount | number)!" nzTitle="文章数量"></nz-statistic>
+            </nz-col>
+            <nz-col [nzSpan]="6">
+                <nz-statistic [nzValue]="(counts.tagCount | number)!" nzTitle="标签量"></nz-statistic>
+            </nz-col>
+            <nz-col [nzSpan]="6">
+                <nz-statistic [nzValue]="(counts.categoryCount | number)!" nzTitle="分类数量"></nz-statistic>
+            </nz-col>
+            <nz-col [nzSpan]="6">
+                <nz-statistic [nzValue]="(counts.commentCount | number)!" nzTitle="评论量"></nz-statistic>
+            </nz-col>
+        </nz-row>
+    </nz-card>
+    <nz-card nzTitle="信息" nz-col nzSpan="11" nzOffset="1" nzSize="small">
+        <nz-row [nzGutter]="24">
+            <nz-col [nzSpan]="8">
+                <nz-statistic [nzValue]="(counts.visitorCount | number)!" nzTitle="总访问量"></nz-statistic>
+            </nz-col>
+            <nz-col [nzSpan]="8">
+                <nz-statistic [nzValue]="(dayVisitCount | number)!" nzTitle="日访问量"></nz-statistic>
+            </nz-col>
+            <nz-col [nzSpan]="8">
+                <nz-statistic [nzValue]="userInfo.recentlyLandedDate" nzTitle="上次登录"></nz-statistic>
+            </nz-col>
+        </nz-row>
+    </nz-card>
+</div>
+<div nz-row style="margin-top: 30px">
+    <nz-card style="width:100%;" nzSize="small" nzTitle="日志" [nzExtra]="reload">
+        <ng-template #reload>
+            <a (click)="getLog()" title="刷新"><i nz-icon nzType="reload" nzTheme="outline"></i></a>
+        </ng-template>
+        <nz-spin [nzSpinning]="logLoading" style="width: 100%;">
+            <pre style="width: 100%;max-height: 500px;overflow: auto;">{{logText}}</pre>
+        </nz-spin>
+    </nz-card>
+</div>

@@ -47,7 +47,7 @@ const routes: Routes = [
             },
             {
                 path: '**',
-                loadChildren: () => import('./admin-index/admin-index.module').then(mod => mod.AdminIndexModule),
+                loadChildren: () => import('./admin-dashboard/admin-dashboard.module').then(mod => mod.AdminDashboardModule),
                 canActivate: [AuthGuard]
             }
         ]
