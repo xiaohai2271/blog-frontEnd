@@ -14,7 +14,8 @@ import {GlobalUserService} from '../../../services/global-user.service';
 })
 export class AdminUserComponent implements OnInit {
 
-    constructor(private apiService: ApiService, private title: Title, private messageService: NzMessageService, private userService: GlobalUserService) {
+    constructor(private apiService: ApiService, private title: Title, private messageService: NzMessageService,
+                private userService: GlobalUserService) {
         this.formGroup = new FormGroup({
             id: new FormControl(null),
             email: new FormControl(''),
