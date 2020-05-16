@@ -49,7 +49,7 @@ export class HeaderComponent implements OnInit {
     @Output() registrationEvent = new EventEmitter();
     size: 'large' | 'default';
     currentPath: string;
-
+    noAvatarUrl = 'https://cdn.celess.cn/'
 
     public pageList: {
         path: string;

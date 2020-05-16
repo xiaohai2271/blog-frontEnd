@@ -5,6 +5,7 @@ import {ApiService} from '../../../api/api.service';
 import {NzMessageService} from 'ng-zorro-antd';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
+import {Title} from '@angular/platform-browser';
 
 @Component({
     selector: 'app-admin-link',
@@ -13,7 +14,8 @@ import {Observable} from 'rxjs';
 })
 export class AdminLinkComponent implements OnInit {
 
-    constructor(private apiService: ApiService, private messageService: NzMessageService) {
+    constructor(private apiService: ApiService, private messageService: NzMessageService, private title: Title) {
+        this.title.setTitle('小海博客 | 友链管理');
         this.formGroup = new FormGroup({
             id: new FormControl(null),
             name: new FormControl(null, [Validators.required]),

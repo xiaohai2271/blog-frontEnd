@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {ApiService} from '../../../api/api.service';
 import {GlobalUserService} from '../../../services/global-user.service';
 import {User} from '../../../class/User';
+import {Title} from '@angular/platform-browser';
 
 @Component({
     selector: 'app-admin-dashboard',
@@ -10,7 +11,9 @@ import {User} from '../../../class/User';
     styleUrls: ['./admin-dashboard.component.less']
 })
 export class AdminDashboardComponent implements OnInit {
-    constructor(private apiService: ApiService, private userService: GlobalUserService, private http: HttpClient) {
+    constructor(private apiService: ApiService, private userService: GlobalUserService, private http: HttpClient,
+                private title: Title) {
+        this.title.setTitle('小海博客 | 后台管理');
         this.getUserInfo();
     }
 

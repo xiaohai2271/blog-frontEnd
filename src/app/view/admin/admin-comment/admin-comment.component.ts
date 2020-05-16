@@ -4,6 +4,7 @@ import {ApiService} from '../../../api/api.service';
 import {PageList} from '../../../class/HttpReqAndResp';
 import {Comment, CommentReq} from '../../../class/Comment';
 import {GlobalUserService} from '../../../services/global-user.service';
+import {Title} from '@angular/platform-browser';
 
 @Component({
     selector: 'app-admin-comment',
@@ -12,7 +13,9 @@ import {GlobalUserService} from '../../../services/global-user.service';
 })
 export class AdminCommentComponent implements OnInit {
 
-    constructor(private apiService: ApiService, private  messageService: NzMessageService, private userService: GlobalUserService) {
+    constructor(private apiService: ApiService, private  messageService: NzMessageService, private userService: GlobalUserService,
+                private title: Title) {
+        this.title.setTitle('小海博客 | 评论管理')
         this.userService.watchUserInfo({
             next: data => {
                 if (data.result) {
