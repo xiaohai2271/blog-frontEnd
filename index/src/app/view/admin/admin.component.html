@@ -9,7 +9,7 @@
               *ngIf="user">
         <ul nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
             <li nz-menu-item routerLink="/admin">
-                <i nz-icon nzType="desktop" nzTheme="outline"></i>
+                <i nz-icon nzType="dashboard" nzTheme="outline"></i>
                 <span>后台首页</span>
             </li>
 
@@ -43,11 +43,6 @@
             <!--                <span>分类管理</span>-->
             <!--            </li>-->
 
-            <li nz-menu-item (click)="infoDrawerVisible = true">
-                <i nz-icon nzType="idcard" nzTheme="outline"></i>
-                <span>查看信息</span>
-            </li>
-
             <li nz-menu-item routerLink="/admin/user" *ngIf="user.role=='admin'">
                 <i nz-icon nzType="user" nzTheme="outline"></i>
                 <span>用户管理</span>
@@ -66,6 +61,11 @@
             <li nz-menu-item routerLink="/admin/update" *ngIf="user.role=='admin'">
                 <i nz-icon nzType="arrow-up" nzTheme="outline"></i>
                 <span>更新管理</span>
+            </li>
+
+            <li nz-menu-item (click)="infoDrawerVisible = true">
+                <i nz-icon nzType="idcard" nzTheme="outline"></i>
+                <span>查看信息</span>
             </li>
 
             <!--TODO : do something here ..... -->
