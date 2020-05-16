@@ -19,6 +19,7 @@
     "@angular/platform-browser": "^9.1.2",
     "@angular/platform-browser-dynamic": "^9.1.2",
     "@angular/router": "^9.1.2",
+    "@angular/service-worker": "^9.1.2",
     "jquery": "^3.5.0",
     "ng-zorro-antd": "^9.0.1",
     "nrm": "^1.2.1",
