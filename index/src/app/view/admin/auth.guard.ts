@@ -14,12 +14,14 @@ export class AuthGuard implements CanActivate {
     }
 
     userInfo: User;
+    visitCount: number = 0; // 记录一共走过几次canActivate
     private path: string;
     private readonly loginPath: string = '/user/login';
     private observable: Observable<boolean>;
 
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
         this.path = state.url.indexOf('?') > 0 ? state.url.substr(0, state.url.indexOf('?')) : state.url;
+        this.visitCount++;
         this.observable = new Observable<boolean>(observer => {
             if (!this.userInfo) {
                 this.watchUserInfo(observer);
@@ -58,6 +60,7 @@ export class AuthGuard implements CanActivate {
             case '/admin/visitor':
                 if (this.userInfo.role !== 'admin') {
                     observer.next(false)
+                    if (this.visitCount === 1) this.router.navigateByUrl('/admin')
                     return;
                 }
         }
