@@ -1,1 +1,62 @@
-<p>admin-link works!</p>
+<div class="inner-content">
+    <nz-card nzTitle="友链管理" nzSize="small">
+        <button nz-button (click)="addLink()" style="margin-bottom: 15px">新增</button>
+        <nz-table #table [nzData]="pageList.list" [nzTotal]="pageList.total" [(nzPageIndex)]="pageIndex"
+                  [nzPageSize]="pageSize" [nzLoading]="loading"
+                  (nzPageIndexChange)="getLinks()" nzFrontPagination="false">
+            <thead>
+            <th>友链名称</th>
+            <th>友链地址</th>
+            <th>是否可见</th>
+            <th>操作</th>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of table.data">
+                <td>{{data.name}}</td>
+                <td><a [href]="data.url" target="_blank">{{data.url}}</a></td>
+                <td>
+                    <input type="checkbox" disabled [checked]="data.open">
+                </td>
+                <td>
+                    <a (click)="showEdit(data)" class="edit-opr">编辑</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a nz-popconfirm nzPopconfirmTitle="确定要删除这条友链吗?" nzOkText="删除" nzCancelText="点错了"
+                       (nzOnConfirm)="delete(data.id)" class="del-opr">删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </nz-table>
+    </nz-card>
+</div>
+
+<nz-modal [(nzVisible)]="modalVisible" [nzTitle]="modalTitle" (nzOnOk)="modalConfirm()"
+          (nzOnCancel)="modalVisible = false" [nzClosable]="true" [nzOkDisabled]="!formGroup.valid">
+    <form nz-form [formGroup]="formGroup">
+        <nz-form-item>
+            <nz-form-label nzRequired>网站名称</nz-form-label>
+            <nz-form-control nzErrorTip="网站名称不可为空">
+                <input nz-input formControlName="name">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>网站链接</nz-form-label>
+            <nz-form-control [nzErrorTip]="nameErrTip">
+                <input nz-input formControlName="url">
+                <ng-template #nameErrTip>
+                    <div *ngIf="formGroup.controls.url.hasError('required')">网站链接不可为空</div>
+                    <div *ngIf="formGroup.controls.url.hasError('pattern')">网站链接格式不正确</div>
+                    <div></div>
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>是否公开</nz-form-label>
+            <nz-form-control nzErrorTip="不可为空">
+                <nz-select nzPlaceHolder="请选择" formControlName="open" [nzAllowClear]="true">
+                    <nz-option [nzValue]="true" nzLabel="公开"></nz-option>
+                    <nz-option [nzValue]="false" nzLabel="不公开"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>

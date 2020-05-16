@@ -43,7 +43,7 @@ export class AdminCommentComponent implements OnInit {
             },
             error: err => {
                 this.loading = false;
-                this.messageService.success(err.msg);
+                this.messageService.error(err.msg);
             },
             complete: () => this.loading = false
         })
