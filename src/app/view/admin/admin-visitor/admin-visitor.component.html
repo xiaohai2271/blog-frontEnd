@@ -1,0 +1,24 @@
+<div class="inner-content">
+    <nz-card nzTitle="访客信息管理" nzSize="small">
+        <nz-table #table [nzData]="pageList.list" [nzTotal]="pageList.total" [(nzPageIndex)]="pageIndex"
+                  [nzPageSize]="pageSize" [nzLoading]="loading"
+                  (nzPageIndexChange)="getVisitors()" nzFrontPagination="false">
+            <thead>
+            <th>ip地址</th>
+            <th>访问日期</th>
+            <th>浏览器类型</th>
+            <th>浏览器版本</th>
+            <th>系统</th>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of table.data">
+                <td>{{data.ip}}</td>
+                <td>{{data.date}}</td>
+                <td>{{data.browserName}}</td>
+                <td>{{data.browserVersion}}</td>
+                <td>{{data.osname}}</td>
+            </tr>
+            </tbody>
+        </nz-table>
+    </nz-card>
+</div>

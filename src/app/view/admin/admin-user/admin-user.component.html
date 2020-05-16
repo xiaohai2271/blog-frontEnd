@@ -1,0 +1,117 @@
+<div class="inner-content">
+    <nz-card nzTitle="用户管理" nzSize="small">
+        <nz-table #table [nzData]="pageList.list" [nzTotal]="pageList.total" [(nzPageIndex)]="pageIndex"
+                  [nzPageSize]="pageSize" [nzLoading]="loading"
+                  (nzPageIndexChange)="getUser()" nzFrontPagination="false">
+            <thead>
+            <th>邮箱</th>
+            <th>昵称</th>
+            <th>角色</th>
+            <th>邮箱验证状态</th>
+            <th>操作</th>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of table.data">
+                <td>{{data.email}}</td>
+                <td>{{data.displayName}}</td>
+                <td>
+                    <nz-tag [nzColor]="'blue'" *ngIf="data.role == 'admin'">{{data.role}}</nz-tag>
+                    <nz-tag [nzColor]="'purple'" *ngIf="data.role == 'user'">{{data.role}}</nz-tag>
+                </td>
+                <td>
+                    <nz-tag [nzColor]="'green'" *ngIf="data.emailStatus">已验证</nz-tag>
+                    <nz-tag [nzColor]="'red'" *ngIf="!data.emailStatus">未验证</nz-tag>
+                </td>
+                <td>
+                    <a (click)="showModal(true, data)" class="edit-opr">编辑</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a (click)="showModal(false, data)" class="show-opr">查看</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a nz-popconfirm nzPopconfirmTitle="确定要删除这个用户吗?" nzOkText="删除" nzCancelText="点错了"
+                       (nzOnConfirm)="deleteUser(data.id)" class="del-opr">删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </nz-table>
+    </nz-card>
+</div>
+
+<nz-modal [(nzVisible)]="modalData.visible" [nzClosable]="true" [nzTitle]="modalData.title"
+          (nzOnCancel)="modalData.visible = false" (nzOnOk)="modalConfirm()"
+          [nzFooter]="modalData.isEdit?editContentFooter:showContentFooter"
+          [nzContent]="showContent">
+    <ng-template #showContent>
+        <form nz-form [formGroup]="formGroup" (ngSubmit)="modalConfirm()">
+            <nz-form-item>
+                <nz-form-label nzSpan="4" nzRequired>邮箱</nz-form-label>
+                <nz-form-control nzSpan="18">
+                    <input type="email" nz-input formControlName="email"
+                           [disabled]="!modalData.isEdit">
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label nzSpan="4" nzRequired>昵称</nz-form-label>
+                <nz-form-control nzSpan="18">
+                    <input type="text" nz-input formControlName="displayName" [disabled]="!modalData.isEdit">
+                </nz-form-control>
+            </nz-form-item>
+
+
+            <nz-form-item>
+                <nz-form-label nzSpan="4" nzRequired>角色</nz-form-label>
+                <nz-form-control nzSpan="18">
+                    <nz-select formControlName="role" [nzDisabled]="!modalData.isEdit||formGroup.value.id==user.id">
+                        <nz-option nzValue="admin" nzLabel="admin"></nz-option>
+                        <nz-option nzValue="user" nzLabel="user"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label nzSpan="4" nzRequired>状态</nz-form-label>
+                <nz-form-control nzSpan="18">
+                    <nz-radio-group formControlName="emailStatus" [nzDisabled]="!modalData.isEdit">
+                        <label nz-radio [nzValue]="true">邮箱已验证</label>
+                        <label nz-radio [nzValue]="false">邮箱未验证</label>
+                    </nz-radio-group>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item *ngIf="modalData.isEdit">
+                <nz-form-label nzSpan="4">密码</nz-form-label>
+                <nz-form-control nzSpan="18">
+                    <a *ngIf="!modalData.resetPwd" (click)="modalData.resetPwd = true">
+                        重设密码<i nz-icon nzType="edit" nzTheme="twotone" style="margin-left: 10px;"></i>
+                    </a>
+                    <nz-input-group *ngIf="modalData.resetPwd" [nzSuffix]="cancelBtn" nzSize="small">
+                        <input type="password" nz-input formControlName="pwd" autocomplete="new-password"
+                               [disabled]="!modalData.isEdit">
+                        <ng-template #cancelBtn>
+                            <button nz-button (click)="modalData.resetPwd = false" nzSize="small" nzType="link">取消
+                            </button>
+                        </ng-template>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label nzSpan="4">描述</nz-form-label>
+                <nz-form-control nzSpan="18">
+                    <textarea nz-input [nzAutosize]="{ minRows: 2, maxRows: 4 }" formControlName="desc"
+                              [disabled]="!modalData.isEdit"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </ng-template>
+
+    <ng-template #showContentFooter>
+        <button nz-button (click)="modalData.visible = false">关闭</button>
+    </ng-template>
+
+    <ng-template #editContentFooter>
+        <button nz-button (click)="modalData.visible = false">取消</button>
+        <button nz-button (click)="modalConfirm()" nzType="primary">提交</button>
+    </ng-template>
+
+</nz-modal>
