@@ -6,6 +6,7 @@
             <thead>
             <th>文章标题</th>
             <th>评论内容</th>
+            <th>评论者</th>
             <th>评论日期</th>
             <th>操作</th>
             </thead>
@@ -25,6 +26,7 @@
                         <button nz-button (click)="editInfo.editFocus=false" nzSize="small">取消</button>
                     </nz-input-group>
                 </td>
+                <td>{{data.authorName}}</td>
                 <td>{{data.date}}</td>
                 <td>
                     <a (click)="editFocus(data)" class="edit-opr">编辑</a>
