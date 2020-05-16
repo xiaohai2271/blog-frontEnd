@@ -17,8 +17,8 @@ export class AdminDashboardComponent implements OnInit {
         this.getUserInfo();
     }
 
-    logLoading: true;
-    logText: string;
+    logLoading: boolean = true;
+    logText: string = null;
     counts: {
         articleCount: number,
         visitorCount: number,
@@ -26,9 +26,10 @@ export class AdminDashboardComponent implements OnInit {
         leaveMsgCount: number,
         tagCount: number,
         commentCount: number
-    }
-    dayVisitCount: number
-    userInfo: User;
+    } = {articleCount: 0, visitorCount: 0, categoryCount: 0, tagCount: 0, commentCount: 0, leaveMsgCount: 0}
+
+    dayVisitCount: number = 0;
+    userInfo: User = new User();
 
     ngOnInit(): void {
     }
@@ -36,6 +37,7 @@ export class AdminDashboardComponent implements OnInit {
     getLog() {
         this.http.get('https://api.celess.cn/blog.log', {responseType: 'text'}).subscribe(data => {
             this.logText = data;
+            this.logLoading = false
         });
     }
 

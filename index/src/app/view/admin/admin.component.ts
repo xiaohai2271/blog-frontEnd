@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {NzMessageService} from 'ng-zorro-antd';
+import {Router} from '@angular/router';
 import {GlobalUserService} from '../../services/global-user.service';
 import {User} from '../../class/User';
 import {ApiService} from '../../api/api.service';
@@ -12,14 +13,15 @@ import {ApiService} from '../../api/api.service';
 })
 export class AdminComponent implements OnInit {
 
-    constructor(public gUserService: GlobalUserService, private apiService: ApiService, private messageService: NzMessageService) {
+    constructor(public gUserService: GlobalUserService, private apiService: ApiService, private messageService: NzMessageService,
+                private router: Router) {
         this.gUserService.watchUserInfo({
                 complete: () => null,
                 error: (err) => null,
                 next: data => {
                     console.log('更新user')
                     this.user = data.result
-                    this.initHelloWords()
+                    if (data.result) this.initHelloWords()
                 }
             }
         )
@@ -33,6 +35,11 @@ export class AdminComponent implements OnInit {
     editInfoFormGroup: FormGroup;
 
     showInfoDrawer = () => this.infoDrawerVisible = !this.infoDrawerVisible;
+
+    logout() {
+        this.gUserService.logout();
+        this.router.navigateByUrl('/')
+    }
 
     ngOnInit(): void {
         this.editInfoFormGroup = new FormGroup({
@@ -81,4 +88,5 @@ export class AdminComponent implements OnInit {
         });
         this.editInfoModalVisible = false;
     }
+
 }

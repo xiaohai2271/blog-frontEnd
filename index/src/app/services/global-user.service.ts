@@ -45,7 +45,7 @@ export class GlobalUserService {
         // 获取数据
         const subscription = this.getUserInfoFromServer();
         return {
-            unsubscribe:()=>{
+            unsubscribe: () => {
                 this.userObserverArray.splice(this.userObserverArray.indexOf(observer), 1);
                 observer.complete();
                 subscription.unsubscribe()

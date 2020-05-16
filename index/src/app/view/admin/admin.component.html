@@ -89,7 +89,7 @@
     </nz-layout>
 </nz-layout>
 <nz-drawer [nzClosable]="false" [nzVisible]="infoDrawerVisible" nzPlacement="right"
-           [nzTitle]="sayHelloTemp" (nzOnClose)="infoDrawerVisible = false" >
+           [nzTitle]="sayHelloTemp" (nzOnClose)="infoDrawerVisible = false">
     <p>您最近一次登录是在:</p>
     <p>{{user.recentlyLandedDate}}</p>
     <br><br>
@@ -110,6 +110,11 @@
             <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
         </nz-descriptions-item>
     </nz-descriptions>
+
+
+    <div nz-row style="text-align: center">
+        <a (click)="logout()" style="width: 100%">注销</a>
+    </div>
     <!--  TODO: 展示更多信息  -->
 </nz-drawer>
 
