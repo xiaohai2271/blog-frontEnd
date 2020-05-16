@@ -48,7 +48,7 @@ export class ArticleComponent implements OnInit {
             error: (err) => null,
             next: data => {
                 this.user = data.result;
-                this.avatarImgUrl = data.result.avatarImgUrl;
+                if (data.result) this.avatarImgUrl = data.result.avatarImgUrl;
             }
         });
         this.comment = new CommentReq(true);

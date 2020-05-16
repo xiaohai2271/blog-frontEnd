@@ -24,7 +24,8 @@
                 <nz-statistic [nzValue]="(dayVisitCount | number)!" nzTitle="日访问量"></nz-statistic>
             </nz-col>
             <nz-col [nzSpan]="8">
-                <nz-statistic [nzValue]="userInfo.recentlyLandedDate" nzTitle="上次登录"></nz-statistic>
+                <nz-statistic [nzValue]="userInfo.recentlyLandedDate?userInfo.recentlyLandedDate:''"
+                              nzTitle="上次登录"></nz-statistic>
             </nz-col>
         </nz-row>
     </nz-card>
