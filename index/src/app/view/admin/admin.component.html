@@ -38,15 +38,15 @@
                 <span>分类标签管理</span>
             </li>
 
-<!--            <li nz-menu-item routerLink="/admin/category" *ngIf="user.role=='admin'">-->
-<!--                <i nz-icon nzType="appstore" nzTheme="outline"></i>-->
-<!--                <span>分类管理</span>-->
-<!--            </li>-->
+            <!--            <li nz-menu-item routerLink="/admin/category" *ngIf="user.role=='admin'">-->
+            <!--                <i nz-icon nzType="appstore" nzTheme="outline"></i>-->
+            <!--                <span>分类管理</span>-->
+            <!--            </li>-->
 
-            <li nz-menu-item routerLink="/admin/userInfo">
-                <i nz-icon nzType="idcard" nzTheme="outline"></i>
-                <span>修改信息</span>
-            </li>
+            <!--            <li nz-menu-item routerLink="/admin/userInfo">-->
+            <!--                <i nz-icon nzType="idcard" nzTheme="outline"></i>-->
+            <!--                <span>修改信息</span>-->
+            <!--            </li>-->
 
             <li nz-menu-item routerLink="/admin/user" *ngIf="user.role=='admin'">
                 <i nz-icon nzType="user" nzTheme="outline"></i>
@@ -89,7 +89,7 @@
     </nz-layout>
 </nz-layout>
 <nz-drawer [nzClosable]="false" [nzVisible]="infoDrawerVisible" nzPlacement="right"
-           [nzTitle]="sayHelloTemp" (nzOnClose)="infoDrawerVisible = false">
+           [nzTitle]="sayHelloTemp" (nzOnClose)="infoDrawerVisible = false" >
     <p>您最近一次登录是在:</p>
     <p>{{user.recentlyLandedDate}}</p>
     <br><br>

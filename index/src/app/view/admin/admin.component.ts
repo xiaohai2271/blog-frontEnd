@@ -13,6 +13,16 @@ import {ApiService} from '../../api/api.service';
 export class AdminComponent implements OnInit {
 
     constructor(public gUserService: GlobalUserService, private apiService: ApiService, private messageService: NzMessageService) {
+        this.gUserService.watchUserInfo({
+                complete: () => null,
+                error: (err) => null,
+                next: data => {
+                    console.log('更新user')
+                    this.user = data.result
+                    this.initHelloWords()
+                }
+            }
+        )
     }
 
     user: User;
@@ -25,21 +35,11 @@ export class AdminComponent implements OnInit {
     showInfoDrawer = () => this.infoDrawerVisible = !this.infoDrawerVisible;
 
     ngOnInit(): void {
-        this.gUserService.watchUserInfo({
-                complete: () => null,
-                error: (err) => null,
-                next: data => {
-                    console.log('更新user')
-                    this.user = data.result
-                }
-            }
-        )
         this.editInfoFormGroup = new FormGroup({
             desc: new FormControl(),
             displayName: new FormControl(),
             email: new FormControl({value: null, disabled: true})
         });
-        this.initHelloWords()
     }
 
     private initHelloWords() {
