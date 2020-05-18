@@ -92,36 +92,34 @@
            [nzTitle]="sayHelloTemp" (nzOnClose)="infoDrawerVisible = false">
     <p>您最近一次登录是在:</p>
     <p>{{user.recentlyLandedDate}}</p>
-    <br><br>
+    <nz-divider></nz-divider>
     <nz-descriptions [nzColumn]="1">
         <nz-descriptions-item nzTitle="邮箱">
-            <!--      抽屉的宽度是256px      -->
-            <div style="width: 256px">
+            <div>
                 <i nz-icon nzType="mail" class="icon" nzTheme="twotone"></i>
                 <span>{{user.email}}</span>
                 <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
             </div>
         </nz-descriptions-item>
         <nz-descriptions-item nzTitle="昵称">
-            <div style="width: 256px">
+            <div>
                 <i nz-icon nzType="crown" class="icon" nzTheme="twotone"></i>
                 <span>{{user.displayName}}</span>
                 <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
             </div>
         </nz-descriptions-item>
         <nz-descriptions-item nzTitle="描述" *ngIf="user.desc">
-            <div style="width: 256px">
-                <i nz-icon nzType="info-circle" class="icon" nzTheme="twotone"></i>
-                <span>{{user.desc}}</span>
-                <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
-            </div>
+            <i nz-icon nzType="info-circle" class="icon" nzTheme="twotone"></i>
+            <span nz-tooltip [nzTooltipTitle]="user.desc" nzTooltipPlacement="left" nz-typography [nzEllipsis]="true" [nzContent]="user.desc" style="max-width: 100px">{{user.desc}}</span>
+            <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
         </nz-descriptions-item>
     </nz-descriptions>
 
+    <nz-divider></nz-divider>
 
-    <div nz-row style="text-align: center">
-        <a (click)="logout()" style="width: 100%">注销</a>
-    </div>
+    <!--    <div >-->
+    <button nz-button nzDanger nzBlock nzType="primary" (click)="logout()">注销</button>
+    <!--    </div>-->
     <!--  TODO: 展示更多信息  -->
 </nz-drawer>
 
