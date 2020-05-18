@@ -1,7 +1,7 @@
 <div class="inner-content">
     <nz-card nzTitle="访客信息管理" nzSize="small">
         <nz-table #table [nzData]="pageList.list" [nzTotal]="pageList.total" [(nzPageIndex)]="pageIndex"
-                  [nzPageSize]="pageSize" [nzLoading]="loading"
+                  [nzPageSize]="pageSize" [nzLoading]="loading" [nzScroll]="{x:'800px'}"
                   (nzPageIndexChange)="getVisitors()" nzFrontPagination="false">
             <thead>
             <th>ip地址</th>

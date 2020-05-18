@@ -2,7 +2,7 @@
     <nz-card nzTitle="更新内容管理" nzSize="small">
         <button nz-button (click)="showModal()" style="margin-bottom: 15px;">新增</button>
         <nz-table #table [nzData]="pageList.list" [nzTotal]="pageList.total" [(nzPageIndex)]="pageIndex"
-                  [nzPageSize]="pageSize" [nzLoading]="loading"
+                  [nzPageSize]="pageSize" [nzLoading]="loading" [nzScroll]="{x:'800px'}"
                   (nzPageIndexChange)="getUpdateInfo()" nzFrontPagination="false">
             <thead>
             <th>更新内容</th>

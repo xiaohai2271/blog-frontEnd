@@ -1,7 +1,7 @@
 <div class="inner-content">
     <nz-card nzTitle="评论管理" nzSize="small">
         <nz-table #table [nzData]="pageList.list" [nzTotal]="pageList.total" [(nzPageIndex)]="pageIndex"
-                  [nzPageSize]="pageSize" [nzLoading]="loading"
+                  [nzPageSize]="pageSize" [nzLoading]="loading" [nzScroll]="{x:'800px'}"
                   (nzPageIndexChange)="getComment()" nzFrontPagination="false">
             <thead>
             <th>文章标题</th>

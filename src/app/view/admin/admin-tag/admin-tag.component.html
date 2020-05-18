@@ -14,7 +14,7 @@
                     </button>
                 </div>
                 <nz-table #table [nzData]="categoryList" [nzTotal]="categoryList.length"
-                          (nzPageIndexChange)="getCategory()"
+                          (nzPageIndexChange)="getCategory()" [nzScroll]="{x:'800px'}"
                           nzFrontPagination="false" [nzLoading]="loading">
                     <thead>
                     <th>分类名</th>
@@ -51,7 +51,7 @@
             </nz-tab>
             <nz-tab nzTitle="标签管理" (nzClick)="editInfo.editFocus=false">
                 <nz-table #tagTable [nzData]="tagPageList.list" [nzTotal]="tagPageList.total"
-                          [(nzPageIndex)]="pageIndex"
+                          [(nzPageIndex)]="pageIndex" [nzScroll]="{x:'800px'}"
                           [nzPageSize]="pageSize" (nzPageIndexChange)="getTag()" nzFrontPagination="false">
                     <thead>
                     <th>标签名</th>
