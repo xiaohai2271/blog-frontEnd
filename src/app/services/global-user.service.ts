@@ -115,7 +115,7 @@ export class GlobalUserService {
                 }
                 this.localStorageService.removeToken();
                 this.userObserverArray.forEach(ob => ob.next(new Response<User>(null)));
-                this.userObserverArray.forEach(ob => ob.error(err));
+                this.userObserverArray.forEach(ob => ob.error && ob.error(err));
             }
         });
     }

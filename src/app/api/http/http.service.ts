@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {RequestObj} from '../../class/HttpReqAndResp';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {LocalStorageService} from '../../services/local-storage.service';
 import {Response} from '../../class/HttpReqAndResp';
@@ -34,7 +34,7 @@ export class HttpService {
         }
         request.path = this.checkUrl(request);
 
-        let observable: Observable<Response<T>>;
+        let observable: Observable<HttpResponse<Response<T>>>;
         switch (request.method) {
             case 'GET':
                 observable = this.get<Response<T>>(request);
@@ -55,13 +55,17 @@ export class HttpService {
         const oob = new Observable<Response<T>>(o => observer = o);
 
         observable.subscribe(o => {
-            if (o.code) {
+            const tokenFromReps = o.headers.get('Authorization');
+            if (tokenFromReps) {
+                this.localStorageService.setToken(tokenFromReps);
+            }
+            if (o.body.code) {
                 observer.error(o);
                 if (this.errorDispatch) {
-                    this.errorDispatch.errHandler(o.code, o.msg, request);
+                    this.errorDispatch.errHandler(o.body.code, o.body.msg, request);
                 }
             } else {
-                observer.next(o);
+                observer.next(o.body);
             }
             observer.complete();
         });
@@ -72,7 +76,8 @@ export class HttpService {
         return this.httpClient.get<T>(request.path,
             {
                 headers: request.header,
-                withCredentials: true
+                withCredentials: true,
+                observe: 'response'
             });
     }
 
@@ -80,7 +85,8 @@ export class HttpService {
         return this.httpClient.post<T>(request.path, request.data,
             {
                 headers: request.header,
-                withCredentials: true
+                withCredentials: true,
+                observe: 'response'
             });
     }
 
@@ -88,7 +94,8 @@ export class HttpService {
         return this.httpClient.put<T>(request.path, request.data,
             {
                 headers: request.header,
-                withCredentials: true
+                withCredentials: true,
+                observe: 'response'
             });
     }
 
@@ -96,7 +103,8 @@ export class HttpService {
         return this.httpClient.delete<T>(request.path,
             {
                 headers: request.header,
-                withCredentials: true
+                withCredentials: true,
+                observe: 'response'
             });
     }
 

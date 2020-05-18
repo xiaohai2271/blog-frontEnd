@@ -1,7 +1,7 @@
 <div class="inner-content">
     <nz-card nzTitle="文章管理" nzSize="small">
         <nz-table #table [nzData]="pageList.list" [nzTotal]="pageList.total" [(nzPageIndex)]="page"
-                  [nzPageSize]="pageSize" [nzLoading]="loading"
+                  [nzPageSize]="pageSize" [nzLoading]="loading" [nzScroll]="{x:'1100px'}"
                   (nzPageIndexChange)="getArticle()" nzFrontPagination="false">
             <thead>
             <th>标题</th>
