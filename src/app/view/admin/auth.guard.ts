@@ -1,5 +1,12 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router} from '@angular/router';
+import {
+    CanActivate,
+    ActivatedRouteSnapshot,
+    RouterStateSnapshot,
+    UrlTree,
+    Router,
+    CanActivateChild
+} from '@angular/router';
 import {Observable, Observer} from 'rxjs';
 import {User} from '../../class/User';
 import {GlobalUserService} from '../../services/global-user.service';
@@ -10,7 +17,6 @@ import {GlobalUserService} from '../../services/global-user.service';
 export class AuthGuard implements CanActivate {
 
     constructor(private userService: GlobalUserService, private router: Router) {
-        // this.userService.refreshUserInfo();
     }
 
     userInfo: User;
@@ -34,11 +40,12 @@ export class AuthGuard implements CanActivate {
 
     watchUserInfo(observer: Observer<boolean>) {
         this.userService.watchUserInfo({
-            complete: null,
+            complete: () => null,
             error: (err) => {
                 // 请求重复
                 if (err.code !== -1) {
                     observer.next(false);
+                    observer.complete();
                     this.router.navigateByUrl(this.loginPath);
                 }
             },
@@ -58,13 +65,15 @@ export class AuthGuard implements CanActivate {
             case '/admin/update':
             case '/admin/user':
             case '/admin/visitor':
-                if (this.userInfo.role !== 'admin') {
-                    observer.next(false)
+                if (this.userInfo && this.userInfo.role !== 'admin') {
+                    observer.next(false);
+                    observer.complete();
                     if (this.visitCount === 1) this.router.navigateByUrl('/admin')
                     return;
                 }
         }
         observer.next(true);
+        observer.complete();
     }
 
 }

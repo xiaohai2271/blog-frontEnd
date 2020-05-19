@@ -8,47 +8,47 @@ const routes: Routes = [
     {
         path: '',
         component: AdminComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         children: [
             {
                 path: 'article',
                 loadChildren: () => import('./admin-article/admin-article.module').then(mod => mod.AdminArticleModule),
-                canActivate: [AuthGuard]
+                // canActivate: [AuthGuard]
             },
             {
                 path: 'comment',
                 loadChildren: () => import('./admin-comment/admin-comment.module').then(mod => mod.AdminCommentModule),
-                canActivate: [AuthGuard]
+                // canActivate: [AuthGuard]
             },
             {
                 path: 'link',
                 loadChildren: () => import('./admin-link/admin-link.module').then(mod => mod.AdminLinkModule),
-                canActivate: [AuthGuard]
+                // canActivate: [AuthGuard]
             },
             {
                 path: 'tag',
                 loadChildren: () => import('./admin-tag/admin-tag.module').then(mod => mod.AdminTagModule),
-                canActivate: [AuthGuard]
+                // canActivate: [AuthGuard]
             },
             {
                 path: 'update',
                 loadChildren: () => import('./admin-update/admin-update.module').then(mod => mod.AdminUpdateModule),
-                canActivate: [AuthGuard]
+                // canActivate: [AuthGuard]
             },
             {
                 path: 'user',
                 loadChildren: () => import('./admin-user/admin-user.module').then(mod => mod.AdminUserModule),
-                canActivate: [AuthGuard]
+                // canActivate: [AuthGuard]
             },
             {
                 path: 'visitor',
                 loadChildren: () => import('./admin-visitor/admin-visitor.module').then(mod => mod.AdminVisitorModule),
-                canActivate: [AuthGuard]
+                // canActivate: [AuthGuard]
             },
             {
                 path: '**',
                 loadChildren: () => import('./admin-dashboard/admin-dashboard.module').then(mod => mod.AdminDashboardModule),
-                canActivate: [AuthGuard]
+                // canActivate: [AuthGuard]
             }
         ]
     }

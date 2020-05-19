@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {LoginReq, User} from '../class/User';
 import {ApiService} from '../api/api.service';
-import {Observable, Observer} from 'rxjs';
+import {Observable, Observer, Subscription} from 'rxjs';
 import {Response} from '../class/HttpReqAndResp';
 import {LocalStorageService} from './local-storage.service';
 
@@ -15,42 +15,32 @@ export class GlobalUserService {
     }
 
     private lastRequestTime: number;
+    private userInfo: User = null;
 
     // 存储订阅者
     private userObserverArray: Observer<Response<User>>[] = [];
 
+    private multicastArray: Observer<Response<User>>[] = [];
+
     watchUserInfo(observer: Observer<Response<User>>) {
         if (this.userObserverArray.indexOf(observer) < 0) this.userObserverArray.push(observer);
-        const user = this.localStorageService.getUser();
-        // 判断本地缓存的用户信息是否符合要求，符合要求返回本地缓存
-        if (this.localStorageService.isLogin() && user && !this.localStorageService.checkNeedNet()) {
-            observer.next(new Response<User>(user));
-            return {
-                unsubscribe() {
-                    observer.complete();
-                }
+        this.multicastArray = [...this.userObserverArray];
+        let subscription: Subscription = null;
+        const unsubscribe = () => {
+            this.userObserverArray.splice(this.userObserverArray.indexOf(observer), 1);
+            observer.complete();
+            if (subscription) subscription.unsubscribe();
+        };
+        if (this.lastRequestTime && Date.now() - this.lastRequestTime < 3000) {
+            if (this.userInfo && this.multicastArray.length) {
+                this.broadcast()
+                this.lastRequestTime = Date.now();
             }
+            return {unsubscribe}
         }
-        if (this.lastRequestTime && Date.now() - this.lastRequestTime < 500) {
-            return {
-                unsubscribe: () => {
-                    this.userObserverArray.splice(this.userObserverArray.indexOf(observer), 1);
-                    observer.complete();
-                }
-            }
-        }
-        // 不符合 请求网络数据并更新缓存
-        // 向订阅者传数据
-        this.lastRequestTime = Date.now();
         // 获取数据
-        const subscription = this.getUserInfoFromServer();
-        return {
-            unsubscribe: () => {
-                this.userObserverArray.splice(this.userObserverArray.indexOf(observer), 1);
-                observer.complete();
-                subscription.unsubscribe()
-            }
-        }
+        subscription = this.getUserInfoFromServer();
+        return {unsubscribe}
     }
 
     // 刷新用户信息
@@ -59,14 +49,16 @@ export class GlobalUserService {
     }
 
     login(loginReq: LoginReq, observer: Observer<Response<User>>) {
+        this.multicastArray = [...this.userObserverArray];
         const oob = new Observable<Response<User>>(o => observer = o);
         const subscription = this.apiService.login(loginReq).subscribe({
             next: o => {
                 // 登录成功
                 this.localStorageService.setToken(o.result.token);
-                this.localStorageService.setUser(o.result);
+                // this.localStorageService.setUser(o.result);
                 // this.userObserver.next(o);
-                this.userObserverArray.forEach(ob => ob.next(o))
+                this.userInfo = o.result;
+                this.broadcast()
                 observer.next(o);
                 observer.complete();
             },
@@ -84,10 +76,12 @@ export class GlobalUserService {
     }
 
     logout(observer?: Observer<Response<string>>) {
+        this.userInfo = null;
+        this.multicastArray = [...this.userObserverArray];
         // 如果不需要返回消息也ok
         this.apiService.logout().subscribe(data => {
                 this.localStorageService.clear();
-                this.userObserverArray.forEach(ob => ob.next(new Response<User>(null)))
+                this.broadcast()
                 if (observer) {
                     observer.next(data);
                     observer.complete();
@@ -101,22 +95,42 @@ export class GlobalUserService {
             })
     }
 
-    private getUserInfoFromServer() {
+    getUserInfoFromServer(observer?: Observer<Response<User>>) {
         return this.apiService.userInfo().subscribe({
             next: o => {
-                this.localStorageService.setUser(o.result);
-                this.userObserverArray.forEach(ob => ob.next(o));
+                this.lastRequestTime = Date.now();
+                this.userInfo = o.result;
+                // this.localStorageService.setUser(o.result);
+                this.broadcast()
+                if (observer) {
+                    observer.next(o);
+                    observer.complete();
+                }
+                // this.requested = false;
             },
             error: err => {
                 // console.debug('登录过期 token错误 等等');
+                if (observer) {
+                    observer.error(err);
+                    observer.complete();
+                }
+
                 if (err.code === -1) {
                     // 请求重复
                     return
                 }
-                this.localStorageService.removeToken();
-                this.userObserverArray.forEach(ob => ob.next(new Response<User>(null)));
-                this.userObserverArray.forEach(ob => ob.error && ob.error(err));
+                // this.requested = false;
+                // this.localStorageService.removeToken();
+                this.multicastArray.forEach(ob => ob.next(new Response<User>(this.userInfo)))
+                this.multicastArray.forEach(ob => ob.error(err))
+                this.multicastArray.splice(0, this.multicastArray.length);
+
             }
         });
+    }
+
+    private broadcast() {
+        this.multicastArray.forEach(ob => ob.next(new Response<User>(this.userInfo)))
+        this.multicastArray.splice(0, this.multicastArray.length);
     }
 }

@@ -6,6 +6,7 @@ import {NgZorroAntdModule} from 'ng-zorro-antd';
 import {NzSpaceModule} from 'ng-zorro-antd/space';
 import {AdminHeaderComponent} from '../../components/admin-header/admin-header.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import {AuthGuard} from './auth.guard';
 
 
 @NgModule({
@@ -18,8 +19,9 @@ import {ReactiveFormsModule} from '@angular/forms';
         AdminRoutingModule,
         NgZorroAntdModule,
         NzSpaceModule,
-        ReactiveFormsModule
-    ]
+        ReactiveFormsModule,
+    ],
+    providers: [AuthGuard]
 })
 export class AdminModule {
 }

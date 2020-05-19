@@ -30,6 +30,7 @@ export class AdminDashboardComponent implements OnInit {
 
     dayVisitCount: number = 0;
     userInfo: User = new User();
+    private isRequested: boolean = false;
 
     ngOnInit(): void {
     }
@@ -52,13 +53,14 @@ export class AdminDashboardComponent implements OnInit {
     getUserInfo = () => this.userService.watchUserInfo({
         next: data => {
             this.userInfo = data.result
-            if (data.result && data.result.role === 'admin') {
+            if (data.result && data.result.role === 'admin' && !this.isRequested) {
                 this.getLog();
                 this.getCounts();
+                this.isRequested = true;
                 this.getDayVisitCount();
             }
         },
-        error: null,
-        complete: null
+        error: () => null,
+        complete: () => null
     })
 }

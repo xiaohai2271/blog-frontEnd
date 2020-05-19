@@ -91,24 +91,24 @@
 <nz-drawer [nzClosable]="false" [nzVisible]="infoDrawerVisible" nzPlacement="right"
            [nzTitle]="sayHelloTemp" (nzOnClose)="infoDrawerVisible = false">
     <p>您最近一次登录是在:</p>
-    <p>{{user.recentlyLandedDate}}</p>
+    <p>{{user&&user.recentlyLandedDate}}</p>
     <nz-divider></nz-divider>
     <nz-descriptions [nzColumn]="1">
         <nz-descriptions-item nzTitle="邮箱">
             <div>
                 <i nz-icon nzType="mail" class="icon" nzTheme="twotone"></i>
-                <span>{{user.email}}</span>
+                <span>{{user&&user.email}}</span>
                 <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
             </div>
         </nz-descriptions-item>
         <nz-descriptions-item nzTitle="昵称">
             <div>
                 <i nz-icon nzType="crown" class="icon" nzTheme="twotone"></i>
-                <span>{{user.displayName}}</span>
+                <span>{{user&&user.displayName}}</span>
                 <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
             </div>
         </nz-descriptions-item>
-        <nz-descriptions-item nzTitle="描述" *ngIf="user.desc">
+        <nz-descriptions-item nzTitle="描述" *ngIf="user&&user.desc">
             <i nz-icon nzType="info-circle" class="icon" nzTheme="twotone"></i>
             <span nz-tooltip [nzTooltipTitle]="user.desc" nzTooltipPlacement="left" nz-typography [nzEllipsis]="true" [nzContent]="user.desc" style="max-width: 100px">{{user.desc}}</span>
             <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>

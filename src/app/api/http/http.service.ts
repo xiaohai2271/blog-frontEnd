@@ -59,8 +59,8 @@ export class HttpService {
             if (tokenFromReps) {
                 this.localStorageService.setToken(tokenFromReps);
             }
-            if (o.body.code) {
-                observer.error(o);
+            if (o.body.code !== 0) {
+                observer.error(o.body);
                 if (this.errorDispatch) {
                     this.errorDispatch.errHandler(o.body.code, o.body.msg, request);
                 }
