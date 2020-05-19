@@ -14,7 +14,7 @@ export class AdminHeaderComponent implements OnInit {
 
     user: User
     @Output() infoClicked = new EventEmitter<void>()
-
+    noAvatarUrl = 'https://cdn.celess.cn/'
     logout = () => this.userService.logout();
     infoClickedEvent = () => this.infoClicked.emit();
 

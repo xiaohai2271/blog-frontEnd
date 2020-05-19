@@ -11,7 +11,9 @@
 
 
     <div id="loged" *ngIf="user" (click)="infoClickedEvent()">
-        <nz-avatar [nzSrc]="user.avatarImgUrl"></nz-avatar>
+        <nz-avatar [nzSrc]="user.avatarImgUrl" *ngIf="user.avatarImgUrl!==noAvatarUrl"></nz-avatar>
+        <nz-avatar [nzText]="user.displayName" style="background: #f56a00"
+                   *ngIf="user.avatarImgUrl===noAvatarUrl"></nz-avatar>
         <span>{{user.displayName}}</span>
     </div>
 

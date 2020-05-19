@@ -582,4 +582,16 @@ export class ApiService extends HttpService {
         });
     }
 
+    setPwd(pwdStr: string, newPwdStr: string, confirmPwdStr: string,) {
+        return super.Service<string>({
+            path: '/user/setPwd',
+            method: 'POST',
+            queryParam: {
+                pwd: pwdStr,
+                newPwd: newPwdStr,
+                confirmPwd: confirmPwdStr,
+            }
+        });
+    }
+
 }

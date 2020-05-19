@@ -67,8 +67,8 @@ export class AuthGuard implements CanActivate {
             case '/admin/visitor':
                 if (this.userInfo && this.userInfo.role !== 'admin') {
                     observer.next(false);
-                    observer.complete();
                     if (this.visitCount === 1) this.router.navigateByUrl('/admin')
+                    observer.complete();
                     return;
                 }
         }

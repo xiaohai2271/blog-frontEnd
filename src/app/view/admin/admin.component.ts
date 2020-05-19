@@ -1,10 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {NzMessageService} from 'ng-zorro-antd';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {NzMessageService, UploadFile} from 'ng-zorro-antd';
 import {Router} from '@angular/router';
 import {GlobalUserService} from '../../services/global-user.service';
 import {User} from '../../class/User';
 import {ApiService} from '../../api/api.service';
+import {environment} from '../../../environments/environment';
+import {Observable} from 'rxjs';
+import {LocalStorageService} from '../../services/local-storage.service';
 
 @Component({
     selector: 'app-admin',
@@ -14,17 +17,33 @@ import {ApiService} from '../../api/api.service';
 export class AdminComponent implements OnInit {
 
     constructor(public gUserService: GlobalUserService, private apiService: ApiService, private messageService: NzMessageService,
-                private router: Router) {
+                private router: Router, private localStorageService: LocalStorageService) {
         this.gUserService.watchUserInfo({
                 complete: () => null,
                 error: (err) => null,
                 next: data => {
                     console.log('更新user')
                     this.user = data.result
+                    this.user.avatarImgUrl += '?t=' + Date.now();
                     if (data.result) this.initHelloWords()
                 }
             }
-        )
+        );
+        this.editInfoFormGroup = new FormGroup({
+            desc: new FormControl(),
+            displayName: new FormControl(),
+            email: new FormControl({value: null, disabled: true})
+        });
+        this.resetPwdFormGroup = new FormGroup({
+            originPwd: new FormControl(null, [Validators.required]),
+            newPwd: new FormControl(null, [
+                Validators.required, Validators.minLength(6), Validators.maxLength(16), Validators.pattern(/^[\w_-]{6,16}$/)
+            ]),
+            newPwdConfirm: new FormControl(null, [
+                Validators.required, Validators.minLength(6), Validators.maxLength(16), Validators.pattern(/^[\w_-]{6,16}$/),
+                this.checkSamePwd()
+            ]),
+        })
     }
 
     user: User;
@@ -32,8 +51,11 @@ export class AdminComponent implements OnInit {
     infoDrawerVisible: boolean = false;
     sayHelloContent: string;
     editInfoModalVisible: boolean = false;
+    resetPwdModalVisible: boolean = false;
     editInfoFormGroup: FormGroup;
-
+    resetPwdFormGroup: FormGroup;
+    noAvatarUrl = 'https://cdn.celess.cn/'
+    host: string
     showInfoDrawer = () => this.infoDrawerVisible = !this.infoDrawerVisible;
 
     logout() {
@@ -42,12 +64,19 @@ export class AdminComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.editInfoFormGroup = new FormGroup({
-            desc: new FormControl(),
-            displayName: new FormControl(),
-            email: new FormControl({value: null, disabled: true})
-        });
+        this.host = environment.host;
     }
+
+    checkSamePwd = () => {
+        return (control: AbstractControl): { [key: string]: any } | null => {
+            console.log('a')
+            const newPwd = this.resetPwdFormGroup && this.resetPwdFormGroup.value.newPwd;
+            return control.value !== newPwd ? {pwdNotSame: true} : null;
+        };
+    }
+    uploadHeader = (file: UploadFile): object | Observable<{}> => {
+        return {Authorization: this.localStorageService.getToken()}
+    };
 
     private initHelloWords() {
         const hours = new Date().getHours();
@@ -89,4 +118,30 @@ export class AdminComponent implements OnInit {
         this.editInfoModalVisible = false;
     }
 
+    resetPwdConfirm() {
+        // this.apiService
+        const data = this.resetPwdFormGroup.value;
+        this.apiService.setPwd(data.originPwd, data.newPwd, data.newPwdConfirm).subscribe({
+            next: respData => {
+                this.messageService.success('修改密码成功，请牢记你修改的密码');
+                this.gUserService.refreshUserInfo();
+            },
+            error: err => {
+                this.messageService.error('修改密码失败，' + err.msg);
+            }
+        })
+        this.resetPwdModalVisible = false;
+    }
+
+    showResetPwdModal() {
+        this.resetPwdModalVisible = true;
+        this.infoDrawerVisible = false
+    }
+
+    avatarUpload(info: any) {
+        if (info.type === 'success' && info.file.response.code === 0) {
+            const time = new Date().valueOf();
+            this.gUserService.refreshUserInfo();
+        }
+    }
 }

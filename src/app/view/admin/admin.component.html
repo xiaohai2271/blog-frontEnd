@@ -89,29 +89,46 @@
     </nz-layout>
 </nz-layout>
 <nz-drawer [nzClosable]="false" [nzVisible]="infoDrawerVisible" nzPlacement="right"
-           [nzTitle]="sayHelloTemp" (nzOnClose)="infoDrawerVisible = false">
+           [nzTitle]="sayHelloTemp" (nzOnClose)="infoDrawerVisible = false" nzWidth="300px">
     <p>您最近一次登录是在:</p>
-    <p>{{user&&user.recentlyLandedDate}}</p>
+    <p>{{user && user.recentlyLandedDate}}</p>
     <nz-divider></nz-divider>
+    <div style="text-align: center;margin-bottom: 10px;">
+        <nz-avatar [nzSize]="64" [nzSrc]="user.avatarImgUrl"
+                   *ngIf="user.avatarImgUrl!==noAvatarUrl"></nz-avatar>
+        <nz-avatar [nzSize]="64" [nzText]="user.displayName" style="background: #f56a00"
+                   *ngIf="user.avatarImgUrl===noAvatarUrl"></nz-avatar>
+
+        <nz-upload style="display: block" [nzAction]="host+'/user/imgUpload'" nzWithCredentials="true" nzLimit="1"
+                   (nzChange)="avatarUpload($event)" [nzHeaders]="uploadHeader">
+            <button nz-button nzBlock nzType="link"><i nz-icon nzType="upload"></i>修改头像</button>
+        </nz-upload>
+    </div>
     <nz-descriptions [nzColumn]="1">
         <nz-descriptions-item nzTitle="邮箱">
             <div>
                 <i nz-icon nzType="mail" class="icon" nzTheme="twotone"></i>
-                <span>{{user&&user.email}}</span>
+                <span>{{user && user.email}}</span>
                 <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
             </div>
         </nz-descriptions-item>
         <nz-descriptions-item nzTitle="昵称">
             <div>
                 <i nz-icon nzType="crown" class="icon" nzTheme="twotone"></i>
-                <span>{{user&&user.displayName}}</span>
+                <span>{{user && user.displayName}}</span>
                 <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
             </div>
         </nz-descriptions-item>
         <nz-descriptions-item nzTitle="描述" *ngIf="user&&user.desc">
             <i nz-icon nzType="info-circle" class="icon" nzTheme="twotone"></i>
-            <span nz-tooltip [nzTooltipTitle]="user.desc" nzTooltipPlacement="left" nz-typography [nzEllipsis]="true" [nzContent]="user.desc" style="max-width: 100px">{{user.desc}}</span>
+            <span nz-tooltip [nzTooltipTitle]="user.desc" nzTooltipPlacement="left" nz-typography [nzEllipsis]="true"
+                  [nzContent]="user.desc" style="max-width: 100px">{{user.desc}}</span>
             <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="密码">
+            <i nz-icon nzType="fire" nzTheme="twotone"> </i>
+            <span> *********</span>
+            <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showResetPwdModal()"></i>
         </nz-descriptions-item>
     </nz-descriptions>
 
@@ -143,6 +160,43 @@
             <nz-form-control>
                 <input nz-input formControlName="desc" placeholder="请输入自我介绍">
             </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="resetPwdModalVisible" nzClosable="true" (nzOnCancel)="resetPwdModalVisible = false"
+          (nzOnOk)="resetPwdConfirm()" nzTitle="修改密码" [nzOkDisabled]="!resetPwdFormGroup.valid">
+    <form nz-form (submit)="resetPwdConfirm()" [formGroup]="resetPwdFormGroup">
+        <nz-form-item>
+            <nz-form-label nzRequired>原密码</nz-form-label>
+            <nz-form-control nzErrorTip="原密码不可为空">
+                <input type="password" name="xxx" nz-input formControlName="originPwd">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>新密码</nz-form-label>
+            <nz-form-control [nzErrorTip]="newPwdErrTip">
+                <input type="password" name="xxx" nz-input formControlName="newPwd">
+            </nz-form-control>
+            <ng-template #newPwdErrTip>
+                <div *ngIf="resetPwdFormGroup.controls.newPwd.hasError('required')">新密码不可为空</div>
+                <div *ngIf="resetPwdFormGroup.controls.newPwd.hasError('minlengtj')">新密码最短6位</div>
+                <div *ngIf="resetPwdFormGroup.controls.newPwd.hasError('maxlengtj')">新密码最长16位</div>
+                <div *ngIf="resetPwdFormGroup.controls.newPwd.hasError('pattern')">新密码范围[数字，大小写字母，下划线和减号]</div>
+            </ng-template>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>确认密码</nz-form-label>
+            <nz-form-control [nzErrorTip]="newPwdConfirmErrTip">
+                <input type="password" nz-input name="xxx" formControlName="newPwdConfirm">
+            </nz-form-control>
+            <ng-template #newPwdConfirmErrTip>
+                <div *ngIf="resetPwdFormGroup.controls.newPwdConfirm.hasError('required')">确认密码不可为空</div>
+                <div *ngIf="resetPwdFormGroup.controls.newPwdConfirm.hasError('minlengtj')">确认密码最短6位</div>
+                <div *ngIf="resetPwdFormGroup.controls.newPwdConfirm.hasError('maxlengtj')">确认密码最长16位</div>
+                <div *ngIf="resetPwdFormGroup.controls.newPwdConfirm.hasError('pattern')">确认密码范围[数字，大小写字母，下划线和减号]</div>
+                <div *ngIf="resetPwdFormGroup.controls.newPwdConfirm.hasError('pwdNotSame')">确认密码应和新密码相同</div>
+            </ng-template>
         </nz-form-item>
     </form>
 </nz-modal>

@@ -45,6 +45,7 @@ export class GlobalUserService {
 
     // 刷新用户信息
     refreshUserInfo(): void {
+        this.multicastArray = [...this.userObserverArray];
         this.getUserInfoFromServer();
     }
 

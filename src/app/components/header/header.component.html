@@ -18,9 +18,9 @@
     </div>
     <div *ngIf="userInfo" id="info">
         <!--        <img [src]="userInfo.avatarImgUrl" alt="avatar" id="avatar">-->
-        <nz-avatar [nzSrc]="userInfo.avatarImgUrl" *ngIf="userInfo.avatarImgUrl===noAvatarUrl"></nz-avatar>
+        <nz-avatar [nzSrc]="userInfo.avatarImgUrl" *ngIf="userInfo.avatarImgUrl!==noAvatarUrl"></nz-avatar>
         <nz-avatar [nzText]="userInfo.displayName" style="background: #f56a00"
-                   *ngIf="userInfo.avatarImgUrl!==noAvatarUrl"></nz-avatar>
+                   *ngIf="userInfo.avatarImgUrl===noAvatarUrl"></nz-avatar>
         <button nz-button nzType="link" class="info-name"
                 nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomRight" nzTrigger="click">
             {{userInfo.displayName}}<i nz-icon nzType="caret-down" nzTheme="outline"></i>
