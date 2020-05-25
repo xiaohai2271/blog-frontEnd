@@ -32,11 +32,16 @@
 
 > 普通用户后台
 
-![普通用户后台](./pic/admin-user.png)
+![普通用户后台](./pic/user.png)
 
 > 写作页面
 
 ![普通用户后台](./pic/write.png)
+
+> 登录页面
+
+![](./pic/login.png)
+> 登录页面的背景图采用bing的图片，每日一更哦。 
 
 
 
@@ -46,7 +51,7 @@
 
 ##### 构建
 
-> - index
+>
 >
 > > 1. 进入index目录
 > > 2. npm install
@@ -56,15 +61,6 @@
 > >    -  `/src/environments/environment-prod.ts`（线上发布环境）
 > > 4. ng build --prod
 >
-> - admin
->
-> > 1. cd admin
-> > 2. npm install
-> > 3. 修改环境数据中的host
-> >    - ` /src/environments/environment.ts` (本地开发环境) 
-> >    - `/src/environments/environment-prod.ts`（线上发布环境）
-> > 4. ng build --prod
-> > 5. 修改index.html将` <base href="/">`改为 ` <base href="/admin/">`
 >
 >可使用项目根目录的`build.sh` 脚本进行构建，但是 两个项目中的环境里面的变量仍需自己修改
 >
@@ -74,18 +70,11 @@
 
 - 将`index/dist/index`下的全部文件上传到网站根目录 
 
-- 将`admin/dist/admin`文件夹上传到根目录
-
 - 目录结构如下:
 
-	![目录结构](./pic/prodfiletree.jpg)
-	
 - 修改nginx的location配置 
 ```nginx
-   	location ~ /admin/* {
-	    try_files $uri $uri /admin/index.html;
- 	}
-    	location / {
-            try_files $uri $uri/ /index.html;
-  	}
+location / {
+    try_files $uri $uri/ /index.html;
+}
 ```
