@@ -29,7 +29,7 @@ export class UpdateComponent implements OnInit {
             this.lastUpdate = data.result;
         });
         this.apiService.webUpdate().subscribe(data => {
-            this.webUpdate = data.result.reverse();
+            this.webUpdate = data.result;
         });
     }
 

@@ -27,7 +27,9 @@ export class AdminCommentComponent implements OnInit {
                 } else {
                     this.getComment = this.getCommentForUser;
                 }
+                if (this.requested) return;
                 this.getComment()
+                this.requested = true
             },
             error: null,
             complete: null
@@ -40,23 +42,25 @@ export class AdminCommentComponent implements OnInit {
     pageList: PageList<Comment> = new PageList<Comment>();
     editInfo = {
         id: null,
-        content: new CommentReq(true),
+        content: new CommentReq(null),
         editFocus: false,
     }
     getComment: any;// 存放获取评论的方法
+    private requested: boolean = false;
 
 
     ngOnInit(): void {
     }
 
 
-    getCommentForAdmin = () => this.apiService.getCommentByTypeForAdmin(true, this.pageIndex, this.pageSize).subscribe({
+    // TODO:: pagePath
+    getCommentForAdmin = () => this.apiService.getCommentByTypeForAdmin('*', this.pageIndex, this.pageSize).subscribe({
         next: data => this.pageList = data.result,
         complete: () => this.loading = false,
         error: err => this.loading = false
     })
 
-    getCommentForUser = () => this.apiService.getCommentByTypeForUser(true, this.pageIndex, this.pageSize).subscribe({
+    getCommentForUser = () => this.apiService.getCommentByTypeForUser('*', this.pageIndex, this.pageSize).subscribe({
         next: data => this.pageList = data.result,
         complete: () => this.loading = false,
         error: err => this.loading = false
@@ -97,9 +101,9 @@ export class AdminCommentComponent implements OnInit {
         this.editInfo.id = data.id;
         this.editInfo.content.content = data.content;
         this.editInfo.content.id = data.id;
-        this.editInfo.content.articleID = data.articleID;
+        // this.editInfo.content.articleID = data.articleID;
         this.editInfo.content.pid = data.pid;
-        this.editInfo.content.responseId = data.responseId;
+        // this.editInfo.content.responseId = data.responseId;
         this.editInfo.editFocus = true;
     }
 }

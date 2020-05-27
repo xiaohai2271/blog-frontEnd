@@ -111,7 +111,7 @@ export class ApiService extends HttpService {
     }
 
     categories() {
-        return super.Service<Category[]>({
+        return super.Service<PageList<Category>>({
             path: '/categories',
             method: 'GET'
         });
@@ -183,10 +183,9 @@ export class ApiService extends HttpService {
         });
     }
 
-
-    getCommentByPid(pid: number, pageNumber: number = 1, pageSize: number = 10) {
-        return super.Service<Comment[]>({
-            path: `/comment/pid/${pid}`,
+    getCommentByTypeForAdmin(pagePath: string, pageNumber: number = 1, pageSize: number = 10) {
+        return super.Service<PageList<Comment>>({
+            path: `/admin/comment/pagePath/${pagePath}`,
             method: 'GET',
             queryParam: {
                 page: pageNumber,
@@ -195,20 +194,9 @@ export class ApiService extends HttpService {
         });
     }
 
-    getCommentByTypeForAdmin(isComment: boolean, pageNumber: number = 1, pageSize: number = 10) {
+    getCommentByTypeForUser(pagePath: string, pageNumber: number = 1, pageSize: number = 10) {
         return super.Service<PageList<Comment>>({
-            path: `/admin/comment/type/${isComment ? 1 : 0}`,
-            method: 'GET',
-            queryParam: {
-                page: pageNumber,
-                count: pageSize
-            }
-        });
-    }
-
-    getCommentByTypeForUser(isComment: boolean, pageNumber: number = 1, pageSize: number = 10) {
-        return super.Service<PageList<Comment>>({
-            path: `/user/comment/type/${isComment ? 1 : 0}`,
+            path: `/user/comment/pagePath/${pagePath}`,
             method: 'GET',
             queryParam: {
                 page: pageNumber,
@@ -234,21 +222,9 @@ export class ApiService extends HttpService {
         });
     }
 
-    comments(articleID: number, pageSize: number = 10, pageNumber: number = 1) {
+    comments(pagePath: string, pageSize: number = 10, pageNumber: number = 1) {
         return super.Service<PageList<Comment>>({
-            path: '/comments',
-            method: 'GET',
-            queryParam: {
-                articleId: articleID,
-                count: pageSize,
-                page: pageNumber
-            }
-        });
-    }
-
-    leaveMsg(pageSize: number = 10, pageNumber: number = 1) {
-        return super.Service<PageList<Comment>>({
-            path: '/leaveMsg',
+            path: `/comment/pagePath/${pagePath}`,
             method: 'GET',
             queryParam: {
                 count: pageSize,
@@ -272,7 +248,6 @@ export class ApiService extends HttpService {
             articleCount: number,
             visitorCount: number,
             categoryCount: number,
-            leaveMsgCount: number,
             tagCount: number,
             commentCount: number
         }>({

@@ -22,7 +22,7 @@ export class ArticleDetailCardComponent implements OnInit {
         }
         if (this.showMediaArea == null) {
             // 如果作者名不为空 则显示
-            this.showMediaArea = this.data.authorName != null;
+            this.showMediaArea = this.data.author.displayName != null;
         }
         if (this.showTagArea == null) {
             this.showTagArea = this.data.tags != null;

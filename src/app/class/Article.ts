@@ -1,3 +1,6 @@
+import {Tag} from './Tag';
+import {User} from './User';
+
 export class Article {
     id: number;
     title: string;
@@ -5,16 +8,16 @@ export class Article {
     mdContent?: string;
     original?: boolean;
     url?: string;
-    publishDateFormat?: string;
+    publishDateFormat: string;
     updateDateFormat?: string;
     category?: string;
-    tags?: string[];
-    authorName?: string;
-    preArticleId?: number;
-    nextArticleId?: number;
-    preArticleTitle?: string;
-    nextArticleTitle?: string;
-    readingNumber?: number;
+    tags?: Tag[];
+    author: User;
+    preArticle?: Article;
+    nextArticle?: Article;
+    readingNumber: number;
+    likeCount: number;
+    dislikeCount: number;
     open?: string;
 }
 
@@ -24,7 +27,7 @@ export class ArticleReq {
     id?: number;
     mdContent: string;
     open: boolean;
-    tags: string;
+    tags: string[];
     title: string;
     type: boolean;
     url?: string;

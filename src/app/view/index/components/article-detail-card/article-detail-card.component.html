@@ -10,7 +10,7 @@
         </span>
         <span *ngIf="showMediaArea" class="badge">
             <i nz-icon nzType="user" nzTheme="outline"></i>
-            <span>{{data.authorName}}</span>
+            <span>{{data.author.displayName}}</span>
         </span>
         <span *ngIf="showMediaArea" class="badge">
             <i nz-icon nzType="file" nzTheme="outline"></i>
@@ -28,7 +28,7 @@
         <div>
         <span *ngFor="let tag of data.tags">
             <i nz-icon nzType="tag" nzTheme="outline"></i>
-            <a [routerLink]="'/tags/'+tag">{{tag}}</a>
+            <a [routerLink]="'/tags/'+tag.name">{{tag.name}}</a>
         </span>
         </div>
     </ng-template>

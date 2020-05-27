@@ -5,7 +5,7 @@ import {AdminUpdateComponent} from './admin-update.component';
 import {
     NzButtonModule,
     NzCardModule,
-    NzDividerModule, NzInputModule, NzModalModule,
+    NzDividerModule, NzIconModule, NzInputModule, NzModalModule,
     NzPopconfirmModule,
     NzTableModule,
     NzToolTipModule,
@@ -30,7 +30,8 @@ import {FormsModule} from '@angular/forms';
         NzModalModule,
         FormsModule,
         NzButtonModule,
-        NzInputModule
+        NzInputModule,
+        NzIconModule
     ]
 })
 export class AdminUpdateModule {

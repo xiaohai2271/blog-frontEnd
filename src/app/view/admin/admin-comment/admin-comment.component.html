@@ -1,20 +1,25 @@
 <div class="inner-content">
-    <nz-card nzTitle="评论管理" nzSize="small">
-        <nz-table #table [nzData]="pageList.list" [nzTotal]="pageList.total" [(nzPageIndex)]="pageIndex"
-                  [nzPageSize]="pageSize" [nzLoading]="loading" [nzScroll]="{x:'800px'}"
-                  (nzPageIndexChange)="getComment()" nzFrontPagination="false">
+    <nz-card nzTitle="评论管理" nzSize="small" [nzExtra]="reload">
+        <nz-table #table [nzData]="pageList.list"
+                  [nzTotal]="pageList.total"
+                  [(nzPageIndex)]="pageIndex"
+                  [nzPageSize]="pageSize"
+                  [nzLoading]="loading"
+                  [nzScroll]="{x:'800px'}"
+                  (nzPageIndexChange)="getComment()"
+                  nzFrontPagination="false"
+                  nzTableLayout="fixed">
             <thead>
-            <th>文章标题</th>
-            <th>评论内容</th>
-            <th>评论者</th>
-            <th>评论日期</th>
-            <th>操作</th>
+            <th nzAlign="center">评论页面</th>
+            <th nzAlign="center">评论内容</th>
+            <th nzAlign="center">评论日期</th>
+            <th nzAlign="center">操作</th>
             </thead>
             <tbody>
             <tr *ngFor="let data of table.data">
-                <td nz-typography nzEllipsis="true" [nzTooltipTitle]="data.articleTitle" nzTooltipPlacement="right"
-                    nz-tooltip>{{data.articleTitle}}</td>
-                <td nz-typography nzEllipsis="true" [nzTooltipTitle]="data.content" nzTooltipPlacement="right"
+                <td nzAlign="center"><a [href]="data.pagePath">{{data.pagePath}}</a></td>
+                <td nzAlign="center" nzEllipsis="true" [nzTooltipTitle]="data.content"
+                    nzTooltipPlacement="right"
                     nz-tooltip style="min-width: 100px;max-width: 400px">
                     <span *ngIf="!editInfo.editFocus||data.id!==editInfo.id">{{data.content}}</span>
                     <nz-input-group *ngIf="editInfo.editFocus&&data.id===editInfo.id"
@@ -26,9 +31,8 @@
                         <button nz-button (click)="editInfo.editFocus=false" nzSize="small">取消</button>
                     </nz-input-group>
                 </td>
-                <td>{{data.authorName}}</td>
-                <td>{{data.date}}</td>
-                <td>
+                <td nzAlign="center">{{data.date}}</td>
+                <td nzAlign="center">
                     <a (click)="editFocus(data)" class="edit-opr">编辑</a>
                     <nz-divider nzType="vertical"></nz-divider>
                     <a nz-popconfirm nzPopconfirmTitle="确定要删除这篇文章吗?" nzOkText="删除" nzCancelText="点错了"
@@ -40,3 +44,6 @@
     </nz-card>
 </div>
 <ng-template #tagIcon><i nz-icon nzType="message" nzTheme="outline"></i></ng-template>
+<ng-template #reload>
+    <a (click)="getComment()" title="刷新"><i nz-icon nzType="reload" nzTheme="outline"></i></a>
+</ng-template>

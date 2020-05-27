@@ -38,8 +38,8 @@ export class CategoryComponent implements OnInit {
 
     getCategories(needGetArticle: boolean) {
         this.apiService.categories().subscribe(data => {
-            this.categoryList = data.result;
-            this.category = data.result[0];
+            this.categoryList = data.result.list;
+            this.category = this.categoryList[0];
             if (needGetArticle) {
                 this.getArticles(this.category.name);
                 this.name = this.category.name;

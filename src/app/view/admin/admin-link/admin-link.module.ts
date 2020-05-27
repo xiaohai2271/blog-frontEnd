@@ -6,7 +6,7 @@ import {
     NzButtonModule,
     NzCardModule,
     NzDividerModule,
-    NzFormModule, NzInputModule,
+    NzFormModule, NzIconModule, NzInputModule,
     NzModalModule,
     NzPopconfirmModule, NzSelectModule,
     NzTableModule
@@ -30,7 +30,8 @@ import {ReactiveFormsModule} from '@angular/forms';
         ReactiveFormsModule,
         NzInputModule,
         NzSelectModule,
-        NzButtonModule
+        NzButtonModule,
+        NzIconModule
     ]
 })
 export class AdminLinkModule {

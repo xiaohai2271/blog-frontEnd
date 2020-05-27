@@ -23,10 +23,9 @@ export class AdminDashboardComponent implements OnInit {
         articleCount: number,
         visitorCount: number,
         categoryCount: number,
-        leaveMsgCount: number,
         tagCount: number,
         commentCount: number
-    } = {articleCount: 0, visitorCount: 0, categoryCount: 0, tagCount: 0, commentCount: 0, leaveMsgCount: 0}
+    } = {articleCount: 0, visitorCount: 0, categoryCount: 0, tagCount: 0, commentCount: 0}
 
     dayVisitCount: number = 0;
     userInfo: User = new User();

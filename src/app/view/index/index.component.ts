@@ -7,7 +7,7 @@ import {PageList} from '../../class/HttpReqAndResp';
 import {ErrDispatch} from '../../class/ErrDispatch';
 import {RequestObj} from '../../class/HttpReqAndResp';
 import {Router} from '@angular/router';
-import {Tag} from '../../class/Tag';
+import {Category, Tag} from '../../class/Tag';
 import {Title} from '@angular/platform-browser';
 
 @Component({
@@ -36,12 +36,11 @@ export class IndexComponent implements OnInit, ErrDispatch {
     desc: string;
     articles: PageList<Article>;
     tagNameAndNumber: { name: string, size: number }[];
-    categoryList: Tag[];
+    categoryList: Category[];
     counts: {
         articleCount: number,
         visitorCount: number,
         categoryCount: number,
-        leaveMsgCount: number,
         tagCount: number,
         commentCount: number
     };
@@ -75,7 +74,7 @@ export class IndexComponent implements OnInit, ErrDispatch {
             }
         });
         this.apiService.categories().subscribe({
-            next: data => this.categoryList = data.result,
+            next: data => this.categoryList = data.result.list,
             error: err => {
             }
         });

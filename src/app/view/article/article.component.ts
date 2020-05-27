@@ -51,7 +51,7 @@ export class ArticleComponent implements OnInit {
                 if (data.result) this.avatarImgUrl = data.result.avatarImgUrl;
             }
         });
-        this.comment = new CommentReq(true);
+        this.comment = new CommentReq(`article/${this.articleId}`);
     }
 
     parseMd(md: string) {
@@ -73,7 +73,7 @@ export class ArticleComponent implements OnInit {
         this.router.navigateByUrl('/article/' + id);
         this.apiService.getArticle(id).subscribe({
             next: data => {
-                this.apiService.comments(id).subscribe(commData => {
+                this.apiService.comments(`article+${id}`).subscribe(commData => {
                     this.commentPage = commData.result;
                 });
                 document.getElementById('article-content').innerHTML = '';
@@ -89,7 +89,6 @@ export class ArticleComponent implements OnInit {
     // true ==> 一级评论  false ==>二级评论
     submitComment(bool: boolean) {
         this.submitting = true;
-        this.comment.articleID = this.articleId;
         if (!bool) {
             this.comment.content = this.content;
             this.comment.pid = this.pid;
