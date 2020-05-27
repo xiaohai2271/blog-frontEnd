@@ -81,7 +81,7 @@ export class WriteComponent implements OnInit {
         });
         this.apiService.categories().subscribe({
             next: data => {
-                this.categoryList = data.result;
+                this.categoryList = data.result.list;
             },
             error: err => {
                 this.message.error('获取分类信息失败');
@@ -109,17 +109,19 @@ export class WriteComponent implements OnInit {
     /**
      * 文章数据提交
      */
-    publishArticle(e: { id: number, type: boolean, tags: string, category: string, url?: string }) {
+    publishArticle(e: { id: number, type: boolean, tags: string[], category: string, url?: string }) {
         this.article.type = e.type;
         this.article.tags = e.tags;
         this.article.category = e.category;
         this.article.url = e.url;
         this.article.id = e.id;
 
-        if (!this.article.id && this.title === this.article.title) {
-            this.message.error('文章标题未经更改，请修改后再发布');
-            return;
-        }
+        this.modalVisible = false;
+
+        // if (!this.article.id && this.title === this.article.title) {
+        //     this.message.error('文章标题未经更改，请修改后再发布');
+        //     return;
+        // }
 
         // 文章 暂存
         localStorage.setItem('tmpArticle', JSON.stringify(this.article));
@@ -182,7 +184,9 @@ export class WriteComponent implements OnInit {
             next: data => {
                 this.article.category = data.result.category;
                 this.article.mdContent = data.result.mdContent;
-                this.article.tags = String(data.result.tags);
+                const tags = []
+                data.result.tags.forEach(t => tags.push(t.name))
+                this.article.tags = tags;
                 this.article.type = data.result.original;
                 this.article.url = data.result.url;
                 this.article.title = data.result.title;

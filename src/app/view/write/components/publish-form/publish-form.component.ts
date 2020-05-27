@@ -1,6 +1,6 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Tag} from '../../../../class/Tag';
+import {Category, Tag} from '../../../../class/Tag';
 
 @Component({
     selector: 'c-publish-form',
@@ -15,9 +15,9 @@ export class PublishFormComponent implements OnInit {
     @ViewChild('inputElement', {static: false}) tagInputElement: ElementRef;
 
     @Input() tagNacList: { name: string, size: number }[];
-    @Input() categoryList: Tag[];
-    @Input() primaryData: { id: number, type: boolean, tags: string, category: string, url?: string };
-    @Output() submitEvent = new EventEmitter<{ id: number, type: boolean, tags: string, category: string, url?: string }>();
+    @Input() categoryList: Category[];
+    @Input() primaryData: { id: number, type: boolean, tags: string[], category: string, url?: string };
+    @Output() submitEvent = new EventEmitter<{ id: number, type: boolean, tags: string[], category: string, url?: string }>();
 
     formGroup: FormGroup;
     tagTmpList: string[] = [];
@@ -36,8 +36,8 @@ export class PublishFormComponent implements OnInit {
         if (this.primaryData) {
             this.formGroup.get('type').setValue(this.primaryData.type);
             const tags = this.primaryData.tags;
-            this.formGroup.get('tagList').setValue(tags ? this.primaryData.tags.split(',') : tags);
-            this.tagTmpList = tags ? this.primaryData.tags.split(',') : [...tags];
+            this.formGroup.get('tagList').setValue(tags);
+            this.tagTmpList = tags;
             this.formGroup.get('category').setValue(this.primaryData.category);
             this.formGroup.get('url').setValue(this.primaryData.url);
         }
@@ -47,7 +47,7 @@ export class PublishFormComponent implements OnInit {
         const formData = {
             id: this.formGroup.value.isUpdate ? this.primaryData.id : null,
             type: this.formGroup.value.type,
-            tags: this.formGroup.value.tagList.toString(),
+            tags: this.formGroup.value.tagList,
             category: this.formGroup.value.category,
             url: this.formGroup.value.type ? null : this.formGroup.value.url
         };

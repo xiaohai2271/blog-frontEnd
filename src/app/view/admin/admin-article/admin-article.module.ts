@@ -4,7 +4,7 @@ import {RouterModule} from '@angular/router';
 import {AdminArticleComponent} from './admin-article.component';
 import {
     NzCardModule,
-    NzDividerModule,
+    NzDividerModule, NzIconModule,
     NzPopconfirmModule,
     NzTableModule, NzTagModule,
     NzToolTipModule,
@@ -25,6 +25,7 @@ import {
         NzDividerModule,
         NzPopconfirmModule,
         NzTagModule,
+        NzIconModule,
     ]
 })
 export class AdminArticleModule {

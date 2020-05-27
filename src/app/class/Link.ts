@@ -3,4 +3,6 @@ export class Link {
     name: string;
     url: string;
     open?: boolean;
+    iconPath: string;
+    desc: string;
 }

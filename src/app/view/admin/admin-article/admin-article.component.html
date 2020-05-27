@@ -1,14 +1,22 @@
 <div class="inner-content">
-    <nz-card nzTitle="文章管理" nzSize="small">
-        <nz-table #table [nzData]="pageList.list" [nzTotal]="pageList.total" [(nzPageIndex)]="page"
-                  [nzPageSize]="pageSize" [nzLoading]="loading" [nzScroll]="{x:'1100px'}"
-                  (nzPageIndexChange)="getArticle()" nzFrontPagination="false">
+    <nz-card nzTitle="文章管理" nzSize="small" [nzExtra]="reload">
+        <nz-table #table [nzData]="pageList.list"
+                  [nzTotal]="pageList.total"
+                  [(nzPageIndex)]="page"
+                  [nzPageSize]="pageSize"
+                  [nzLoading]="loading"
+                  [nzScroll]="{x:'1100px'}"
+                  (nzPageIndexChange)="getArticle()"
+                  nzFrontPagination="false"
+                  nzTableLayout="fixed">
             <thead>
             <th>标题</th>
             <th>发布日期</th>
             <th>更新日期</th>
             <th>文章类型</th>
             <th>阅读量</th>
+            <th>👍赞</th>
+            <th>👎踩</th>
             <th>是否可见</th>
             <th>操作</th>
             </thead>
@@ -25,6 +33,12 @@
                 <td>
                     <nz-tag [nzColor]="'purple'">{{data.readingNumber}}</nz-tag>
                 </td>
+                <td>
+                    <nz-tag [nzColor]="'blue'">{{data.likeCount}}</nz-tag>
+                </td>
+                <td>
+                    <nz-tag [nzColor]="'magenta'">{{data.dislikeCount}}</nz-tag>
+                </td>
                 <td><input type="checkbox" [checked]="data.open" disabled></td>
                 <td>
                     <a routerLink="/write" [queryParams]="{id:data.id}" class="edit-opr">编辑</a>
@@ -36,6 +50,10 @@
                 </td>
             </tr>
             </tbody>
+
+            <ng-template #reload>
+                <a (click)="getArticle()" title="刷新"><i nz-icon nzType="reload" nzTheme="outline"></i></a>
+            </ng-template>
         </nz-table>
     </nz-card>
 </div>

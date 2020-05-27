@@ -6,7 +6,7 @@
 
         <!-- 文章版权 -->
         <div id="copyright">
-            <p>本文作者：{{article.authorName}} </p>
+            <p>本文作者：{{article.author.displayName}} </p>
             <p>{{article.original ? "本文" : "原文"}}链接：{{article.original ? copyRightUrl : article.url}}</p>
             <p>版权声明：转载请注明出处</p>
         </div>
@@ -16,17 +16,19 @@
             <!-- TODO -->
             <span *ngFor="let item of (article.tags||'')" class="tag">
                         <i nz-icon nzType="tag" nzTheme="fill"></i>
-                        <a class="tag" [routerLink]="['/tags']" [queryParams]="{name:item}">{{item}}</a>
-                     </span>
+                        <a class="tag" [routerLink]="['/tags/'+item.name]">{{item.name}}</a>
+            </span>
         </div>
 
         <div class="article-bAnda">
-            <a (click)="toArticle(article.nextArticleId)" [class.disabled]="article.nextArticleId==-1">
-                <i nz-icon nzType="left" nzTheme="outline"></i> {{article.nextArticleTitle}}
+            <a (click)="toArticle(article.nextArticle.id)" [class.disabled]="!article.nextArticle">
+                <i nz-icon nzType="left" nzTheme="outline"></i>
+                {{(article.nextArticle && article.nextArticle.title) || '无'}}
             </a>
-            <a (click)="toArticle(article.preArticleId)" [class.disabled]="article.preArticleId==-1"
+            <a (click)="toArticle(article.preArticle.id)" [class.disabled]="!article.preArticle"
                style="float: right" id="pre">
-                {{article.preArticleTitle}} <i nz-icon nzType="right" nzTheme="outline"></i>
+                {{(article.preArticle && article.preArticle.title) || '无'}}
+                <i nz-icon nzType="right" nzTheme="outline"></i>
             </a>
         </div>
 
@@ -58,19 +60,30 @@
 
         <nz-list [nzLoading]="!commentPage">
             <nz-list-item *ngFor="let comment of commentPage.list">
-                <nz-comment [nzAuthor]="comment.authorName" [nzDatetime]="comment.date" style="width: 100%">
-                    <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="comment.authorAvatarImgUrl"></nz-avatar>
+                <nz-comment [nzAuthor]="comment.fromUser.displayName" [nzDatetime]="comment.date" style="width: 100%">
+                    <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="comment.fromUser.avatarImgUrl"
+                               *ngIf="comment.fromUser.avatarImgUrl">
+                    </nz-avatar>
+                    <nz-avatar nz-comment-avatar nzIcon="user" [nzText]="comment.fromUser.displayName"
+                               *ngIf="!comment.fromUser.avatarImgUrl">
+                    </nz-avatar>
                     <nz-comment-content>
                         <p style="font-size: larger">{{ comment.content }}</p>
                     </nz-comment-content>
                     <nz-comment-action>
                         <i nz-icon nzType="message" nzTheme="outline"></i>
-                        <button nz-button nzType="link" (click)="resp(comment.id,comment.authorName)">回复</button>
+                        <button nz-button nzType="link" (click)="resp(comment.id,comment.fromUser.displayName)">回复
+                        </button>
                     </nz-comment-action>
 
                     <nz-list-item *ngFor="let com of comment.respComment">
-                        <nz-comment [nzAuthor]="com.authorName" [nzDatetime]="com.date">
-                            <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="com.authorAvatarImgUrl"></nz-avatar>
+                        <nz-comment [nzAuthor]="com.fromUser.displayName" [nzDatetime]="com.date">
+                            <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="com.fromUser.avatarImgUrl"
+                                       *ngIf="com.fromUser.avatarImgUrl">
+                            </nz-avatar>
+                            <nz-avatar nz-comment-avatar nzIcon="user" [nzText]="com.fromUser.displayName"
+                                       *ngIf="!com.fromUser.avatarImgUrl">
+                            </nz-avatar>
                             <nz-comment-content>
                                 <p style="font-size: larger">{{ com.content }}</p>
                             </nz-comment-content>

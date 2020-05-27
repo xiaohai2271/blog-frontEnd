@@ -1,33 +1,26 @@
+import {User} from './User';
+
 export class Comment {
     id?: number;
-    authorName?: string;
-    authorAvatarImgUrl?: string;
+    fromUser: User;
+    toUser?: User;
     content: string;
-    articleID: number;
-    articleTitle: string;
+    pagePath: string;
     date?: string;
-    responseId: string;
     pid: number;
-    comment: boolean;
     respComment: Comment[];
+    status: number;
 }
 
 
 export class CommentReq {
     id?: number;
-    comment: boolean;
     content: string;
-    pid: number;
-    articleID: number;
-    responseId: string;
+    pid: number = -1;
+    toUserId: number;
+    pagePath: string;
 
-    constructor(comment: boolean) {
-        this.comment = comment;
-        this.responseId = '';
-        if (!comment) {
-            this.articleID = -1;
-        }
-        this.pid = -1;
-        this.id = null;
+    constructor(pagePath: string) {
+        this.pagePath = pagePath;
     }
 }
