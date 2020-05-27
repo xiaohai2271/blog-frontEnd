@@ -1,5 +1,5 @@
 <div class="inner-content">
-    <nz-card nzTitle="访客信息管理" nzSize="small">
+    <nz-card nzTitle="访客信息管理" nzSize="small" [nzExtra]="reload">
         <nz-table #table [nzData]="pageList.list" [nzTotal]="pageList.total" [(nzPageIndex)]="pageIndex"
                   [nzPageSize]="pageSize" [nzLoading]="loading" [nzScroll]="{x:'800px'}"
                   (nzPageIndexChange)="getVisitors()" nzFrontPagination="false">
@@ -22,3 +22,6 @@
         </nz-table>
     </nz-card>
 </div>
+<ng-template #reload>
+    <a (click)="getVisitors()" title="刷新"><i nz-icon nzType="reload" nzTheme="outline"></i></a>
+</ng-template>

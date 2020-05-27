@@ -1,5 +1,5 @@
 <div class="inner-content">
-    <nz-card nzTitle="友链管理" nzSize="small">
+    <nz-card nzTitle="友链管理" nzSize="small" [nzExtra]="reload">
         <button nz-button (click)="addLink()" style="margin-bottom: 15px">新增</button>
         <nz-table #table [nzData]="pageList.list" [nzTotal]="pageList.total" [(nzPageIndex)]="pageIndex"
                   [nzPageSize]="pageSize" [nzLoading]="loading"  [nzScroll]="{x:'1200px'}"
@@ -28,6 +28,10 @@
         </nz-table>
     </nz-card>
 </div>
+
+<ng-template #reload>
+    <a (click)="getLinks()" title="刷新"><i nz-icon nzType="reload" nzTheme="outline"></i></a>
+</ng-template>
 
 <nz-modal [(nzVisible)]="modalVisible" [nzTitle]="modalTitle" (nzOnOk)="modalConfirm()"
           (nzOnCancel)="modalVisible = false" [nzClosable]="true" [nzOkDisabled]="!formGroup.valid">

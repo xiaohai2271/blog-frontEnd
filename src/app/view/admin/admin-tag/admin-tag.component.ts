@@ -29,15 +29,17 @@ export class AdminTagComponent implements OnInit {
     pageIndex: number = 1;
     pageSize: number = 10;
 
+    getData: any;
 
     ngOnInit(): void {
         this.title.setTitle('小海博客 | 标签分类管理')
         this.getCategory();
         this.getTag();
+        this.getData = this.getTag;
     }
 
     getCategory = () => this.apiService.categories().subscribe({
-        next: data => this.categoryList = data.result,
+        next: data => this.categoryList = data.result.list,
         complete: () => this.loading = false,
         error: err => this.loading = false
     })
@@ -137,5 +139,13 @@ export class AdminTagComponent implements OnInit {
         this.editInfo.editFocus = false
         this.editInfo.isAdd = false
         this.editInfo.name = null
+    }
+
+    tabChanged(mode: 'tag' | 'category') {
+        this.editInfo.editFocus = false
+        if (mode === 'tag')
+            this.getData = this.getTag;
+        else
+            this.getData = this.getCategory;
     }
 }

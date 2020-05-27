@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {AdminVisitorComponent} from './admin-visitor.component';
-import {NzButtonModule, NzCardModule, NzDividerModule, NzTableModule} from 'ng-zorro-antd';
+import {NzButtonModule, NzCardModule, NzDividerModule, NzIconModule, NzTableModule} from 'ng-zorro-antd';
 
 
 @NgModule({
@@ -15,7 +15,8 @@ import {NzButtonModule, NzCardModule, NzDividerModule, NzTableModule} from 'ng-z
         NzCardModule,
         NzTableModule,
         NzButtonModule,
-        NzDividerModule
+        NzDividerModule,
+        NzIconModule
     ]
 })
 export class AdminVisitorModule {

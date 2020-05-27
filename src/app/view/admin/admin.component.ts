@@ -24,7 +24,6 @@ export class AdminComponent implements OnInit {
                 next: data => {
                     console.log('更新user')
                     this.user = data.result
-                    this.user.avatarImgUrl += '?t=' + Date.now();
                     if (data.result) this.initHelloWords()
                 }
             }

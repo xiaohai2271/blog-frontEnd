@@ -1,7 +1,7 @@
 <div class="inner-content">
     <nz-card nzTitle="" nzSize="small">
-        <nz-tabset>
-            <nz-tab nzTitle="分类管理" (nzClick)="editInfo.editFocus=false">
+        <nz-tabset [nzTabBarExtraContent]="reload">
+            <nz-tab nzTitle="分类管理" (nzClick)="tabChanged('tag')">
                 <div style="margin-bottom: 15px;">
                     <nz-input-group *ngIf="editInfo.editFocus&&editInfo.isAdd" [nzPrefix]="tagIcon"
                                     style="width: 200px">
@@ -49,7 +49,7 @@
                     </tbody>
                 </nz-table>
             </nz-tab>
-            <nz-tab nzTitle="标签管理" (nzClick)="editInfo.editFocus=false">
+            <nz-tab nzTitle="标签管理" (nzClick)="tabChanged('category')">
                 <nz-table #tagTable [nzData]="tagPageList.list" [nzTotal]="tagPageList.total"
                           [(nzPageIndex)]="pageIndex" [nzScroll]="{x:'800px'}"
                           [nzPageSize]="pageSize" (nzPageIndexChange)="getTag()" nzFrontPagination="false">
@@ -90,3 +90,8 @@
     </nz-card>
 </div>
 <ng-template #tagIcon><i nz-icon nzType="tag" nzTheme="outline"></i></ng-template>
+<ng-template #reload>
+    <a (click)="getData()" title="刷新"><i nz-icon nzType="reload" nzTheme="outline"></i></a>
+</ng-template>
+
+

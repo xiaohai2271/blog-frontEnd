@@ -1,5 +1,5 @@
 <div class="inner-content">
-    <nz-card nzTitle="更新内容管理" nzSize="small">
+    <nz-card nzTitle="更新内容管理" nzSize="small" [nzExtra]="reload">
         <button nz-button (click)="showModal()" style="margin-bottom: 15px;">新增</button>
         <nz-table #table [nzData]="pageList.list" [nzTotal]="pageList.total" [(nzPageIndex)]="pageIndex"
                   [nzPageSize]="pageSize" [nzLoading]="loading" [nzScroll]="{x:'800px'}"
@@ -30,3 +30,6 @@
           (nzOnOk)="confirm()" [nzTitle]="modalData.title">
     <textarea nz-input [(ngModel)]="modalData.content" [nzAutosize]="{ minRows: 2, maxRows: 8 }"></textarea>
 </nz-modal>
+<ng-template #reload>
+    <a (click)="getUpdateInfo()" title="刷新"><i nz-icon nzType="reload" nzTheme="outline"></i></a>
+</ng-template>
