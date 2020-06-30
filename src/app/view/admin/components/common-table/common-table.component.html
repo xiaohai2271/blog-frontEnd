@@ -1,0 +1,25 @@
+<nz-table>
+    <thead>
+    <tr>
+        <td *ngFor="let headData of data">
+            {{headData.fieldName}}
+        </td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td *ngFor="let headData of data">
+            <ng-template [ngIf]="!headData.isActionColumns">
+                {{headData.fieldName}}
+            </ng-template>
+            <ng-template *ngIf="headData.isActionColumns">
+                <a *ngFor="let action of headData.action" (mouseenter)="action.hover(headData)" (mouseout)="null"
+                   (click)="action.click(headData)" [ngStyle]="{'color':action.color,'font-size':action.fontSize}">
+                    {{action.name}}
+                </a>
+            </ng-template>
+        </td>
+    </tr>
+
+    </tbody>
+</nz-table>
