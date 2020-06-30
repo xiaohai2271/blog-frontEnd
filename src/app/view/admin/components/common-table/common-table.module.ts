@@ -1,16 +1,20 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {CommonTableComponent} from './common-table.component';
-import {NzTableModule} from "ng-zorro-antd";
+import {NzDividerModule, NzTableModule} from 'ng-zorro-antd';
 
 
 @NgModule({
     declarations: [
         CommonTableComponent
     ],
+    exports: [
+        CommonTableComponent
+    ],
     imports: [
         CommonModule,
-        NzTableModule
+        NzTableModule,
+        NzDividerModule
     ]
 })
 export class CommonTableModule {

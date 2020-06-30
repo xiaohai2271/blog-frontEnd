@@ -1,24 +1,33 @@
 <nz-table>
     <thead>
     <tr>
-        <td *ngFor="let headData of data">
-            {{headData.fieldName}}
-        </td>
+        <ng-container *ngFor="let headData of data">
+            <th *ngIf="headData.show">
+                {{headData.fieldName}}
+            </th>
+        </ng-container>
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <td *ngFor="let headData of data">
-            <ng-template [ngIf]="!headData.isActionColumns">
-                {{headData.fieldName}}
-            </ng-template>
-            <ng-template *ngIf="headData.isActionColumns">
-                <a *ngFor="let action of headData.action" (mouseenter)="action.hover(headData)" (mouseout)="null"
-                   (click)="action.click(headData)" [ngStyle]="{'color':action.color,'font-size':action.fontSize}">
-                    {{action.name}}
-                </a>
-            </ng-template>
-        </td>
+    <tr *ngFor="let t of dataList.list">
+        <ng-container *ngFor="let headData of data">
+            <td *ngIf="headData.show">
+                <ng-template [ngIf]="!headData.isActionColumns">
+                    {{t[headData.fieldValue]}}
+                </ng-template>
+                <ng-container *ngIf="headData.isActionColumns">
+                    <a *ngFor="let action of headData.action; let i = index" (mouseenter)="action.hover(t)"
+                       (mouseout)="null" (click)="action.click(t)"
+                       [ngStyle]="{'color':action.color,'font-size':action.fontSize}">
+                        {{action.name}}
+                        <ng-template [ngIf]="i!=headData.action.length-1">
+                            <nz-divider nzType="vertical"></nz-divider>
+                        </ng-template>
+                    </a>
+                </ng-container>
+            </td>
+        </ng-container>
+
     </tr>
 
     </tbody>
