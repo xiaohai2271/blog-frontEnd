@@ -70,6 +70,9 @@ export class AdminLinkComponent implements OnInit {
         linkReq.name = this.formGroup.value.name;
         linkReq.url = this.formGroup.value.url;
         linkReq.open = this.formGroup.value.open;
+        // 暂时设置未空
+        linkReq.desc = '';
+        linkReq.iconPath = '';
         const oper = this.formGroup.value.oper;
         let observable: Observable<Response<Link>>;
         if (oper === 'edit') {
@@ -80,7 +83,7 @@ export class AdminLinkComponent implements OnInit {
         }
         observable.subscribe({
             next: data => this.messageService.success('操作成功'),
-            error: err => this.messageService.success('操作失败,', err.msg),
+            error: err => this.messageService.error('操作失败,' + err.msg),
             complete: () => this.getLinks()
         })
     }
@@ -88,6 +91,7 @@ export class AdminLinkComponent implements OnInit {
     addLink() {
         this.modalVisible = true;
         this.modalTitle = '新增友链信息';
+        this.formGroup.reset();
         this.formGroup.controls.oper.setValue('add')
     }
 }
