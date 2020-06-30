@@ -32,6 +32,10 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     }
 
     getData = () => {
+        this.request.queryParam = {
+            page: this.dataList.pageNum ? this.dataList.pageNum : 1,
+            count: this.dataList.pageSize ? this.dataList.pageSize : 10
+        }
         this.httpService.Service<PageList<T>>(this.request).subscribe(resp => {
             this.dataList = resp.result;
         });
