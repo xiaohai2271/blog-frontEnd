@@ -1,4 +1,10 @@
-<nz-table>
+<nz-table nzTableLayout="fixed"
+          [nzData]="dataList.list"
+          [nzTotal]="dataList.total"
+          [(nzPageIndex)]="dataList.pageNum"
+          [nzPageSize]="dataList.pageSize"
+          (nzPageIndexChange)="getData()"
+          nzFrontPagination="false">
     <thead>
     <tr>
         <ng-container *ngFor="let headData of data">

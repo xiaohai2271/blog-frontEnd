@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Data} from './data';
 import {PageList, RequestObj} from '../../../../class/HttpReqAndResp';
 import {HttpService} from '../../../../api/http/http.service';
@@ -8,7 +8,7 @@ import {HttpService} from '../../../../api/http/http.service';
     templateUrl: './common-table.component.html',
     styleUrls: ['./common-table.component.less']
 })
-export class CommonTableComponent<T> implements OnInit {
+export class CommonTableComponent<T> implements OnInit, OnChanges {
 
     constructor(private httpService: HttpService) {
 
@@ -20,9 +20,7 @@ export class CommonTableComponent<T> implements OnInit {
     dataList: PageList<T> = new PageList<T>();
 
     ngOnInit(): void {
-        this.httpService.Service<PageList<T>>(this.request).subscribe(resp => {
-            this.dataList = resp.result;
-        });
+        this.getData();
         this.data.forEach(dat => {
             if (!dat.action) return;
             dat.action.forEach(act => {
@@ -31,6 +29,15 @@ export class CommonTableComponent<T> implements OnInit {
                 }
             })
         })
+    }
+
+    getData = () => {
+        this.httpService.Service<PageList<T>>(this.request).subscribe(resp => {
+            this.dataList = resp.result;
+        });
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
     }
 
 }
