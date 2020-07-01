@@ -1,99 +1,111 @@
 import {Component, OnInit} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd';
 import {ApiService} from '../../../api/api.service';
-import {PageList} from '../../../class/HttpReqAndResp';
+import {RequestObj} from '../../../class/HttpReqAndResp';
 import {Comment, CommentReq} from '../../../class/Comment';
 import {GlobalUserService} from '../../../services/global-user.service';
 import {Title} from '@angular/platform-browser';
+import {Data} from '../components/common-table/data';
 
 @Component({
     selector: 'app-admin-comment',
     templateUrl: './admin-comment.component.html',
-    styleUrls: ['./admin-comment.component.less']
 })
 export class AdminCommentComponent implements OnInit {
 
     constructor(private apiService: ApiService, private  messageService: NzMessageService, private userService: GlobalUserService,
                 private title: Title) {
         this.title.setTitle('小海博客 | 评论管理')
+        this.request = {
+            // path: `/admin/comment/pagePath/${pagePath}`,
+            path: null,
+            method: 'GET',
+            queryParam: {
+                page: 1,
+                count: 10
+            }
+        }
         this.userService.watchUserInfo({
             next: data => {
                 if (data.result) {
                     if (data.result.role === 'admin') {
-                        this.getComment = this.getCommentForAdmin;
+                        this.request.path = '/admin/comment/pagePath/*'
                     } else {
-                        this.getComment = this.getCommentForUser;
+                        this.request.path = '/user/comment/pagePath/*'
                     }
-                } else {
-                    this.getComment = this.getCommentForUser;
                 }
-                if (this.requested) return;
-                this.getComment()
-                this.requested = true
             },
-            error: null,
-            complete: null
+            error: () => null,
+            complete: () => null
         })
     }
 
-    loading: boolean = true;
-    pageIndex: number = 1;
-    pageSize: number = 10;
-    pageList: PageList<Comment> = new PageList<Comment>();
+    request: RequestObj;
     editInfo = {
         id: null,
         content: new CommentReq(null),
         editFocus: false,
     }
-    getComment: any;// 存放获取评论的方法
-    private requested: boolean = false;
-
+    headData: Data<Comment>[];
 
     ngOnInit(): void {
+        this.headData = [
+            {fieldName: '主键', fieldValue: 'id', show: false, primaryKey: true},
+            {fieldName: '评论路径', fieldValue: 'pagePath', show: true},
+            {fieldName: '评论创建者昵称', fieldValue: 'fromUser.displayName', show: true},
+            {fieldName: '评论接收者昵称', fieldValue: 'toUser.displayName', show: true},
+            {fieldName: '评论内容', fieldValue: 'content', show: false},
+            {fieldName: '评论日期', fieldValue: 'date', show: true},
+            {fieldName: '父评论id', fieldValue: 'pid', show: false},
+            {fieldName: '状态', fieldValue: 'status', show: true},
+            {
+                fieldName: '操作',
+                fieldValue: '',
+                show: true,
+                isActionColumns: true,
+                action: [
+                    {name: '查看', click: data => console.log(data)},
+                    {name: '删除', color: 'red', click: data => this.deleteComment(data), needConfirm: true},
+                    {name: '编辑', color: '#2db7f5', click: data => this.edit(data)},
+                ]
+            }
+        ];
     }
 
 
-    // TODO:: pagePath
-    getCommentForAdmin = () => this.apiService.getCommentByTypeForAdmin('*', this.pageIndex, this.pageSize).subscribe({
-        next: data => this.pageList = data.result,
-        complete: () => this.loading = false,
-        error: err => this.loading = false
-    })
+    // // TODO:: pagePath
+    // getCommentForAdmin = () => this.apiService.getCommentByTypeForAdmin('*', this.pageIndex, this.pageSize).subscribe({
+    //     next: data => this.pageList = data.result,
+    //     complete: () => this.loading = false,
+    //     error: err => this.loading = false
+    // })
 
-    getCommentForUser = () => this.apiService.getCommentByTypeForUser('*', this.pageIndex, this.pageSize).subscribe({
-        next: data => this.pageList = data.result,
-        complete: () => this.loading = false,
-        error: err => this.loading = false
-    })
+    // getCommentForUser = () => this.apiService.getCommentByTypeForUser('*', this.pageIndex, this.pageSize).subscribe({
+    //     next: data => this.pageList = data.result,
+    //     complete: () => this.loading = false,
+    //     error: err => this.loading = false
+    // })
 
-    deleteComment(id: number) {
-        this.loading = true;
-        this.apiService.deleteComment(id).subscribe({
+    deleteComment(data: Comment) {
+        this.apiService.deleteComment(data.id).subscribe({
             next: () => {
                 this.messageService.success('删除评论成功');
-                this.getComment();
             },
             error: err => {
-                this.loading = false;
                 this.messageService.error(err.msg);
-            },
-            complete: () => this.loading = false
+            }
         })
     }
 
-    edit() {
-        this.editInfo.editFocus = false;
-        this.loading = true;
+    edit(comment: Comment) {
         this.apiService.updateComment(this.editInfo.content).subscribe({
             next: data => {
                 this.messageService.success('更新评论成功');
-                this.getComment();
             },
             error: err => {
-                this.loading = false;
                 this.messageService.success(err.msg);
             },
-            complete: () => this.loading = false
+            complete: () => null
         })
     }
 

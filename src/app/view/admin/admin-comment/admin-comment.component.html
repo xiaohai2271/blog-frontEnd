@@ -1,3 +1,4 @@
+<!--
 <div class="inner-content">
     <nz-card nzTitle="评论管理" nzSize="small" [nzExtra]="reload">
         <nz-table #table [nzData]="pageList.list"
@@ -46,4 +47,14 @@
 <ng-template #tagIcon><i nz-icon nzType="message" nzTheme="outline"></i></ng-template>
 <ng-template #reload>
     <a (click)="getComment()" title="刷新"><i nz-icon nzType="reload" nzTheme="outline"></i></a>
+</ng-template>
+-->
+
+<c-common-table [request]="request" [data]="headData" cardTitle="评论管理"
+                [template]="{status:{temp:status,param:{'0':' 正常 ','3':'已删除'}}}">
+</c-common-table>
+
+<ng-template let-originValue="originValue" let-value="value" #status>
+    <nz-tag nzColor="geekblue" *ngIf="originValue==0">{{value}}</nz-tag>
+    <nz-tag nzColor="#f50" *ngIf="originValue==3">{{value}}</nz-tag>
 </ng-template>
