@@ -32,7 +32,7 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     dataList: PageList<T> = new PageList<T>();
 
     ngOnInit(): void {
-        this.getData();
+        if (!this.template) this.template = {}
         this.data.forEach(dat => {
             if (!dat.action) return;
             dat.action.forEach(act => {
@@ -40,7 +40,9 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
                     act.hover = () => null;
                 }
             })
-        })
+        });
+        if (!this.request) return
+        this.getData();
     }
 
     getData = () => {

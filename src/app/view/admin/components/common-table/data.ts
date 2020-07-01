@@ -17,6 +17,7 @@ export class Data<T> {
         color?: string,
         order?: number,
         fontSize?: string,
+        needConfirm?: boolean,
         click: (data: T) => void,
         hover?: (data: T) => void | null;
     }[] = []

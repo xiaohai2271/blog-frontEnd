@@ -36,9 +36,14 @@
                         </ng-template>
                     </ng-template>
                     <ng-container *ngIf="headData.isActionColumns">
-                        <a *ngFor="let action of headData.action; let i = index" (mouseenter)="action.hover(t)"
-                           (mouseout)="null" (click)="action.click(t)"
-                           [ngStyle]="{'color':action.color,'font-size':action.fontSize}">
+                        <a *ngFor="let action of headData.action; let i = index"
+                           (mouseenter)="action.hover(t)"
+                           (mouseout)="null"
+                           [ngStyle]="{'color':action.color,'font-size':action.fontSize}"
+                           nz-popconfirm
+                           [nzPopconfirmTitle]="'是否确认'+action.name+'该数据?'"
+                           [nzCondition]="!action.needConfirm"
+                           (nzOnConfirm)="action.click(t)">
                             {{action.name}}
                             <ng-template [ngIf]="i!=headData.action.length-1">
                                 <nz-divider nzType="vertical"></nz-divider>

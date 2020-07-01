@@ -4,7 +4,7 @@ import {CommonTableComponent} from './common-table.component';
 import {
     NzCardModule,
     NzDividerModule,
-    NzIconModule, NzOutletModule,
+    NzIconModule, NzOutletModule, NzPopconfirmModule,
     NzTableModule,
     NzToolTipModule,
     NzTypographyModule
@@ -26,7 +26,8 @@ import {
         NzToolTipModule,
         NzCardModule,
         NzIconModule,
-        NzOutletModule
+        NzOutletModule,
+        NzPopconfirmModule
     ]
 })
 export class CommonTableModule {
