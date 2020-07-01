@@ -45,10 +45,10 @@ const routes: Routes = [
                 loadChildren: () => import('./admin-visitor/admin-visitor.module').then(mod => mod.AdminVisitorModule),
                 // canActivate: [AuthGuard]
             },
-            {
-                path: 'test',
-                loadChildren: () => import('./test-common-table/test-common-table.module').then(Mod => Mod.TestCommonTableModule)
-            },
+            // {
+            //     path: 'test',
+            //     loadChildren: () => import('./test-common-table/test-common-table.module').then(Mod => Mod.TestCommonTableModule)
+            // },
             {
                 path: '**',
                 loadChildren: () => import('./admin-dashboard/admin-dashboard.module').then(mod => mod.AdminDashboardModule),
