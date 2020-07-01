@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Data} from '../components/common-table/data';
 import {Article} from '../../../class/Article';
-import {RequestObj} from "../../../class/HttpReqAndResp";
+import {RequestObj} from '../../../class/HttpReqAndResp';
 
 @Component({
     selector: 'app-test-common-table',
@@ -26,13 +26,19 @@ title: "教你动手写一个刷课脚本"
 updateDateFormat: "2020-05-27 00:55:05"*/
     constructor() {
         this.data = [
-            {fieldName: '主键', fieldValue: 'id', show: false},
+            {fieldName: '主键', fieldValue: 'id', show: false, primaryKey: true},
             {fieldName: '标题', fieldValue: 'title', show: true},
-            {fieldName: '标签', fieldValue: 'category', show: true},
+            {fieldName: '发布日期', fieldValue: 'publishDateFormat', show: true},
+            {fieldName: '更新日期', fieldValue: 'updateDateFormat', show: true},
+            {fieldName: '文章类型', fieldValue: 'original', show: true},
+            {fieldName: '阅读量', fieldValue: 'readingNumber', show: true},
+            {fieldName: '分类', fieldValue: 'category', show: true},
             {fieldName: '👎数', fieldValue: 'dislikeCount', show: true},
             {fieldName: '👍数', fieldValue: 'likeCount', show: true},
             {fieldName: '状态', fieldValue: 'open', show: true},
             {fieldName: '简介', fieldValue: 'summary', show: false},
+            {fieldName: '作者', fieldValue: 'author.displayName', show: true},
+            {fieldName: '标签数', fieldValue: 'tags.length', show: true},
             {
                 fieldName: '操作', fieldValue: '', show: true, isActionColumns: true,
                 action: [

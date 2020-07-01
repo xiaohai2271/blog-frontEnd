@@ -14,9 +14,12 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
 
     }
 
-    @Input() data: Data<T>[]
+    /**
+     * 设置readonly data 因为后面有使用eval 为了安全 TODO
+     */
+    @Input() readonly data: Data<T>[]
     @Input() request: RequestObj
-    @Input() title: string
+    @Input() cardTitle: string
     loading: boolean = true;
 
     dataList: PageList<T> = new PageList<T>();
@@ -51,4 +54,10 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
     }
 
+
+    getValue(index: number, fieldValue: string) {
+        // todo: 过滤
+        // tslint:disable-next-line:no-eval
+        return eval(`this.dataList.list[${index}].` + fieldValue);
+    }
 }

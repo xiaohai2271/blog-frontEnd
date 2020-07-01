@@ -1,4 +1,4 @@
-<nz-card nzSize="small" [nzExtra]="refresh" [nzTitle]="title" [nzLoading]="loading">
+<nz-card nzSize="small" [nzExtra]="refresh" [nzTitle]="cardTitle" [nzLoading]="loading">
     <nz-table nzTableLayout="fixed"
               [nzData]="dataList.list"
               [nzTotal]="dataList.total"
@@ -16,17 +16,17 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let t of dataList.list">
+        <tr *ngFor="let t of dataList.list;let index = index">
             <ng-container *ngFor="let headData of data">
                 <td *ngIf="headData.show"
                     nz-typography
                     nzEllipsis
                     nzEllipsisRows="1"
-                    [nzTooltipTitle]="headData.fieldName+' : '+t[headData.fieldValue]"
-                    nzTooltipPlacement="right"
+                    [nzTooltipTitle]="headData.isActionColumns ? null : headData.fieldName+' : '+getValue(index,headData.fieldValue)"
+                    nzTooltipPlacement="top"
                     nz-tooltip>
                     <ng-template [ngIf]="!headData.isActionColumns">
-                        {{t[headData.fieldValue]}}
+                        {{ getValue(index, headData.fieldValue) }}
                     </ng-template>
                     <ng-container *ngIf="headData.isActionColumns">
                         <a *ngFor="let action of headData.action; let i = index" (mouseenter)="action.hover(t)"
@@ -47,5 +47,5 @@
 
 
 <ng-template #refresh>
-    <i nz-icon nzType="reload" nzTheme="outline" (click)="getData()"></i>
+    <i nz-icon nzType="reload" nzTheme="outline" (click)="getData()" style="cursor: pointer"></i>
 </ng-template>
