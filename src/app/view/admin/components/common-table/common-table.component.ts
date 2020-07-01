@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef} from '@angular/core';
 import {Data} from './data';
 import {PageList, RequestObj} from '../../../../class/HttpReqAndResp';
 import {HttpService} from '../../../../api/http/http.service';
@@ -15,7 +15,7 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     }
 
     /**
-     * 设置readonly data 因为后面有使用eval 为了安全 TODO
+     * 设置readonly data 因为后面有使用eval 为了安全
      */
     @Input() readonly data: Data<T>[];
     @Input() request: RequestObj;
@@ -26,6 +26,7 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
             param?: { [key: string]: string }
         }
     };
+    @Output() pageInfo = new EventEmitter<{ page: number, pageSize: number }>();
     loading: boolean = true;
 
     dataList: PageList<T> = new PageList<T>();
@@ -44,10 +45,13 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
 
     getData = () => {
         this.loading = true;
+        const pageValue = this.dataList.pageNum ? this.dataList.pageNum : 1;
+        const countValue = this.dataList.pageSize ? this.dataList.pageSize : 10
         this.request.queryParam = {
-            page: this.dataList.pageNum ? this.dataList.pageNum : 1,
-            count: this.dataList.pageSize ? this.dataList.pageSize : 10
+            page: pageValue,
+            count: countValue
         }
+        this.pageInfo.emit({page: pageValue, pageSize: countValue})
         this.httpService.Service<PageList<T>>(this.request).subscribe({
             next: resp => {
                 this.dataList = resp.result;
@@ -62,9 +66,11 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
 
 
     getValue(index: number, fieldValue: string) {
-        // todo: 过滤
+        let str = `this.dataList.list[${index}].` + fieldValue;
+        const regexp = /<|>|=|onload|$|{|}|《/
+        str = str.replace(regexp, '');
         // tslint:disable-next-line:no-eval
-        const value = eval(`this.dataList.list[${index}].` + fieldValue);
+        const value = eval(str);
         return value ? value : '暂无数据';
     }
 
