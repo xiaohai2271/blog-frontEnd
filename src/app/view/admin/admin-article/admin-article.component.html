@@ -1,61 +1,32 @@
-<div class="inner-content">
-    <nz-card nzTitle="文章管理" nzSize="small" [nzExtra]="reload">
-        <nz-table #table [nzData]="pageList.list"
-                  [nzTotal]="pageList.total"
-                  [(nzPageIndex)]="page"
-                  [nzPageSize]="pageSize"
-                  [nzLoading]="loading"
-                  [nzScroll]="{x:'1100px'}"
-                  (nzPageIndexChange)="getArticle()"
-                  nzFrontPagination="false"
-                  nzTableLayout="fixed">
-            <thead>
-            <th>标题</th>
-            <th>发布日期</th>
-            <th>更新日期</th>
-            <th>文章类型</th>
-            <th>阅读量</th>
-            <th>👍赞</th>
-            <th>👎踩</th>
-            <th>是否可见</th>
-            <th>操作</th>
-            </thead>
-            <tbody>
-            <tr *ngFor="let data of table.data">
-                <td nz-typography nzEllipsis="true" [nzTooltipTitle]="data.title" nzTooltipPlacement="right"
-                    nz-tooltip>{{data.title}}</td>
-                <td>{{data.publishDateFormat}}</td>
-                <td>{{data.updateDateFormat}}</td>
-                <td>
-                    <nz-tag nzColor="green" *ngIf="data.original">原创</nz-tag>
-                    <nz-tag nzColor="#ff5500" *ngIf="!data.original">转载</nz-tag>
-                </td>
-                <td>
-                    <nz-tag [nzColor]="'purple'">{{data.readingNumber}}</nz-tag>
-                </td>
-                <td>
-                    <nz-tag [nzColor]="'blue'">{{data.likeCount}}</nz-tag>
-                </td>
-                <td>
-                    <nz-tag [nzColor]="'magenta'">{{data.dislikeCount}}</nz-tag>
-                </td>
-                <td><input type="checkbox" [checked]="data.open" disabled></td>
-                <td>
-                    <a routerLink="/write" [queryParams]="{id:data.id}" class="edit-opr">编辑</a>
-                    <nz-divider nzType="vertical"></nz-divider>
-                    <a [routerLink]="'/article'+data.id" class="show-opr">查看</a>
-                    <nz-divider nzType="vertical"></nz-divider>
-                    <a nz-popconfirm nzPopconfirmTitle="确定要删除这篇文章吗?" nzOkText="删除" nzCancelText="点错了"
-                       (nzOnConfirm)="deleteArticle(data.id)" class="del-opr">删除</a>
-                </td>
-            </tr>
-            </tbody>
+<c-common-table cardTitle="文章管理"
+                #commonTableComponent
+                [data]="headData"
+                [request]="request"
+                [template]="{
+                    original:{temp:original,param:{true:'原创',false:'转载'}},
+                    readingNumber:{temp:readingNumber},
+                    likeCount:{temp:likeCount},
+                    dislikeCount:{temp:dislikeCount},
+                    open:{temp:open}
+                }">
+</c-common-table>
 
-            <ng-template #reload>
-                <a (click)="getArticle()" title="刷新"><i nz-icon nzType="reload" nzTheme="outline"></i></a>
-            </ng-template>
-        </nz-table>
-    </nz-card>
-</div>
+<ng-template let-value="value" let-originValue="originValue" #original>
+    <nz-tag [nzColor]="originValue?'green':'#ff5500'">{{value}}</nz-tag>
+</ng-template>
 
+<ng-template let-value="value" #readingNumber>
+    <nz-tag nzColor="purple">{{value}}</nz-tag>
+</ng-template>
 
+<ng-template let-value="value" #likeCount>
+    <nz-tag nzColor="blue">{{value}}</nz-tag>
+</ng-template>
+
+<ng-template let-value="value" #dislikeCount>
+    <nz-tag nzColor="magenta">{{value}}</nz-tag>
+</ng-template>
+
+<ng-template #open let-value="value">
+    <label nz-checkbox nzDisabled [ngModel]="value"></label>
+</ng-template>
