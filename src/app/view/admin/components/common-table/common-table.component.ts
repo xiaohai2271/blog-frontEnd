@@ -41,7 +41,7 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
                 }
             })
         });
-        if (!this.request) return
+        if (!this.request || !this.request.path) return
         this.getData();
     }
 
@@ -71,9 +71,14 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
         let str = `this.dataList.list[${index}].` + fieldValue;
         const regexp = /<|>|=|onload|$|{|}|《/
         str = str.replace(regexp, '');
-        // tslint:disable-next-line:no-eval
-        const value = eval(str);
-        return value !== undefined ? value : '暂无数据';
+        let value;
+        try {
+            // tslint:disable-next-line:no-eval
+            value = eval(str);
+        } catch (e) {
+            value = null
+        }
+        return (value != null) ? value : '————';
     }
 
     getContext = (fieldValue: string, index: number) => {
