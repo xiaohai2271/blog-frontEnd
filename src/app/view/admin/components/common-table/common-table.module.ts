@@ -1,7 +1,14 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {CommonTableComponent} from './common-table.component';
-import {NzDividerModule, NzTableModule} from 'ng-zorro-antd';
+import {
+    NzCardModule,
+    NzDividerModule,
+    NzIconModule,
+    NzTableModule,
+    NzToolTipModule,
+    NzTypographyModule
+} from 'ng-zorro-antd';
 
 
 @NgModule({
@@ -14,7 +21,11 @@ import {NzDividerModule, NzTableModule} from 'ng-zorro-antd';
     imports: [
         CommonModule,
         NzTableModule,
-        NzDividerModule
+        NzDividerModule,
+        NzTypographyModule,
+        NzToolTipModule,
+        NzCardModule,
+        NzIconModule
     ]
 })
 export class CommonTableModule {

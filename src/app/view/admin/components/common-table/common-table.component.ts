@@ -16,6 +16,8 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
 
     @Input() data: Data<T>[]
     @Input() request: RequestObj
+    @Input() title: string
+    loading: boolean = true;
 
     dataList: PageList<T> = new PageList<T>();
 
@@ -32,12 +34,17 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     }
 
     getData = () => {
+        this.loading = true;
         this.request.queryParam = {
             page: this.dataList.pageNum ? this.dataList.pageNum : 1,
             count: this.dataList.pageSize ? this.dataList.pageSize : 10
         }
-        this.httpService.Service<PageList<T>>(this.request).subscribe(resp => {
-            this.dataList = resp.result;
+        this.httpService.Service<PageList<T>>(this.request).subscribe({
+            next: resp => {
+                this.dataList = resp.result;
+                this.loading = false;
+            },
+            error: err => this.loading = false
         });
     }
 
