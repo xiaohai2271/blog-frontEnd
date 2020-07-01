@@ -1,0 +1,58 @@
+<nz-card nzSize="small" [nzExtra]="refresh" [nzTitle]="cardTitle" [nzLoading]="loading">
+    <nz-table nzTableLayout="fixed"
+              [nzData]="dataList.list"
+              [nzTotal]="dataList.total"
+              [(nzPageIndex)]="dataList.pageNum"
+              [nzPageSize]="dataList.pageSize"
+              (nzPageIndexChange)="getData()"
+              nzFrontPagination="false">
+        <thead>
+        <tr>
+            <ng-container *ngFor="let headData of data">
+                <th *ngIf="headData.show">
+                    {{headData.fieldName}}
+                </th>
+            </ng-container>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let t of dataList.list;let index = index">
+            <ng-container *ngFor="let headData of data">
+                <td *ngIf="headData.show"
+                    nz-typography
+                    nzEllipsis
+                    nzEllipsisRows="1"
+                    [nzTooltipTitle]="headData.isActionColumns ? null : headData.fieldName+' : '+getValue(index,headData.fieldValue)"
+                    nzTooltipPlacement="top"
+                    nz-tooltip>
+                    <ng-template [ngIf]="!headData.isActionColumns">
+                        <ng-template [ngIf]="template[headData.fieldValue]">
+                            <ng-container
+                                    *ngTemplateOutlet="template[headData.fieldValue].temp; context:getContext(headData.fieldValue,index) ">
+                            </ng-container>
+                        </ng-template>
+                        <ng-template [ngIf]="!template[headData.fieldValue]">
+                            {{ getValue(index, headData.fieldValue) }}
+                        </ng-template>
+                    </ng-template>
+                    <ng-container *ngIf="headData.isActionColumns">
+                        <a *ngFor="let action of headData.action; let i = index" (mouseenter)="action.hover(t)"
+                           (mouseout)="null" (click)="action.click(t)"
+                           [ngStyle]="{'color':action.color,'font-size':action.fontSize}">
+                            {{action.name}}
+                            <ng-template [ngIf]="i!=headData.action.length-1">
+                                <nz-divider nzType="vertical"></nz-divider>
+                            </ng-template>
+                        </a>
+                    </ng-container>
+                </td>
+            </ng-container>
+        </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+
+
+<ng-template #refresh>
+    <i nz-icon nzType="reload" nzTheme="outline" (click)="getData()" style="cursor: pointer"></i>
+</ng-template>
