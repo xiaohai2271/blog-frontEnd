@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef} from '@angular/core';
 import {Data} from './data';
 import {PageList, RequestObj} from '../../../../class/HttpReqAndResp';
 import {HttpService} from '../../../../api/http/http.service';
@@ -17,9 +17,15 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     /**
      * 设置readonly data 因为后面有使用eval 为了安全 TODO
      */
-    @Input() readonly data: Data<T>[]
-    @Input() request: RequestObj
-    @Input() cardTitle: string
+    @Input() readonly data: Data<T>[];
+    @Input() request: RequestObj;
+    @Input() cardTitle: string;
+    @Input() template: {
+        [fieldValue: string]: {
+            temp: TemplateRef<any>,
+            param?: { [key: string]: string }
+        }
+    };
     loading: boolean = true;
 
     dataList: PageList<T> = new PageList<T>();
@@ -58,6 +64,23 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     getValue(index: number, fieldValue: string) {
         // todo: 过滤
         // tslint:disable-next-line:no-eval
-        return eval(`this.dataList.list[${index}].` + fieldValue);
+        const value = eval(`this.dataList.list[${index}].` + fieldValue);
+        return value ? value : '暂无数据';
+    }
+
+    getContext = (fieldValue: string, index: number) => {
+        const valueData = this.getValue(index, fieldValue);
+        let context: { value: string, originValue?: string };
+        if (this.template[fieldValue].param) {
+            context = {
+                value: this.template[fieldValue].param[valueData],
+                originValue: valueData
+            }
+        } else {
+            context = {
+                value: valueData
+            }
+        }
+        return context;
     }
 }

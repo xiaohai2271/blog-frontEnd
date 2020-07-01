@@ -3,6 +3,8 @@ import {CommonModule} from '@angular/common';
 import {TestCommonTableComponent} from './test-common-table.component';
 import {Router, RouterModule} from '@angular/router';
 import {CommonTableModule} from '../components/common-table/common-table.module';
+import {NzCheckboxModule, NzTagModule} from 'ng-zorro-antd';
+import {FormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -10,7 +12,10 @@ import {CommonTableModule} from '../components/common-table/common-table.module'
     imports: [
         CommonModule,
         RouterModule.forChild([{path: '', component: TestCommonTableComponent}]),
-        CommonTableModule
+        CommonTableModule,
+        NzTagModule,
+        NzCheckboxModule,
+        FormsModule
     ]
 })
 export class TestCommonTableModule {

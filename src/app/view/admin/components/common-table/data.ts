@@ -1,10 +1,18 @@
+import {TemplateRef} from '@angular/core';
+
 export class Data<T> {
     fieldName: string;
     fieldValue: string;
     show: boolean = true;
     primaryKey?: boolean = false;
     isActionColumns?: boolean = false;
-    action?: {
+    template?: {
+        template: TemplateRef<any>,
+        keymap?: {
+            [value: string]: string
+        }
+    };
+    action ?: {
         name: string,
         color?: string,
         order?: number,

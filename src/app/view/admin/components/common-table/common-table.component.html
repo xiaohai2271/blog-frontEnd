@@ -26,7 +26,14 @@
                     nzTooltipPlacement="top"
                     nz-tooltip>
                     <ng-template [ngIf]="!headData.isActionColumns">
-                        {{ getValue(index, headData.fieldValue) }}
+                        <ng-template [ngIf]="template[headData.fieldValue]">
+                            <ng-container
+                                    *ngTemplateOutlet="template[headData.fieldValue].temp; context:getContext(headData.fieldValue,index) ">
+                            </ng-container>
+                        </ng-template>
+                        <ng-template [ngIf]="!template[headData.fieldValue]">
+                            {{ getValue(index, headData.fieldValue) }}
+                        </ng-template>
                     </ng-template>
                     <ng-container *ngIf="headData.isActionColumns">
                         <a *ngFor="let action of headData.action; let i = index" (mouseenter)="action.hover(t)"
