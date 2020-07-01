@@ -71,7 +71,7 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
         str = str.replace(regexp, '');
         // tslint:disable-next-line:no-eval
         const value = eval(str);
-        return value ? value : '暂无数据';
+        return value !== undefined ? value : '暂无数据';
     }
 
     getContext = (fieldValue: string, index: number) => {
