@@ -4,7 +4,7 @@ import {PageList, RequestObj} from '../../../../class/HttpReqAndResp';
 import {HttpService} from '../../../../api/http/http.service';
 
 @Component({
-    selector: 'c-common-table',
+    selector: 'common-table',
     templateUrl: './common-table.component.html',
     styleUrls: ['./common-table.component.less']
 })
