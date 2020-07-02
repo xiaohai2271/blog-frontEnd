@@ -1,7 +1,7 @@
 import {TemplateRef} from '@angular/core';
 
 export class Data<T> {
-    fieldName: string;
+    title: string;
     fieldValue: string;
     show: boolean = true;
     primaryKey?: boolean = false;

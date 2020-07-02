@@ -9,35 +9,35 @@
               [nzScroll]="{x:'1300px'}">
         <thead>
         <tr>
-            <ng-container *ngFor="let headData of data">
-                <th *ngIf="headData.show">
-                    {{headData.fieldName}}
+            <ng-container *ngFor="let data of headData">
+                <th *ngIf="data.show">
+                    {{data.title}}
                 </th>
             </ng-container>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let t of dataList.list;let index = index">
-            <ng-container *ngFor="let headData of data">
-                <td *ngIf="headData.show"
+            <ng-container *ngFor="let data of headData">
+                <td *ngIf="data.show"
                     nz-typography
                     nzEllipsis
-                    [nzEllipsisRows]="headData.isActionColumns?3:1"
-                    [nzTooltipTitle]="headData.isActionColumns ? null : headData.fieldName+' : '+getValue(index,headData.fieldValue)"
+                    [nzEllipsisRows]="data.isActionColumns?3:1"
+                    [nzTooltipTitle]="data.isActionColumns ? null : data.title+' : '+getValue(index,data.fieldValue)"
                     nzTooltipPlacement="top"
                     nz-tooltip>
-                    <ng-template [ngIf]="!headData.isActionColumns">
-                        <ng-template [ngIf]="template[headData.fieldValue]">
+                    <ng-template [ngIf]="!data.isActionColumns">
+                        <ng-template [ngIf]="template[data.fieldValue]">
                             <ng-container
-                                    *ngTemplateOutlet="template[headData.fieldValue].temp; context:getContext(headData.fieldValue,index) ">
+                                    *ngTemplateOutlet="template[data.fieldValue].temp; context:getContext(data.fieldValue,index) ">
                             </ng-container>
                         </ng-template>
-                        <ng-template [ngIf]="!template[headData.fieldValue]">
-                            {{ getValue(index, headData.fieldValue) }}
+                        <ng-template [ngIf]="!template[data.fieldValue]">
+                            {{ getValue(index, data.fieldValue) }}
                         </ng-template>
                     </ng-template>
-                    <ng-container *ngIf="headData.isActionColumns">
-                        <a *ngFor="let action of headData.action; let i = index"
+                    <ng-container *ngIf="data.isActionColumns">
+                        <a *ngFor="let action of data.action; let i = index"
                            (mouseenter)="action.hover(t)"
                            (mouseout)="null"
                            [ngStyle]="{'color':action.color,'font-size':action.fontSize}"
@@ -47,7 +47,7 @@
                            (nzOnConfirm)="action.click(t)"
                            [title]="action.name">
                             {{action.name}}
-                            <ng-template [ngIf]="i!=headData.action.length-1">
+                            <ng-template [ngIf]="i!=data.action.length-1">
                                 <nz-divider nzType="vertical"></nz-divider>
                             </ng-template>
                         </a>

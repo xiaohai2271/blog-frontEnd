@@ -17,7 +17,7 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     /**
      * 设置readonly data 因为后面有使用eval 为了安全
      */
-    @Input() readonly data: Data<T>[];
+    @Input() headData: Data<T>[];
     @Input() request: RequestObj;
     @Input() cardTitle: string;
     @Input() template: {
@@ -33,7 +33,7 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
 
     ngOnInit(): void {
         if (!this.template) this.template = {}
-        this.data.forEach(dat => {
+        this.headData.forEach(dat => {
             if (!dat.action) return;
             dat.action.forEach(act => {
                 if (!act.hover) {
@@ -73,18 +73,14 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     }
 
 
-    getValue(index: number, fieldValue: string) {
-        let str = `this.dataList.list[${index}].` + fieldValue;
-        const regexp = /<|>|=|onload|$|{|}|《/
-        str = str.replace(regexp, '');
-        let value;
+    getValue(index: number, fieldValue: string): string {
+        let value = this.dataList.list[index];
         try {
-            // tslint:disable-next-line:no-eval
-            value = eval(str);
+            for (const key of fieldValue.split('.')) value = value[key]
         } catch (e) {
-            value = null
+            // ignore
         }
-        return (value != null) ? value : '————';
+        return (value != null) ? value.toString() : '————';
     }
 
     getContext = (fieldValue: string, index: number) => {
