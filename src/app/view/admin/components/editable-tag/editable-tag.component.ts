@@ -3,7 +3,9 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} f
 @Component({
     selector: 'editable-tag',
     template: `
-        <nz-tag *ngIf="!inputVisible" class="editable-tag" title="双击进入编辑" [nzColor]="color" nzNoAnimation (click)="showInput(true)">
+        <nz-tag *ngIf="!inputVisible" class="editable-tag" title="双击进入编辑" [nzColor]="color" nzNoAnimation
+                (click)="showInput(true)"
+                [style.border-style]="showBorder ? 'solid': 'none'">
             <ng-content></ng-content>
         </nz-tag>
         <input #inputElement
@@ -16,11 +18,15 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} f
                (blur)="handleInputConfirm()"
                (keydown.enter)="handleInputConfirm()"
         />
-        <i nz-icon nzType="edit" nzTheme="fill" style="cursor: pointer" (click)="showInput(false)"></i>
+        <i nz-icon *ngIf="showEditIcon"
+           nzType="edit"
+           nzTheme="fill"
+           style="cursor: pointer;margin-right: 8px;"
+           (click)="showInput(false)">
+        </i>
     `,
     styles: [`.editable-tag {
         background: rgb(255, 255, 255);
-        border-style: none;
     }`]
 })
 export class EditableTagComponent implements OnInit {
@@ -34,11 +40,19 @@ export class EditableTagComponent implements OnInit {
 
     @Output() valueChange = new EventEmitter<string>();
     @Input() color: string;
+    @Input() showEditIcon: boolean;
+    @Input() showBorder: boolean;
     private doubleClickInfo = {
         date: null,
     };
 
     ngOnInit(): void {
+        if (this.showEditIcon == null) {
+            this.showEditIcon = true;
+        }
+        if (this.showBorder == null) {
+            this.showBorder = true;
+        }
     }
 
     showInput(doubleClick: boolean): void {
