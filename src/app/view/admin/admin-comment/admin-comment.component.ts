@@ -50,16 +50,16 @@ export class AdminCommentComponent implements OnInit {
 
     ngOnInit(): void {
         this.headData = [
-            {fieldName: '主键', fieldValue: 'id', show: false, primaryKey: true},
-            {fieldName: '评论路径', fieldValue: 'pagePath', show: true},
-            {fieldName: '评论创建者昵称', fieldValue: 'fromUser.displayName', show: true},
-            {fieldName: '评论接收者昵称', fieldValue: 'toUser.displayName', show: true},
-            {fieldName: '评论内容', fieldValue: 'content', show: false},
-            {fieldName: '评论日期', fieldValue: 'date', show: true},
-            {fieldName: '父评论id', fieldValue: 'pid', show: false},
-            {fieldName: '状态', fieldValue: 'status', show: true},
+            {title: '主键', fieldValue: 'id', show: false, primaryKey: true},
+            {title: '评论路径', fieldValue: 'pagePath', show: true},
+            {title: '评论创建者昵称', fieldValue: 'fromUser.displayName', show: true},
+            {title: '评论内容', fieldValue: 'content', show: true},
+            {title: '评论接收者昵称', fieldValue: 'toUser.displayName', show: true},
+            {title: '评论日期', fieldValue: 'date', show: true},
+            {title: '父评论id', fieldValue: 'pid', show: false},
+            {title: '状态', fieldValue: 'status', show: true},
             {
-                fieldName: '操作',
+                title: '操作',
                 fieldValue: '',
                 show: true,
                 isActionColumns: true,
@@ -117,5 +117,9 @@ export class AdminCommentComponent implements OnInit {
         this.editInfo.content.pid = data.pid;
         // this.editInfo.content.responseId = data.responseId;
         this.editInfo.editFocus = true;
+    }
+
+    textChange(value: { value: string; originalValue: string; changed: boolean }) {
+        console.log(value)
     }
 }

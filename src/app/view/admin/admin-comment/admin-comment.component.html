@@ -50,11 +50,15 @@
 </ng-template>
 -->
 
-<common-table [request]="request" [data]="headData" cardTitle="评论管理"
-                [template]="{status:{temp:status,param:{'0':' 正常 ','3':'已删除'}}}">
+<common-table [request]="request" [headData]="headData" cardTitle="评论管理"
+              [template]="{status:{temp:status,param:{'0':' 正常 ','3':'已删除'}},content:{temp:content}}">
 </common-table>
 
 <ng-template let-originValue="originValue" let-value="value" #status>
     <nz-tag nzColor="geekblue" *ngIf="originValue==0">{{value}}</nz-tag>
     <nz-tag nzColor="#f50" *ngIf="originValue==3">{{value}}</nz-tag>
+</ng-template>
+
+<ng-template #content let-value="value">
+    <editable-tag [showBorder]="false" [text]="value" (valueChange)="textChange($event)"></editable-tag>
 </ng-template>
