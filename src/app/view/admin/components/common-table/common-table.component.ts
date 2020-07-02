@@ -54,7 +54,7 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
             count: countValue
         }
         this.pageInfo.emit({page: pageValue, pageSize: countValue})
-        this.httpService.Service<PageList<T>>(this.request).subscribe({
+        return this.httpService.Service<PageList<T>>(this.request).subscribe({
             next: resp => {
                 this.dataList = resp.result;
                 this.loading = false;
@@ -64,6 +64,12 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+        if (changes.request && !changes.request.isFirstChange()) {
+            console.log(changes.request)
+            this.request = changes.request.currentValue;
+            this.getData().unsubscribe();
+            this.getData();
+        }
     }
 
 
