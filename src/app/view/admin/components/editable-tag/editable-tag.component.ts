@@ -6,7 +6,7 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} f
         <nz-tag *ngIf="!inputVisible" class="editable-tag" title="双击进入编辑" [nzColor]="color" nzNoAnimation
                 (click)="showInput(true)"
                 [style.border-style]="showBorder ? 'solid': 'none'">
-            <ng-content></ng-content>
+            {{text}}
         </nz-tag>
         <input #inputElement
                nz-input
@@ -14,7 +14,6 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} f
                *ngIf="inputVisible"
                type="text"
                [(ngModel)]="inputValue"
-               style="width: 78px;"
                (blur)="handleInputConfirm()"
                (keydown.enter)="handleInputConfirm()"
         />
@@ -38,10 +37,12 @@ export class EditableTagComponent implements OnInit {
     inputValue = '';
     @ViewChild('inputElement', {static: false}) inputElement?: ElementRef;
 
-    @Output() valueChange = new EventEmitter<string>();
+    @Output() valueChange = new EventEmitter<{ value: string, originalValue: string, changed: boolean }>();
     @Input() color: string;
     @Input() showEditIcon: boolean;
     @Input() showBorder: boolean;
+    @Input() text: string;
+
     private doubleClickInfo = {
         date: null,
     };
@@ -56,6 +57,7 @@ export class EditableTagComponent implements OnInit {
     }
 
     showInput(doubleClick: boolean): void {
+        this.inputValue = this.text;
         if (doubleClick) {
             if (!this.doubleClickInfo.date) {
                 this.doubleClickInfo.date = new Date().getTime();
@@ -77,7 +79,12 @@ export class EditableTagComponent implements OnInit {
     }
 
     handleInputConfirm(): void {
-        this.valueChange.emit(this.inputValue)
+        this.valueChange.emit({
+            value: this.inputValue,
+            originalValue: this.text,
+            changed: this.inputValue !== this.text
+        })
+        this.text = this.inputValue;
         this.inputValue = '';
         this.inputVisible = false;
     }
