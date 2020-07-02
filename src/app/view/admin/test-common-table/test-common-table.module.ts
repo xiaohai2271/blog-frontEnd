@@ -5,6 +5,7 @@ import {Router, RouterModule} from '@angular/router';
 import {CommonTableModule} from '../components/common-table/common-table.module';
 import {NzCheckboxModule, NzTagModule} from 'ng-zorro-antd';
 import {FormsModule} from '@angular/forms';
+import {EditableTagModule} from '../components/editable-tag/editable-tag.module';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import {FormsModule} from '@angular/forms';
         CommonTableModule,
         NzTagModule,
         NzCheckboxModule,
-        FormsModule
+        FormsModule,
+        EditableTagModule
     ]
 })
 export class TestCommonTableModule {

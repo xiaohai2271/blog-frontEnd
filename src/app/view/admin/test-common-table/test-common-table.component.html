@@ -1,11 +1,11 @@
-<app-common-table [data]="data" [request]="req" cardTitle="文章管理"
-                  [template]="{
+<!--<c-common-table [data]="data" [request]="req" cardTitle="文章管理"
+                [template]="{
                       dislikeCount:{temp:tag},
                       readingNumber:{temp:readingNumber},
                       open:{temp:open},
                       original:{temp:original,param:{true:'原创',false:'转载'}
-                  }}">
-</app-common-table>
+                  }}">-->
+<!--</c-common-table>-->
 <ng-template #tag let-value="value">
     <nz-tag [nzColor]="'#87d068'">{{value}}</nz-tag>
 </ng-template>
@@ -21,3 +21,6 @@
 <ng-template #open let-value="value">
     <label nz-checkbox nzDisabled [ngModel]="value"></label>
 </ng-template>
+
+
+<editable-tag >hhh</editable-tag>
