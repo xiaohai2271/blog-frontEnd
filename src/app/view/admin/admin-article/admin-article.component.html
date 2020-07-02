@@ -1,4 +1,4 @@
-<c-common-table cardTitle="文章管理"
+<common-table cardTitle="文章管理"
                 #commonTableComponent
                 [data]="headData"
                 [request]="request"
@@ -9,7 +9,7 @@
                     dislikeCount:{temp:dislikeCount},
                     open:{temp:open}
                 }">
-</c-common-table>
+</common-table>
 
 <ng-template let-value="value" let-originValue="originValue" #original>
     <nz-tag [nzColor]="originValue?'green':'#ff5500'">{{value}}</nz-tag>

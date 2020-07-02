@@ -50,9 +50,9 @@
 </ng-template>
 -->
 
-<c-common-table [request]="request" [data]="headData" cardTitle="评论管理"
+<common-table [request]="request" [data]="headData" cardTitle="评论管理"
                 [template]="{status:{temp:status,param:{'0':' 正常 ','3':'已删除'}}}">
-</c-common-table>
+</common-table>
 
 <ng-template let-originValue="originValue" let-value="value" #status>
     <nz-tag nzColor="geekblue" *ngIf="originValue==0">{{value}}</nz-tag>
