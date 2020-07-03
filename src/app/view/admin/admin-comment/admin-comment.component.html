@@ -1,4 +1,7 @@
-<common-table [request]="request" [headData]="headData" cardTitle="评论管理"
+<common-table #commonTableComponent
+              [request]="request"
+              [headData]="headData"
+              cardTitle="评论管理"
               [template]="{status:{temp:status,param:{'0':' 正常 ','3':'已删除'}},content:{temp:content}}">
 </common-table>
 
@@ -16,3 +19,26 @@
                   (modalOK)="textChange($event,data)">
     </editable-tag>
 </ng-template>
+
+<nz-modal nzTitle="查看" [nzClosable]="true" [(nzVisible)]="modalData.visible" (nzOnOk)="modalData.visible=false"
+          [nzCancelText]="null">
+    <ng-template #commentTemplateRef let-comment="comment">
+        <nz-comment [nzAuthor]="comment && comment.fromUser.displayName" [nzDatetime]="comment&&comment.date">
+            <nz-avatar nz-comment-avatar nzIcon="user"
+                       [nzSrc]="comment && comment.fromUser && comment.fromUser.avatarImgUrl"></nz-avatar>
+            <nz-comment-content>
+                <p>{{ comment && comment.content }}</p>
+            </nz-comment-content>
+<!--            <nz-comment-action>Reply to</nz-comment-action>-->
+            <ng-container *ngIf="comment&&comment.children && comment.children.length">
+                <ng-template ngFor let-child [ngForOf]="comment&&comment.children">
+                    <ng-template [ngTemplateOutlet]="commentTemplateRef" [ngTemplateOutletContext]="{ comment: child }">
+                    </ng-template>
+                </ng-template>
+            </ng-container>
+        </nz-comment>
+    </ng-template>
+
+    <ng-template [ngTemplateOutlet]="commentTemplateRef" [ngTemplateOutletContext]="{ comment: modalData.comment }">
+    </ng-template>
+</nz-modal>

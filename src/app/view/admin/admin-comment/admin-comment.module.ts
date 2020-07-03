@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {AdminCommentComponent} from './admin-comment.component';
 import {CommonTableModule} from '../components/common-table/common-table.module';
-import {NzTagModule} from 'ng-zorro-antd';
+import {NzAvatarModule, NzCommentModule, NzModalModule, NzTagModule} from 'ng-zorro-antd';
 import {EditableTagModule} from '../components/editable-tag/editable-tag.module';
 
 
@@ -17,6 +17,9 @@ import {EditableTagModule} from '../components/editable-tag/editable-tag.module'
         CommonTableModule,
         NzTagModule,
         EditableTagModule,
+        NzModalModule,
+        NzCommentModule,
+        NzAvatarModule,
     ]
 })
 export class AdminCommentModule {

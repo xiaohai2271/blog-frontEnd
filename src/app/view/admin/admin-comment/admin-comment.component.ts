@@ -7,6 +7,7 @@ import {GlobalUserService} from '../../../services/global-user.service';
 import {Title} from '@angular/platform-browser';
 import {Data} from '../components/common-table/data';
 import {EditableTagComponent} from '../components/editable-tag/editable-tag.component';
+import {CommonTableComponent} from '../components/common-table/common-table.component';
 
 @Component({
     selector: 'app-admin-comment',
@@ -47,7 +48,12 @@ export class AdminCommentComponent implements OnInit {
         content: new CommentReq(null),
     }
     headData: Data<Comment>[];
+    modalData = {
+        visible: false,
+        comment: null
+    }
     @ViewChild('editableTagComponent') editableTagComponent: EditableTagComponent;
+    @ViewChild('commonTableComponent') commonTableComponent: CommonTableComponent<Comment>;
 
     ngOnInit(): void {
         this.headData = [
@@ -65,7 +71,13 @@ export class AdminCommentComponent implements OnInit {
                 show: true,
                 isActionColumns: true,
                 action: [
-                    {name: '查看', click: data => console.log(data)},
+                    {
+                        name: '查看',
+                        click: data => {
+                            this.modalData.visible = true
+                            this.modalData.comment = data;
+                        }
+                    },
                     {name: '删除', color: 'red', click: data => this.deleteComment(data), needConfirm: true},
                     {name: '编辑', color: '#2db7f5', click: data => this.editableTagComponent.getFocus(data.id)},
                 ]
@@ -74,9 +86,14 @@ export class AdminCommentComponent implements OnInit {
     }
 
     deleteComment(data: Comment) {
+        if (data.status === 3) {
+            this.messageService.error('该数据已被删除');
+            return
+        }
         this.apiService.deleteComment(data.id).subscribe({
             next: () => this.messageService.success('删除评论成功'),
-            error: err => this.messageService.error(err.msg)
+            error: err => this.messageService.error(err.msg),
+            complete: () => this.commonTableComponent.getData()
         })
     }
 
