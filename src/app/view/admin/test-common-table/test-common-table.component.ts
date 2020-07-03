@@ -28,21 +28,21 @@ updateDateFormat: "2020-05-27 00:55:05"*/
 
     constructor() {
         this.data = [
-            {fieldName: '主键', fieldValue: 'id', show: false, primaryKey: true},
-            {fieldName: '标题', fieldValue: 'title', show: true},
-            {fieldName: '发布日期', fieldValue: 'publishDateFormat', show: true},
-            {fieldName: '更新日期', fieldValue: 'updateDateFormat', show: true},
-            {fieldName: '文章类型', fieldValue: 'original', show: true},
-            {fieldName: '阅读量', fieldValue: 'readingNumber', show: true},
-            {fieldName: '分类', fieldValue: 'category', show: true},
-            {fieldName: '👎数', fieldValue: 'dislikeCount', show: true},
-            {fieldName: '👍数', fieldValue: 'likeCount', show: true},
-            {fieldName: '状态', fieldValue: 'open', show: true},
-            {fieldName: '简介', fieldValue: 'summary', show: false},
-            {fieldName: '作者', fieldValue: 'author.displayName', show: true},
-            {fieldName: '标签数', fieldValue: 'tags.length', show: true},
+            {title: '主键', fieldValue: 'id', show: false, primaryKey: true},
+            {title: '标题', fieldValue: 'title', show: true},
+            {title: '发布日期', fieldValue: 'publishDateFormat', show: true},
+            {title: '更新日期', fieldValue: 'updateDateFormat', show: true},
+            {title: '文章类型', fieldValue: 'original', show: true},
+            {title: '阅读量', fieldValue: 'readingNumber', show: true},
+            {title: '分类', fieldValue: 'category', show: true},
+            {title: '👎数', fieldValue: 'dislikeCount', show: true},
+            {title: '👍数', fieldValue: 'likeCount', show: true},
+            {title: '状态', fieldValue: 'open', show: true},
+            {title: '简介', fieldValue: 'summary', show: false},
+            {title: '作者', fieldValue: 'author.displayName', show: true},
+            {title: '标签数', fieldValue: 'tags.length', show: true},
             {
-                fieldName: '操作', fieldValue: '', show: true, isActionColumns: true,
+                title: '操作', fieldValue: '', show: true, isActionColumns: true,
                 action: [
                     {
                         name: '新增',
