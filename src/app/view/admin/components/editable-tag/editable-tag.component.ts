@@ -9,6 +9,7 @@ import {
     SimpleChanges,
     ViewChild
 } from '@angular/core';
+import {NzModalRef, NzModalService} from 'ng-zorro-antd';
 
 @Component({
     selector: 'editable-tag',
@@ -39,7 +40,7 @@ export class EditableTagComponent implements OnInit, OnChanges {
 
     private static instanceArray: EditableTagComponent[] = []
 
-    constructor() {
+    constructor(private modal: NzModalService) {
         EditableTagComponent.instanceArray.push(this);
     }
 
@@ -53,11 +54,15 @@ export class EditableTagComponent implements OnInit, OnChanges {
     @Input() showBorder: boolean;
     @Input() text: string;
     @Input() key: any;
+    @Input() showConfirmModal: boolean;
+    @Output() modalOK = new EventEmitter<{ value: string, originalValue: string, changed: boolean }>();
+    @Output() modalCancel = new EventEmitter<{ value: string, originalValue: string, changed: boolean }>();
 
     private tmpKey: any;
     private doubleClickInfo = {
         date: null,
     };
+    confirmModal?: NzModalRef;
 
     ngOnInit(): void {
         if (this.showEditIcon == null) {
@@ -104,14 +109,23 @@ export class EditableTagComponent implements OnInit, OnChanges {
 
 
     handleInputConfirm(): void {
-        this.valueChange.emit({
+        const value = {
             value: this.inputValue,
             originalValue: this.text,
             changed: this.inputValue !== this.text
-        })
+        }
+        this.valueChange.emit(value)
         this.text = this.inputValue;
         this.inputValue = '';
         this.inputVisible = false;
+        if (this.showConfirmModal && value.changed) {
+            this.confirmModal = this.modal.confirm({
+                nzTitle: '数据变更',
+                nzContent: '是否提交修改，点击确定提交修改，点击取消则恢复原数据',
+                nzOnOk: () => this.modalOK.emit(value),
+                nzOnCancel: () => this.modalCancel.emit(value)
+            });
+        }
     }
 
 }

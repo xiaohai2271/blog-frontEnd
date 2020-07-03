@@ -8,5 +8,11 @@
 </ng-template>
 
 <ng-template #content let-value="value" let-data="data">
-    <editable-tag #editableTagComponent [key]="data.id" [showBorder]="false" [text]="value" (valueChange)="textChange($event,data)"></editable-tag>
+    <editable-tag #editableTagComponent
+                  [key]="data.id"
+                  [showBorder]="false"
+                  [text]="value"
+                  [showConfirmModal]="true"
+                  (modalOK)="textChange($event,data)">
+    </editable-tag>
 </ng-template>
