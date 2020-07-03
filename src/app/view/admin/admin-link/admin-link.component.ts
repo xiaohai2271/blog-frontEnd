@@ -1,16 +1,17 @@
-import {Component, OnInit} from '@angular/core';
-import {PageList, Response} from '../../../class/HttpReqAndResp';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {RequestObj, Response} from '../../../class/HttpReqAndResp';
 import {Link} from '../../../class/Link';
 import {ApiService} from '../../../api/api.service';
 import {NzMessageService} from 'ng-zorro-antd';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {Title} from '@angular/platform-browser';
+import {CommonTableComponent} from '../components/common-table/common-table.component';
+import {Data} from '../components/common-table/data';
 
 @Component({
     selector: 'app-admin-link',
-    templateUrl: './admin-link.component.html',
-    styleUrls: ['./admin-link.component.less']
+    templateUrl: './admin-link.component.html'
 })
 export class AdminLinkComponent implements OnInit {
 
@@ -25,35 +26,51 @@ export class AdminLinkComponent implements OnInit {
         })
     }
 
-    pageList: PageList<Link> = new PageList<Link>();
-    loading: boolean = true;
-    pageIndex: number = 1;
-    pageSize: number = 10;
+
     modalVisible: boolean = false;
     modalTitle: string = '';
     formGroup: FormGroup;
-
-    getLinks = () => this.apiService.adminLinks(this.pageSize, this.pageIndex).subscribe({
-        next: data => this.pageList = data.result,
-        error: () => this.loading = false,
-        complete: () => this.loading = false,
-    })
+    request: RequestObj;
+    @ViewChild('commonTableComponent') commonTableComponent: CommonTableComponent<Link>
+    headData: Data<Link>[];
 
     ngOnInit(): void {
-        this.getLinks();
+        this.request = {
+            path: '/admin/links',
+            method: 'GET',
+            queryParam: {
+                count: 10,
+                page: 1
+            }
+        }
+        this.headData = [
+            {title: '主键', fieldValue: 'id', show: false, primaryKey: true},
+            {title: '友链名称', fieldValue: 'name', show: true},
+            {title: '友链地址', fieldValue: 'url', show: true},
+            {title: '是否可见', fieldValue: 'open', show: true},
+            {title: '描述', fieldValue: 'desc', show: false},
+            {title: '图标', fieldValue: 'iconPath', show: false},
+            {title: '状态', fieldValue: 'delete', show: true},
+            {
+                title: '操作', fieldValue: '', show: true, isActionColumns: true, action: [
+                    {name: '访问', click: (data) => window.open(data.url)},
+                    {name: '编辑', click: (data) => this.showEdit(data)},
+                    {name: '删除', color: 'red', needConfirm: true, click: (data) => this.delete(data.id)},
+                ]
+            },
+        ];
     }
 
     delete(id: number) {
         this.apiService.deleteLink(id).subscribe({
             next: data => {
                 this.messageService.success('删除成功');
-                this.getLinks();
+                this.commonTableComponent.getData();
             },
             error: () => {
-                this.loading = false;
                 this.messageService.error('删除失败');
             },
-            complete: () => this.loading = false,
+            complete: () => null,
         })
     }
 
@@ -84,7 +101,7 @@ export class AdminLinkComponent implements OnInit {
         observable.subscribe({
             next: data => this.messageService.success('操作成功'),
             error: err => this.messageService.error('操作失败,' + err.msg),
-            complete: () => this.getLinks()
+            complete: () => this.commonTableComponent.getData()
         })
     }
 

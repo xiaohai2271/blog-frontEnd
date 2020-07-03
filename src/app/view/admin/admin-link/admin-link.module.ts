@@ -2,16 +2,9 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {AdminLinkComponent} from './admin-link.component';
-import {
-    NzButtonModule,
-    NzCardModule,
-    NzDividerModule,
-    NzFormModule, NzIconModule, NzInputModule,
-    NzModalModule,
-    NzPopconfirmModule, NzSelectModule,
-    NzTableModule
-} from 'ng-zorro-antd';
-import {ReactiveFormsModule} from '@angular/forms';
+import {CommonTableModule} from '../components/common-table/common-table.module';
+import {NzCheckboxModule, NzFormModule, NzInputModule, NzModalModule, NzSelectModule, NzTagModule} from 'ng-zorro-antd';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -21,17 +14,16 @@ import {ReactiveFormsModule} from '@angular/forms';
     imports: [
         CommonModule,
         RouterModule.forChild([{path: '', component: AdminLinkComponent}]),
-        NzCardModule,
-        NzTableModule,
-        NzDividerModule,
-        NzPopconfirmModule,
+        CommonTableModule,
+        NzCheckboxModule,
         NzModalModule,
+        FormsModule,
         NzFormModule,
         ReactiveFormsModule,
         NzInputModule,
         NzSelectModule,
-        NzButtonModule,
-        NzIconModule
+        NzTagModule,
+
     ]
 })
 export class AdminLinkModule {

@@ -1,36 +1,18 @@
-<div class="inner-content">
-    <nz-card nzTitle="友链管理" nzSize="small" [nzExtra]="reload">
-        <button nz-button (click)="addLink()" style="margin-bottom: 15px">新增</button>
-        <nz-table #table [nzData]="pageList.list" [nzTotal]="pageList.total" [(nzPageIndex)]="pageIndex"
-                  [nzPageSize]="pageSize" [nzLoading]="loading"  [nzScroll]="{x:'1200px'}"
-                  (nzPageIndexChange)="getLinks()" nzFrontPagination="false">
-            <thead>
-            <th>友链名称</th>
-            <th>友链地址</th>
-            <th>是否可见</th>
-            <th>操作</th>
-            </thead>
-            <tbody>
-            <tr *ngFor="let data of table.data">
-                <td>{{data.name}}</td>
-                <td><a [href]="data.url" target="_blank">{{data.url}}</a></td>
-                <td>
-                    <input type="checkbox" disabled [checked]="data.open">
-                </td>
-                <td>
-                    <a (click)="showEdit(data)" class="edit-opr">编辑</a>
-                    <nz-divider nzType="vertical"></nz-divider>
-                    <a nz-popconfirm nzPopconfirmTitle="确定要删除这条友链吗?" nzOkText="删除" nzCancelText="点错了"
-                       (nzOnConfirm)="delete(data.id)" class="del-opr">删除</a>
-                </td>
-            </tr>
-            </tbody>
-        </nz-table>
-    </nz-card>
-</div>
+<common-table #commonTableComponent
+              cardTitle="友链管理"
+              [request]="request"
+              [headData]="headData"
+              [template]="{open:{temp:open,param:{true:'可见',false:'不可见'}},delete:{temp:deleteTemp,param:{true:'已删除',false:'未删除'}}}"
+>
+</common-table>
 
-<ng-template #reload>
-    <a (click)="getLinks()" title="刷新"><i nz-icon nzType="reload" nzTheme="outline"></i></a>
+<ng-template #open let-value="value">
+    <label nz-checkbox nzDisabled [ngModel]="value"></label>
+</ng-template>
+
+<ng-template let-value="value" let-originValue="originValue" #deleteTemp>
+    <nz-tag [nzColor]="'blue'" *ngIf="originValue=='false'">{{value}}</nz-tag>
+    <nz-tag [nzColor]="'#ff5500'" *ngIf="originValue!='false'">{{value}}</nz-tag>
 </ng-template>
 
 <nz-modal [(nzVisible)]="modalVisible" [nzTitle]="modalTitle" (nzOnOk)="modalConfirm()"
