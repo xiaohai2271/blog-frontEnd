@@ -85,15 +85,17 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
 
     getContext = (fieldValue: string, index: number) => {
         const valueData = this.getValue(index, fieldValue);
-        let context: { value: string, originValue?: string };
+        let context: { value: string, originValue?: string, data: T };
         if (this.template[fieldValue].param) {
             context = {
                 value: this.template[fieldValue].param[valueData],
-                originValue: valueData
+                originValue: valueData,
+                data: this.dataList.list[index]
             }
         } else {
             context = {
-                value: valueData
+                value: valueData,
+                data: this.dataList.list[index]
             }
         }
         return context;

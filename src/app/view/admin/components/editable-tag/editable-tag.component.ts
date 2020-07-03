@@ -1,9 +1,19 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChanges,
+    ViewChild
+} from '@angular/core';
 
 @Component({
     selector: 'editable-tag',
     template: `
-        <nz-tag *ngIf="!inputVisible" class="editable-tag" title="双击进入编辑" [nzColor]="color" nzNoAnimation
+        <nz-tag *ngIf="!inputVisible" title="双击进入编辑" [nzColor]="color" nzNoAnimation
                 (click)="showInput(true)"
                 [style.border-style]="showBorder ? 'solid': 'none'">
             {{text}}
@@ -23,14 +33,14 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} f
            style="cursor: pointer;margin-right: 8px;"
            (click)="showInput(false)">
         </i>
-    `,
-    styles: [`.editable-tag {
-        background: rgb(255, 255, 255);
-    }`]
+    `
 })
-export class EditableTagComponent implements OnInit {
+export class EditableTagComponent implements OnInit, OnChanges {
+
+    private static instanceArray: EditableTagComponent[] = []
 
     constructor() {
+        EditableTagComponent.instanceArray.push(this);
     }
 
     inputVisible = false;
@@ -42,7 +52,9 @@ export class EditableTagComponent implements OnInit {
     @Input() showEditIcon: boolean;
     @Input() showBorder: boolean;
     @Input() text: string;
+    @Input() key: any;
 
+    private tmpKey: any;
     private doubleClickInfo = {
         date: null,
     };
@@ -56,6 +68,13 @@ export class EditableTagComponent implements OnInit {
         }
     }
 
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.key && !changes.key.isFirstChange()) {
+            this.key = changes.key.currentValue;
+            this.getFocus(this.tmpKey);
+        }
+    }
+
     showInput(doubleClick: boolean): void {
         this.inputValue = this.text;
         if (doubleClick) {
@@ -65,18 +84,24 @@ export class EditableTagComponent implements OnInit {
             }
             if (new Date().getTime() - this.doubleClickInfo.date < 200) {
                 this.inputVisible = true;
-                setTimeout(() => {
-                    this.inputElement?.nativeElement.focus();
-                }, 10);
+                setTimeout(() => this.inputElement?.nativeElement.focus(), 10);
             }
             this.doubleClickInfo.date = new Date().getTime();
         } else {
             this.inputVisible = true;
-            setTimeout(() => {
-                this.inputElement?.nativeElement.focus();
-            }, 10);
+            setTimeout(() => this.inputElement?.nativeElement.focus(), 10);
         }
     }
+
+    getFocus(key: any) {
+        this.tmpKey = key;
+        EditableTagComponent.instanceArray.forEach(tag => {
+            if (tag.key === this.tmpKey) {
+                tag.showInput(false);
+            }
+        })
+    }
+
 
     handleInputConfirm(): void {
         this.valueChange.emit({
