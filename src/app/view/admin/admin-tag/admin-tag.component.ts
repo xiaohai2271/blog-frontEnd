@@ -1,151 +1,151 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd';
 import {Category, Tag} from '../../../class/Tag';
 import {ApiService} from '../../../api/api.service';
-import {PageList} from '../../../class/HttpReqAndResp';
+import {PageList, RequestObj} from '../../../class/HttpReqAndResp';
 import {Title} from '@angular/platform-browser';
+import {Data} from '../components/common-table/data';
+import {CommonTableComponent} from '../components/common-table/common-table.component';
+import {Router} from '@angular/router';
+import {EditableTagComponent} from '../components/editable-tag/editable-tag.component';
 
 @Component({
     selector: 'app-admin-tag',
-    templateUrl: './admin-tag.component.html',
-    styleUrls: ['./admin-tag.component.less']
+    templateUrl: './admin-tag.component.html'
 })
 export class AdminTagComponent implements OnInit {
 
-    constructor(private apiService: ApiService, private nzMessageService: NzMessageService, private title: Title) {
+    constructor(private apiService: ApiService, private nzMessageService: NzMessageService, private title: Title, private router: Router) {
     }
 
-    loading: boolean = true;
-
-    categoryList: Category[] = [];
-    editInfo = {
-        id: null,
-        name: null,
-        editFocus: false,
-        isAdd: false
+    categoryCTData: { headData: Data<Category>[], commonTable: CommonTableComponent<Category>, request: RequestObj } = {
+        headData: null,
+        commonTable: null,
+        request: null
     }
-    tagPageList: PageList<Tag> = new PageList<Tag>();
-
-    pageIndex: number = 1;
-    pageSize: number = 10;
-
+    tagCTData: { headData: Data<Category>[], commonTable: CommonTableComponent<Tag>, request: RequestObj } = {
+        headData: null,
+        commonTable: null,
+        request: null
+    }
+    @ViewChild('categoryCTComponent', {static: true}) categoryCTComponent: CommonTableComponent<Category>
+    @ViewChild('tagCTComponent', {static: true}) tagCTComponent: CommonTableComponent<Tag>
+    @ViewChild('editableTagComponent') editableTagComponent: EditableTagComponent
+    private updateData: any;
     getData: any;
 
     ngOnInit(): void {
         this.title.setTitle('小海博客 | 标签分类管理')
-        this.getCategory();
-        this.getTag();
-        this.getData = this.getTag;
+        this.categoryCTData = {
+            commonTable: this.categoryCTComponent,
+            headData: [
+                {fieldValue: 'id', title: '主键', show: false, primaryKey: true},
+                {fieldValue: 'name', title: '分类名', show: true},
+                {fieldValue: 'articles.length', title: '文章数量', show: true},
+                {
+                    fieldValue: '', title: '操作', isActionColumns: true, show: true,
+                    action: [
+                        {name: '查看', click: (data) => this.router.navigateByUrl(`/categories/${data.name}`)},
+                        {name: '编辑', color: 'blue', click: (data) => this.editableTagComponent.getFocus(data.id)},
+                        {
+                            name: '删除',
+                            color: 'red',
+                            needConfirm: true,
+                            click: (data) => this.delete(data.id, 'category')
+                        },
+                    ]
+                },
+            ],
+            request: {
+                path: '/categories',
+                method: 'GET',
+                queryParam: {
+                    page: 1,
+                    count: 1000
+                }
+            }
+        }
+        this.tagCTData = {
+            commonTable: this.tagCTComponent,
+            headData: [
+                {fieldValue: 'id', primaryKey: true, show: false, title: '主键'},
+                {fieldValue: 'name', show: true, title: '标签名'},
+                {
+                    fieldValue: '', show: true, title: '操作', isActionColumns: true, action: [
+                        {name: '查看', click: data => this.router.navigateByUrl(`/tags/${data.name}`)},
+                        {name: '编辑', color: 'blue', click: data => this.editableTagComponent.getFocus(data.id)},
+                        {name: '删除', color: 'red', needConfirm: true, click: data => this.delete(data.id, 'tag')},
+                    ]
+                },
+
+            ],
+            request: {
+                path: '/tags',
+                method: 'GET',
+                queryParam: {
+                    page: 1,
+                    count: 10
+                }
+            }
+        }
+        this.getData = this.categoryCTComponent.getData;
     }
 
-    getCategory = () => this.apiService.categories().subscribe({
-        next: data => this.categoryList = data.result.list,
-        complete: () => this.loading = false,
-        error: err => this.loading = false
-    })
-
-    getTag = () => this.apiService.tags(this.pageIndex, this.pageSize).subscribe({
-        next: data => this.tagPageList = data.result,
-        complete: () => this.loading = false,
-        error: err => this.loading = false
-    })
 
     delete(id, mode: 'tag' | 'category') {
-        this.loading = true;
         if (mode === 'tag') {
             this.apiService.deleteTag(id).subscribe({
                 next: data => {
                     this.nzMessageService.success('删除成功')
-                    this.getTag();
+                    this.tagCTComponent.getData();
                 },
-                complete: () => this.loading = false,
-                error: err => {
-                    this.nzMessageService.error(err.msg)
-                    this.loading = false
-                }
+                complete: () => null,
+                error: err => this.nzMessageService.error(err.msg)
             })
         } else if (mode === 'category') {
             this.apiService.deleteCategory(id).subscribe({
                 next: data => {
                     this.nzMessageService.success('删除成功')
-                    this.getCategory();
+                    this.categoryCTComponent.getData();
                 },
-                complete: () => this.loading = false,
-                error: err => {
-                    this.nzMessageService.error(err.msg)
-                    this.loading = false
-                }
+                complete: () => null,
+                error: err => this.nzMessageService.error(err.msg)
             })
         }
     }
 
-    editFocus(data: Category) {
-        this.editInfo.isAdd = false;
-        this.editInfo.id = data.id;
-        this.editInfo.name = data.name;
-        this.editInfo.editFocus = true;
-    }
-
-    edit(mode: 'tag' | 'category') {
-        this.loading = true;
-        if (mode === 'tag') {
-            this.apiService.updateTag(this.editInfo.id, this.editInfo.name).subscribe({
-                next: data => {
-                    this.nzMessageService.success('更新成功')
-                    this.getTag();
-                },
-                complete: () => this.loading = false,
-                error: err => {
-                    this.nzMessageService.error(err.msg)
-                    this.loading = false
-                }
-            })
-        } else if (mode === 'category') {
-            this.apiService.updateCategory(this.editInfo.id, this.editInfo.name).subscribe({
-                next: data => {
-                    this.nzMessageService.success('更新成功')
-                    this.getCategory();
-                },
-                complete: () => this.loading = false,
-                error: err => {
-                    this.nzMessageService.error(err.msg)
-                    this.loading = false
-                }
-            })
-        }
-        this.editInfo.editFocus = false
-        this.editInfo.name = null
-    }
-
-    addCategory() {
-        this.editInfo.isAdd = true
-        if (!this.editInfo.editFocus && this.editInfo.isAdd) {
-            this.editInfo.name = null;
-            this.editInfo.id = null;
-            this.editInfo.editFocus = true;
-            return
-        }
-        this.apiService.createCategory(this.editInfo.name).subscribe({
+    addCategory($event: { value: string; originalValue: string; changed: boolean }) {
+        if (!$event.value || !$event.changed) return
+        this.apiService.createCategory($event.value).subscribe({
             next: data => {
                 this.nzMessageService.success('新增成功')
-                this.getCategory();
+                this.getData = this.categoryCTComponent.getData();
             },
-            complete: () => this.loading = false,
-            error: err => {
-                this.nzMessageService.error(err.msg)
-                this.loading = false
-            }
+            complete: () => null,
+            error: err => this.nzMessageService.error(err.msg)
         });
-        this.editInfo.editFocus = false
-        this.editInfo.isAdd = false
-        this.editInfo.name = null
+
     }
 
     tabChanged(mode: 'tag' | 'category') {
-        this.editInfo.editFocus = false
-        if (mode === 'tag')
-            this.getData = this.getTag;
-        else
-            this.getData = this.getCategory;
+        if (mode === 'tag') {
+            this.getData = this.categoryCTComponent.getData;
+            this.updateData = this.apiService.updateTag;
+        } else {
+            this.getData = this.tagCTComponent.getData;
+            this.updateData = this.apiService.updateCategory
+        }
+    }
+
+    textChange(value: { value: string; originalValue: string; changed: boolean }, textData: Category | Tag) {
+        this.updateData(textData.id, value.value).subscribe({
+            next: data => {
+                this.nzMessageService.success('更新成功')
+                this.tagCTComponent.getData();
+                this.categoryCTComponent.getData();
+            },
+            complete: () => null,
+            error: err => this.nzMessageService.error(err.msg)
+        });
     }
 }
