@@ -15,13 +15,14 @@ import {NzModalRef, NzModalService} from 'ng-zorro-antd';
     selector: 'editable-tag',
     template: `
         <nz-tag *ngIf="!inputVisible" title="双击进入编辑" [nzColor]="color" nzNoAnimation
-                (click)="showInput(true)"
+                (click)="showInput(this.doubleClick)"
                 [style.border-style]="showBorder ? 'solid': 'none'">
             {{text}}
+            <ng-content></ng-content>
         </nz-tag>
         <input #inputElement
                nz-input
-               nzSize="small"
+               [nzSize]="size"
                *ngIf="inputVisible"
                type="text"
                [(ngModel)]="inputValue"
@@ -55,6 +56,9 @@ export class EditableTagComponent implements OnInit, OnChanges {
     @Input() text: string;
     @Input() key: any;
     @Input() showConfirmModal: boolean;
+    @Input() doubleClick: boolean;
+    @Input() autoClear: boolean;
+    @Input() size: 'small' | 'default' | 'large';
     @Output() modalOK = new EventEmitter<{ value: string, originalValue: string, changed: boolean }>();
     @Output() modalCancel = new EventEmitter<{ value: string, originalValue: string, changed: boolean }>();
 
@@ -71,6 +75,9 @@ export class EditableTagComponent implements OnInit, OnChanges {
         if (this.showBorder == null) {
             this.showBorder = true;
         }
+        if (this.doubleClick == null) {
+            this.doubleClick = true;
+        }
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -82,7 +89,7 @@ export class EditableTagComponent implements OnInit, OnChanges {
 
     showInput(doubleClick: boolean): void {
         this.inputValue = this.text;
-        if (doubleClick) {
+        if (this.doubleClick && doubleClick) {
             if (!this.doubleClickInfo.date) {
                 this.doubleClickInfo.date = new Date().getTime();
                 return
@@ -118,13 +125,16 @@ export class EditableTagComponent implements OnInit, OnChanges {
         this.text = this.inputValue;
         this.inputValue = '';
         this.inputVisible = false;
-        if (this.showConfirmModal && value.changed) {
+        if (this.showConfirmModal && value.changed && this.text != null) {
             this.confirmModal = this.modal.confirm({
                 nzTitle: '数据变更',
                 nzContent: '是否提交修改，点击确定提交修改，点击取消则恢复原数据',
                 nzOnOk: () => this.modalOK.emit(value),
                 nzOnCancel: () => this.modalCancel.emit(value)
             });
+        }
+        if (this.autoClear) {
+            this.text = null
         }
     }
 
