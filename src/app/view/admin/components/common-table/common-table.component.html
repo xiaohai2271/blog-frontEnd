@@ -1,4 +1,14 @@
-<nz-card nzSize="small" [nzExtra]="refresh" [nzTitle]="cardTitle" [nzLoading]="loading">
+<nz-card *ngIf="cardTitle" nzSize="small" [nzExtra]="refresh" [nzTitle]="cardTitle" [nzLoading]="loading">
+    <ng-container *ngTemplateOutlet="table"></ng-container>
+</nz-card>
+
+<ng-container [ngTemplateOutlet]="table" *ngIf="!cardTitle"></ng-container>
+
+<ng-template #refresh>
+    <i nz-icon nzType="reload" nzTheme="outline" (click)="getData()" title="刷新" style="cursor: pointer"></i>
+</ng-template>
+
+<ng-template #table>
     <nz-table nzTableLayout="fixed"
               [nzData]="dataList.list"
               [nzTotal]="dataList.total"
@@ -57,9 +67,4 @@
         </tr>
         </tbody>
     </nz-table>
-</nz-card>
-
-
-<ng-template #refresh>
-    <i nz-icon nzType="reload" nzTheme="outline" (click)="getData()" title="刷新" style="cursor: pointer"></i>
 </ng-template>

@@ -19,7 +19,7 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
      */
     @Input() headData: Data<T>[];
     @Input() request: RequestObj;
-    @Input() cardTitle: string;
+    @Input() cardTitle: string | null;
     @Input() template: {
         [fieldValue: string]: {
             temp: TemplateRef<any>,
