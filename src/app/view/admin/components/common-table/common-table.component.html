@@ -16,7 +16,8 @@
               [nzPageSize]="dataList.pageSize"
               (nzPageIndexChange)="getData()"
               nzFrontPagination="false"
-              [nzScroll]="{x:'1300px'}">
+              [nzScroll]="{x:'1300px'}"
+              [nzLoading]="loading">
         <thead>
         <tr>
             <ng-container *ngFor="let data of headData">

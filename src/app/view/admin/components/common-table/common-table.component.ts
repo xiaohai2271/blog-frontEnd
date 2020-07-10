@@ -57,7 +57,7 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
         return this.httpService.Service<PageList<T>>(this.request).subscribe({
             next: resp => {
                 this.dataList = resp.result;
-                this.loading = false;
+                setTimeout(() => this.loading = false, 10)
             },
             error: err => this.loading = false
         });
