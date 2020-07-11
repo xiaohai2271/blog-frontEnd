@@ -9,6 +9,7 @@
 </ng-template>
 
 <ng-template #table>
+    <ng-content></ng-content>
     <nz-table nzTableLayout="fixed"
               [nzData]="dataList.list"
               [nzTotal]="dataList.total"
