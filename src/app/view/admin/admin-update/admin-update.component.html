@@ -1,35 +1,8 @@
-<div class="inner-content">
-    <nz-card nzTitle="更新内容管理" nzSize="small" [nzExtra]="reload">
-        <button nz-button (click)="showModal()" style="margin-bottom: 15px;">新增</button>
-        <nz-table #table [nzData]="pageList.list" [nzTotal]="pageList.total" [(nzPageIndex)]="pageIndex"
-                  [nzPageSize]="pageSize" [nzLoading]="loading" [nzScroll]="{x:'800px'}"
-                  (nzPageIndexChange)="getUpdateInfo()" nzFrontPagination="false">
-            <thead>
-            <th>更新内容</th>
-            <th>更新日期</th>
-            <th>操作</th>
-            </thead>
-            <tbody>
-            <tr *ngFor="let data of table.data">
-                <td nz-typography nzEllipsis="true" [nzTooltipTitle]="data.info" nzTooltipPlacement="top"
-                    nz-tooltip>{{data.info}}</td>
-                <td>{{data.time}}</td>
-                <td>
-                    <a (click)="showModal(data)" class="edit-opr">编辑</a>
-                    <nz-divider nzType="vertical"></nz-divider>
-                    <a nz-popconfirm nzPopconfirmTitle="确定要删除这个更新吗?" nzOkText="删除" nzCancelText="点错了"
-                       (nzOnConfirm)="deleteUpdateInfo(data.id)" class="del-opr">删除</a>
-                </td>
-            </tr>
-            </tbody>
-        </nz-table>
-    </nz-card>
-</div>
+<common-table [request]="request" [headData]="headData" cardTitle="更新管理">
+    <button nz-button (click)="showModal()">新增</button>
+</common-table>
 
 <nz-modal [(nzVisible)]="modalData.visible" [nzClosable]="true" (nzOnCancel)="modalData.visible = false"
           (nzOnOk)="confirm()" [nzTitle]="modalData.title">
     <textarea nz-input [(ngModel)]="modalData.content" [nzAutosize]="{ minRows: 2, maxRows: 8 }"></textarea>
 </nz-modal>
-<ng-template #reload>
-    <a (click)="getUpdateInfo()" title="刷新"><i nz-icon nzType="reload" nzTheme="outline"></i></a>
-</ng-template>
