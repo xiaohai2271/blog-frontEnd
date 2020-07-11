@@ -2,15 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd';
 import {Title} from '@angular/platform-browser';
 import {FormControl, FormGroup} from '@angular/forms';
-import {PageList} from '../../../class/HttpReqAndResp';
+import {RequestObj} from '../../../class/HttpReqAndResp';
 import {ApiService} from '../../../api/api.service';
 import {User} from '../../../class/User';
 import {GlobalUserService} from '../../../services/global-user.service';
+import {Data} from '../components/common-table/data';
 
 @Component({
     selector: 'app-admin-user',
-    templateUrl: './admin-user.component.html',
-    styleUrls: ['./admin-user.component.less']
+    templateUrl: './admin-user.component.html'
 })
 export class AdminUserComponent implements OnInit {
 
@@ -32,12 +32,7 @@ export class AdminUserComponent implements OnInit {
         })
     }
 
-    pageIndex: number = 1;
-    pageSize: number = 10;
-
-    pageList: PageList<User> = new PageList<User>();
     user: User;
-    loading: boolean = true;
     modalData = {
         visible: false,
         title: null,
@@ -46,29 +41,44 @@ export class AdminUserComponent implements OnInit {
     }
     formGroup: FormGroup;
 
+    headData: Data<User>[];
+    request: RequestObj;
+
     ngOnInit(): void {
         this.title.setTitle('小海博客 | 用户管理')
-        this.getUser();
+        this.request = {
+            path: '/admin/users',
+            method: 'GET',
+            queryParam: {
+                count: 1,
+                page: 10
+            }
+        };
+        this.headData = [
+            {fieldValue: 'id', title: '主键', primaryKey: true, show: false},
+            {fieldValue: 'email', title: '邮箱', show: true},
+            {fieldValue: 'displayName', title: '昵称', show: true},
+            {fieldValue: 'role', title: '角色', show: true},
+            {fieldValue: 'emailStatus', title: '邮箱验证状态', show: true},
+            {fieldValue: 'desc', title: '描述', show: false},
+            {fieldValue: 'avatarImgUrl', title: '头像', show: false},
+            {fieldValue: 'recentlyLandedDate', title: '最近登录日期', show: false},
+            {
+                fieldValue: '', title: '操作', show: true, isActionColumns: true,
+                action: [
+                    {name: '查看', click: data => this.showModal(false, data)},
+                    {name: '编辑', color: 'blue', click: data => this.showModal(true, data)},
+                    {name: '删除', color: 'red', needConfirm: true, click: data => this.deleteUser(data.id)}
+                ]
+            },
+        ];
     }
 
-    getUser = () => this.apiService.adminUsers(this.pageSize, this.pageIndex).subscribe({
-        next: data => this.pageList = data.result,
-        complete: () => this.loading = false,
-        error: err => this.loading = false
-    })
 
     deleteUser(id) {
-        this.loading = true;
         this.apiService.deleteUser(id).subscribe({
-            next: data => {
-                this.messageService.success('删除成功')
-                this.loading = false;
-                this.getUser();
-            },
-            error: err => {
-                this.messageService.error(err.msg)
-                this.loading = false
-            }
+            next: data => this.messageService.success('删除成功'),
+            error: err => this.messageService.error(err.msg)
         })
     }
 
@@ -84,7 +94,6 @@ export class AdminUserComponent implements OnInit {
         this.modalData.visible = false
         this.apiService.adminUpdateUser(this.formGroup.value).subscribe({
             next: data => {
-                this.getUser();
                 this.messageService.success('修改用户信息成功');
                 this.userService.refreshUserInfo();
             }
