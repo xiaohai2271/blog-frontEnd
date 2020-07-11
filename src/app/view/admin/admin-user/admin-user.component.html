@@ -1,40 +1,17 @@
-<div class="inner-content">
-    <nz-card nzTitle="用户管理" nzSize="small" [nzExtra]="reload">
-        <nz-table #table [nzData]="pageList.list" [nzTotal]="pageList.total" [(nzPageIndex)]="pageIndex"
-                  [nzPageSize]="pageSize" [nzLoading]="loading" [nzScroll]="{x:'800px'}"
-                  (nzPageIndexChange)="getUser()" nzFrontPagination="false">
-            <thead>
-            <th>邮箱</th>
-            <th>昵称</th>
-            <th>角色</th>
-            <th>邮箱验证状态</th>
-            <th>操作</th>
-            </thead>
-            <tbody>
-            <tr *ngFor="let data of table.data">
-                <td>{{data.email}}</td>
-                <td>{{data.displayName}}</td>
-                <td>
-                    <nz-tag [nzColor]="'blue'" *ngIf="data.role == 'admin'">{{data.role}}</nz-tag>
-                    <nz-tag [nzColor]="'purple'" *ngIf="data.role == 'user'">{{data.role}}</nz-tag>
-                </td>
-                <td>
-                    <nz-tag [nzColor]="'green'" *ngIf="data.emailStatus">已验证</nz-tag>
-                    <nz-tag [nzColor]="'red'" *ngIf="!data.emailStatus">未验证</nz-tag>
-                </td>
-                <td>
-                    <a (click)="showModal(true, data)" class="edit-opr">编辑</a>
-                    <nz-divider nzType="vertical"></nz-divider>
-                    <a (click)="showModal(false, data)" class="show-opr">查看</a>
-                    <nz-divider nzType="vertical"></nz-divider>
-                    <a nz-popconfirm nzPopconfirmTitle="确定要删除这个用户吗?" nzOkText="删除" nzCancelText="点错了"
-                       (nzOnConfirm)="deleteUser(data.id)" class="del-opr">删除</a>
-                </td>
-            </tr>
-            </tbody>
-        </nz-table>
-    </nz-card>
-</div>
+<common-table [headData]="headData"
+              [request]="request"
+              cardTitle="用户信息管理"
+              [template]="{role:{temp:role},emailStatus:{temp:emailStatus,param:{true:'已验证',false:'未验证'}}}"
+>
+</common-table>
+<ng-template let-value="value" #role>
+    <nz-tag [nzColor]="'blue'" *ngIf="value == 'admin'">{{value}}</nz-tag>
+    <nz-tag [nzColor]="'purple'" *ngIf="value == 'user'">{{value}}</nz-tag>
+</ng-template>
+<ng-template let-value="value" let-originValue="originValue" #emailStatus>
+    <nz-tag [nzColor]="'green'" *ngIf="originValue !='false'">{{value}}</nz-tag>
+    <nz-tag [nzColor]="'red'" *ngIf="originValue !='true'">{{value}}</nz-tag>
+</ng-template>
 
 <nz-modal [(nzVisible)]="modalData.visible" [nzClosable]="true" [nzTitle]="modalData.title"
           (nzOnCancel)="modalData.visible = false" (nzOnOk)="modalConfirm()"
@@ -115,8 +92,3 @@
     </ng-template>
 
 </nz-modal>
-
-
-<ng-template #reload>
-    <a (click)="getUser()" title="刷新"><i nz-icon nzType="reload" nzTheme="outline"></i></a>
-</ng-template>

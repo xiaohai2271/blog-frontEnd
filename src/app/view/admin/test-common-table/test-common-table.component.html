@@ -1,0 +1,28 @@
+<!--<c-common-table [data]="data" [request]="req" cardTitle="文章管理"
+                [template]="{
+                      dislikeCount:{temp:tag},
+                      readingNumber:{temp:readingNumber},
+                      open:{temp:open},
+                      original:{temp:original,param:{true:'原创',false:'转载'}
+                  }}">-->
+<!--</c-common-table>-->
+<ng-template #tag let-value="value">
+    <nz-tag [nzColor]="'#87d068'">{{value}}</nz-tag>
+</ng-template>
+
+<ng-template #readingNumber let-value="value">
+    <nz-tag [nzColor]="'#f50'">{{value}}</nz-tag>
+</ng-template>
+
+<ng-template #original let-value="value" let-originValue="originValue">
+    <nz-tag [nzColor]="originValue?'#87d068':'#f50'">{{value}}</nz-tag>
+</ng-template>
+
+<ng-template #open let-value="value">
+    <label nz-checkbox nzDisabled [ngModel]="value"></label>
+</ng-template>
+
+
+<editable-tag color="green">hhh</editable-tag>
+<editable-tag color="green" [showEditIcon]="false">hhh</editable-tag>
+<editable-tag color="green" [showBorder]="false">hhh</editable-tag>

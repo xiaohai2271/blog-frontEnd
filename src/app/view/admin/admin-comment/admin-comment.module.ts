@@ -2,16 +2,9 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {AdminCommentComponent} from './admin-comment.component';
-import {
-    NzButtonModule,
-    NzCardModule,
-    NzDividerModule, NzIconModule, NzInputModule,
-    NzPopconfirmModule,
-    NzTableModule,
-    NzToolTipModule,
-    NzTypographyModule
-} from 'ng-zorro-antd';
-import {FormsModule} from '@angular/forms';
+import {CommonTableModule} from '../components/common-table/common-table.module';
+import {NzAvatarModule, NzCommentModule, NzModalModule, NzTagModule} from 'ng-zorro-antd';
+import {EditableTagModule} from '../components/editable-tag/editable-tag.module';
 
 
 @NgModule({
@@ -21,16 +14,12 @@ import {FormsModule} from '@angular/forms';
     imports: [
         CommonModule,
         RouterModule.forChild([{path: '', component: AdminCommentComponent}]),
-        NzCardModule,
-        NzTableModule,
-        NzDividerModule,
-        NzPopconfirmModule,
-        NzTypographyModule,
-        NzToolTipModule,
-        NzInputModule,
-        FormsModule,
-        NzIconModule,
-        NzButtonModule
+        CommonTableModule,
+        NzTagModule,
+        EditableTagModule,
+        NzModalModule,
+        NzCommentModule,
+        NzAvatarModule,
     ]
 })
 export class AdminCommentModule {

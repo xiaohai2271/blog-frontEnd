@@ -2,14 +2,10 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {AdminTagComponent} from './admin-tag.component';
-import {
-    NzButtonModule,
-    NzCardModule,
-    NzDividerModule, NzIconModule,
-    NzInputModule, NzPopconfirmModule,
-    NzTableModule, NzTabsModule, NzTagModule,
-} from 'ng-zorro-antd';
 import {FormsModule} from '@angular/forms';
+import {CommonTableModule} from '../components/common-table/common-table.module';
+import {EditableTagModule} from '../components/editable-tag/editable-tag.module';
+import {NzButtonModule, NzCardModule, NzIconModule, NzTabsModule} from "ng-zorro-antd";
 
 
 @NgModule({
@@ -19,16 +15,13 @@ import {FormsModule} from '@angular/forms';
     imports: [
         CommonModule,
         RouterModule.forChild([{path: '', component: AdminTagComponent}]),
-        NzCardModule,
-        NzTableModule,
-        NzDividerModule,
-        NzInputModule,
         FormsModule,
+        CommonTableModule,
+        EditableTagModule,
+        NzCardModule,
         NzTabsModule,
-        NzPopconfirmModule,
-        NzButtonModule,
         NzIconModule,
-        NzTagModule,
+        NzButtonModule,
     ]
 })
 export class AdminTagModule {

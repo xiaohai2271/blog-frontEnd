@@ -23,6 +23,7 @@ export class HttpService {
     }
 
     Service<T>(request: RequestObj) {
+        request.url = null;
         // 设置默认值
         request.contentType = request.contentType == null ? 'application/x-www-form-urlencoded' : request.contentType;
         request.header = {
@@ -32,7 +33,7 @@ export class HttpService {
         if (token != null) {
             request.header.Authorization = token;
         }
-        request.path = this.checkUrl(request);
+        request.url = this.checkUrl(request);
 
         let observable: Observable<HttpResponse<Response<T>>>;
         switch (request.method) {
@@ -73,7 +74,7 @@ export class HttpService {
     }
 
     private get<T>(request: RequestObj) {
-        return this.httpClient.get<T>(request.path,
+        return this.httpClient.get<T>(request.url,
             {
                 headers: request.header,
                 withCredentials: true,
@@ -82,7 +83,7 @@ export class HttpService {
     }
 
     private post<T>(request: RequestObj) {
-        return this.httpClient.post<T>(request.path, request.data,
+        return this.httpClient.post<T>(request.url, request.data,
             {
                 headers: request.header,
                 withCredentials: true,
@@ -91,7 +92,7 @@ export class HttpService {
     }
 
     private put<T>(request: RequestObj) {
-        return this.httpClient.put<T>(request.path, request.data,
+        return this.httpClient.put<T>(request.url, request.data,
             {
                 headers: request.header,
                 withCredentials: true,
@@ -100,7 +101,7 @@ export class HttpService {
     }
 
     private delete<T>(request: RequestObj) {
-        return this.httpClient.delete<T>(request.path,
+        return this.httpClient.delete<T>(request.url,
             {
                 headers: request.header,
                 withCredentials: true,

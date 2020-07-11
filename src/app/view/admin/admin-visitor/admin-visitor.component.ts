@@ -1,34 +1,48 @@
 import {Component, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {ApiService} from '../../../api/api.service';
-import {PageList} from '../../../class/HttpReqAndResp';
+import {RequestObj} from '../../../class/HttpReqAndResp';
 import {Visitor} from '../../../class/Visitor';
+import {Data} from '../components/common-table/data';
 
 @Component({
     selector: 'app-admin-visitor',
-    templateUrl: './admin-visitor.component.html',
-    styleUrls: ['./admin-visitor.component.less']
+    templateUrl: './admin-visitor.component.html'
 })
 export class AdminVisitorComponent implements OnInit {
 
     constructor(private apiService: ApiService, private title: Title) {
     }
 
-    pageIndex: number = 1;
-    pageSize: number = 10;
+    headData: Data<Visitor>[];
+    request: RequestObj
 
-    pageList: PageList<Visitor> = new PageList<Visitor>();
-
-    loading: boolean = true;
-
+    /***
+     * browserName: "Chrome 8"
+     browserVersion: "83.0.4103.116"
+     date: "2020-07-11 09:30:13"
+     id: 3131
+     ip: "127.0.0.1"
+     osname: "Windows 10"
+     */
     ngOnInit(): void {
         this.title.setTitle('小海博客 | 访客信息管理')
-        this.getVisitors();
+        this.request = {
+            path: '/admin/visitor/page',
+            method: 'GET',
+            queryParam: {
+                count: 1,
+                page: 10,
+                showLocation: location
+            }
+        }
+        this.headData = [
+            {fieldValue: 'id', title: '主键', show: false, primaryKey: true},
+            {fieldValue: 'date', title: '主键', show: true},
+            {fieldValue: 'browserName', title: '主键', show: true},
+            {fieldValue: 'ip', title: '主键', show: true},
+            {fieldValue: 'browserVersion', title: '主键', show: true},
+            {fieldValue: 'osname', title: '主键', show: true}
+        ]
     }
-
-    getVisitors = () => this.apiService.adminVisitors(false, this.pageSize, this.pageIndex).subscribe({
-        next: data => this.pageList = data.result,
-        complete: () => this.loading = false,
-        error: err => this.loading = false
-    })
 }

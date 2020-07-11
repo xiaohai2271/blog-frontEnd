@@ -2,6 +2,7 @@ import {HttpHeaders} from '@angular/common/http';
 
 export class RequestObj {
     path: string;
+    url?: string; // 仅在httpService里面进行使用
     method: 'GET' | 'POST' | 'PUT' | 'DELETE';
     data?: {};
     contentType?: 'application/json' | 'application/x-www-form-urlencoded';

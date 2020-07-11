@@ -3,13 +3,13 @@ import {NzMessageService} from 'ng-zorro-antd';
 import {Title} from '@angular/platform-browser';
 import {Observable} from 'rxjs';
 import {ApiService} from '../../../api/api.service';
-import {PageList, Response} from '../../../class/HttpReqAndResp';
+import {PageList, RequestObj, Response} from '../../../class/HttpReqAndResp';
 import {UpdateInfo} from '../../../class/UpdateInfo';
+import {Data} from '../components/common-table/data';
 
 @Component({
     selector: 'app-admin-update',
-    templateUrl: './admin-update.component.html',
-    styleUrls: ['./admin-update.component.less']
+    templateUrl: './admin-update.component.html'
 })
 export class AdminUpdateComponent implements OnInit {
 
@@ -17,49 +17,47 @@ export class AdminUpdateComponent implements OnInit {
     constructor(private apiService: ApiService, private nzMessage: NzMessageService, private title: Title) {
     }
 
-    pageIndex: number = 1;
-    pageSize: number = 10;
-
-    pageList: PageList<UpdateInfo> = new PageList();
-
-    loading: boolean = true;
-
     modalData = {
         visible: false,
         content: null,
         id: null,
         title: null
     };
+    headData: Data<UpdateInfo>[];
+    request: RequestObj;
 
     ngOnInit(): void {
         this.title.setTitle('小海博客 | 更新信息管理')
-        this.getUpdateInfo();
+        this.headData = [
+            {fieldValue: 'id', show: false, title: '主键', primaryKey: true},
+            {fieldValue: 'info', show: true, title: '更新内容'},
+            {fieldValue: 'time', show: true, title: '更新日期'},
+            {
+                fieldValue: '', show: true, title: '操作', isActionColumns: true, action: [
+                    {name: '编辑', click: data => this.showModal(data)},
+                    {name: '删除', color: 'red', needConfirm: true, click: data => this.deleteUpdateInfo(data.id)}
+                ]
+            }
+        ];
+        this.request = {
+            path: '/webUpdate/pages',
+            method: 'GET',
+            queryParam: {
+                count: 1,
+                page: 10,
+            }
+        }
     }
-
-    getUpdateInfo = () => this.apiService.webUpdatePage(this.pageSize, this.pageIndex).subscribe({
-        next: data => this.pageList = data.result,
-        complete: () => this.loading = false,
-        error: err => this.loading = false
-    })
 
 
     deleteUpdateInfo(id) {
-        this.loading = true;
         this.apiService.deleteWebUpdateInfo(id).subscribe({
-            next: data => {
-                this.nzMessage.success('删除成功')
-                this.loading = false;
-                this.getUpdateInfo();
-            },
-            error: err => {
-                this.nzMessage.error(err.msg)
-                this.loading = false
-            }
+            next: data => this.nzMessage.success('删除成功'),
+            error: err => this.nzMessage.error(err.msg)
         })
     }
 
     confirm() {
-        this.loading = true;
         this.modalData.visible = false;
         let observable: Observable<Response<UpdateInfo>>
         if (this.modalData.id) {
@@ -68,17 +66,9 @@ export class AdminUpdateComponent implements OnInit {
             observable = this.apiService.createWebUpdateInfo(this.modalData.content)
         }
         observable.subscribe({
-            next: data => {
-                this.nzMessage.success('操作成功')
-                this.loading = false;
-                this.getUpdateInfo();
-            },
-            error: err => {
-                this.nzMessage.error(err.msg)
-                this.loading = false
-            }
+            next: data => this.nzMessage.success('操作成功'),
+            error: err => this.nzMessage.error(err.msg)
         })
-        console.log(this.modalData);
     }
 
     showModal(data?: UpdateInfo) {

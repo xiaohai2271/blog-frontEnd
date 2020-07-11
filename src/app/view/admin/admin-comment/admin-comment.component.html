@@ -1,49 +1,44 @@
-<div class="inner-content">
-    <nz-card nzTitle="评论管理" nzSize="small" [nzExtra]="reload">
-        <nz-table #table [nzData]="pageList.list"
-                  [nzTotal]="pageList.total"
-                  [(nzPageIndex)]="pageIndex"
-                  [nzPageSize]="pageSize"
-                  [nzLoading]="loading"
-                  [nzScroll]="{x:'800px'}"
-                  (nzPageIndexChange)="getComment()"
-                  nzFrontPagination="false"
-                  nzTableLayout="fixed">
-            <thead>
-            <th nzAlign="center">评论页面</th>
-            <th nzAlign="center">评论内容</th>
-            <th nzAlign="center">评论日期</th>
-            <th nzAlign="center">操作</th>
-            </thead>
-            <tbody>
-            <tr *ngFor="let data of table.data">
-                <td nzAlign="center"><a [href]="data.pagePath">{{data.pagePath}}</a></td>
-                <td nzAlign="center" nzEllipsis="true" [nzTooltipTitle]="data.content"
-                    nzTooltipPlacement="right"
-                    nz-tooltip style="min-width: 100px;max-width: 400px">
-                    <span *ngIf="!editInfo.editFocus||data.id!==editInfo.id">{{data.content}}</span>
-                    <nz-input-group *ngIf="editInfo.editFocus&&data.id===editInfo.id"
-                                    [nzPrefix]="tagIcon" style="width: 50%" (blur)="editInfo.editFocus=false">
-                        <input type="text" nz-input [(ngModel)]="editInfo.content.content" nzSize="small"
-                               [autofocus]="editInfo.editFocus&&data.id===editInfo.id"
-                               (keyup.enter)="edit()">
-                        <button nz-button (click)="edit()" nzSize="small">更新</button>
-                        <button nz-button (click)="editInfo.editFocus=false" nzSize="small">取消</button>
-                    </nz-input-group>
-                </td>
-                <td nzAlign="center">{{data.date}}</td>
-                <td nzAlign="center">
-                    <a (click)="editFocus(data)" class="edit-opr">编辑</a>
-                    <nz-divider nzType="vertical"></nz-divider>
-                    <a nz-popconfirm nzPopconfirmTitle="确定要删除这篇文章吗?" nzOkText="删除" nzCancelText="点错了"
-                       (nzOnConfirm)="deleteComment(data.id)" class="del-opr">删除</a>
-                </td>
-            </tr>
-            </tbody>
-        </nz-table>
-    </nz-card>
-</div>
-<ng-template #tagIcon><i nz-icon nzType="message" nzTheme="outline"></i></ng-template>
-<ng-template #reload>
-    <a (click)="getComment()" title="刷新"><i nz-icon nzType="reload" nzTheme="outline"></i></a>
+<common-table #commonTableComponent
+              [request]="request"
+              [headData]="headData"
+              cardTitle="评论管理"
+              [template]="{status:{temp:status,param:{'0':' 正常 ','3':'已删除'}},content:{temp:content}}">
+</common-table>
+
+<ng-template let-originValue="originValue" let-value="value" #status>
+    <nz-tag nzColor="geekblue" *ngIf="originValue==0">{{value}}</nz-tag>
+    <nz-tag nzColor="#f50" *ngIf="originValue==3">{{value}}</nz-tag>
 </ng-template>
+
+<ng-template #content let-value="value" let-data="data">
+    <editable-tag #editableTagComponent
+                  [key]="data.id"
+                  [showBorder]="false"
+                  [text]="value"
+                  [showConfirmModal]="true"
+                  (modalOK)="textChange($event,data)">
+    </editable-tag>
+</ng-template>
+
+<nz-modal nzTitle="查看" [nzClosable]="true" [(nzVisible)]="modalData.visible" (nzOnOk)="modalData.visible=false"
+          [nzCancelText]="null">
+    <ng-template #commentTemplateRef let-comment="comment">
+        <nz-comment [nzAuthor]="comment && comment.fromUser.displayName" [nzDatetime]="comment&&comment.date">
+            <nz-avatar nz-comment-avatar nzIcon="user"
+                       [nzSrc]="comment && comment.fromUser && comment.fromUser.avatarImgUrl"></nz-avatar>
+            <nz-comment-content>
+                <p>{{ comment && comment.content }}</p>
+            </nz-comment-content>
+<!--            <nz-comment-action>Reply to</nz-comment-action>-->
+            <ng-container *ngIf="comment&&comment.children && comment.children.length">
+                <ng-template ngFor let-child [ngForOf]="comment&&comment.children">
+                    <ng-template [ngTemplateOutlet]="commentTemplateRef" [ngTemplateOutletContext]="{ comment: child }">
+                    </ng-template>
+                </ng-template>
+            </ng-container>
+        </nz-comment>
+    </ng-template>
+
+    <ng-template [ngTemplateOutlet]="commentTemplateRef" [ngTemplateOutletContext]="{ comment: modalData.comment }">
+    </ng-template>
+</nz-modal>
