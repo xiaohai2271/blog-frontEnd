@@ -38,11 +38,11 @@ export class AdminVisitorComponent implements OnInit {
         }
         this.headData = [
             {fieldValue: 'id', title: '主键', show: false, primaryKey: true},
-            {fieldValue: 'date', title: '主键', show: true},
-            {fieldValue: 'browserName', title: '主键', show: true},
-            {fieldValue: 'ip', title: '主键', show: true},
-            {fieldValue: 'browserVersion', title: '主键', show: true},
-            {fieldValue: 'osname', title: '主键', show: true}
+            {fieldValue: 'date', title: '访问日期', show: true},
+            {fieldValue: 'browserName', title: '浏览器', show: true},
+            {fieldValue: 'ip', title: 'ip地址', show: true},
+            {fieldValue: 'browserVersion', title: '浏览器版本', show: true},
+            {fieldValue: 'osname', title: '系统', show: true}
         ]
     }
 }
