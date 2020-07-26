@@ -59,6 +59,7 @@ export class EditableTagComponent implements OnInit, OnChanges {
     @Input() doubleClick: boolean;
     @Input() autoClear: boolean;
     @Input() size: 'small' | 'default' | 'large';
+    @Output() inEditStatus = new EventEmitter<void>();
     @Output() modalOK = new EventEmitter<{ value: string, originalValue: string, changed: boolean }>();
     @Output() modalCancel = new EventEmitter<{ value: string, originalValue: string, changed: boolean }>();
 
@@ -85,6 +86,10 @@ export class EditableTagComponent implements OnInit, OnChanges {
             this.key = changes.key.currentValue;
             this.getFocus(this.tmpKey);
         }
+        if (changes.text && !changes.text.isFirstChange()) {
+            this.text = changes.text.currentValue;
+            this.inputValue = changes.text.currentValue;
+        }
     }
 
     showInput(doubleClick: boolean): void {
@@ -95,12 +100,14 @@ export class EditableTagComponent implements OnInit, OnChanges {
                 return
             }
             if (new Date().getTime() - this.doubleClickInfo.date < 200) {
+                this.inEditStatus.emit()
                 this.inputVisible = true;
                 setTimeout(() => this.inputElement?.nativeElement.focus(), 10);
             }
             this.doubleClickInfo.date = new Date().getTime();
         } else {
             this.inputVisible = true;
+            this.inEditStatus.emit()
             setTimeout(() => this.inputElement?.nativeElement.focus(), 10);
         }
     }
