@@ -1,6 +1,7 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Category, Tag} from '../../../../class/Tag';
+import {ColorList} from '../../../../utils/color'
 
 @Component({
     selector: 'c-publish-form',
@@ -12,17 +13,28 @@ export class PublishFormComponent implements OnInit {
     constructor(private fb: FormBuilder) {
     }
 
-    @ViewChild('inputElement', {static: false}) tagInputElement: ElementRef;
+    @ViewChild('inputElement', {static: true}) tagInputElement: ElementRef;
 
     @Input() tagNacList: { name: string, size: number }[];
     @Input() categoryList: Category[];
     @Input() primaryData: { id: number, type: boolean, tags: string[], category: string, url?: string };
-    @Output() submitEvent = new EventEmitter<{ id: number, type: boolean, tags: string[], category: string, url?: string }>();
+    @Output() submitEvent = new EventEmitter<{
+        id: number,
+        type: boolean,
+        tags: string[],
+        category: string,
+        isUpdate: boolean,
+        url?: string
+    }>();
 
     formGroup: FormGroup;
     tagTmpList: string[] = [];
     tagInputVisible: boolean = false;
     tagListTouched: boolean = false;
+    editTagText: string = '新增';
+
+    color: string[] = [];
+    randomColor = () => this.color = ColorList.map(c => c.bgColor).sort(() => Math.floor(Math.random() * 2));
 
     ngOnInit(): void {
         this.formGroup = this.fb.group({
@@ -41,15 +53,18 @@ export class PublishFormComponent implements OnInit {
             this.formGroup.get('category').setValue(this.primaryData.category);
             this.formGroup.get('url').setValue(this.primaryData.url);
         }
+        this.randomColor();
     }
 
     publishArticle() {
+        console.log(this.formGroup.value)
         const formData = {
-            id: this.formGroup.value.isUpdate ? this.primaryData.id : null,
+            id: this.formGroup.value.isUpdate ? this.primaryData?.id : null,
             type: this.formGroup.value.type,
             tags: this.formGroup.value.tagList,
             category: this.formGroup.value.category,
-            url: this.formGroup.value.type ? null : this.formGroup.value.url
+            url: this.formGroup.value.type ? null : this.formGroup.value.url,
+            isUpdate: this.formGroup.value.isUpdate
         };
         this.submitEvent.emit(formData);
     }
@@ -58,6 +73,7 @@ export class PublishFormComponent implements OnInit {
     showTagInput() {
         this.tagInputVisible = true;
         setTimeout(() => {
+
             this.tagInputElement.nativeElement.focus();
         }, 10);
     }
@@ -69,9 +85,10 @@ export class PublishFormComponent implements OnInit {
     }
 
     // 输入框输入完成
-    handleTagInputConfirm() {
+    handleTagInputConfirm($event: { value: string; originalValue: string; changed: boolean }) {
         this.tagListTouched = true;
-        const tmpTag = this.formGroup.get('tags').value;
+        // const tmpTag = this.formGroup.get('tags').value;
+        const tmpTag = $event.value;
         if (tmpTag && this.tagTmpList.indexOf(tmpTag) === -1) {
             this.tagTmpList = [...this.tagTmpList, tmpTag];
         }
@@ -79,12 +96,13 @@ export class PublishFormComponent implements OnInit {
         this.formGroup.get('tagList').setValue(this.tagTmpList.length ? this.tagTmpList : null);
         this.formGroup.get('tagList').updateValueAndValidity();
         this.tagInputVisible = false;
+        this.editTagText = '新增'
     }
 
     // 点击tag切换
     tagChange($event: boolean, name: string) {
         this.tagListTouched = true;
-        if (this.tagTmpList.indexOf(name) > -1) {
+        if (this.tagTmpList?.indexOf(name) > -1) {
             this.tagTmpList = this.tagTmpList.filter(v => v !== name);
         } else {
             this.tagTmpList.push(name);
@@ -99,6 +117,7 @@ export class PublishFormComponent implements OnInit {
     }
 
     // 点选了文章类型
+
     articleTypeChanged() {
         this.formGroup.get(`url`).clearValidators();
         const type = this.formGroup.get(`type`).value;

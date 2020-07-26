@@ -1,6 +1,6 @@
 <form nz-form [formGroup]="formGroup" (ngSubmit)="publishArticle()">
     <!--     文章类型       -->
-    <nz-form-item *ngIf="primaryData.id">
+    <nz-form-item *ngIf="primaryData?.id">
         <nz-form-label nzSpan="4">发布为</nz-form-label>
         <nz-form-control nzSpan="19" nzOffset="1" nzErrorTip="请选择文章发布类型">
             <nz-radio-group formControlName="isUpdate">
@@ -20,37 +20,7 @@
             </nz-radio-group>
         </nz-form-control>
     </nz-form-item>
-    <!--     标签       -->
-    <nz-form-item>
-        <nz-form-label [nzSpan]="4" (click)="showTagInput()">文章标签</nz-form-label>
-        <nz-form-control [nzSpan]="19" [nzOffset]="1">
-            <input formControlName="tagList" style="display: none">
-            <nz-tag *ngFor="let t of tagTmpList" nzMode="closeable"
-                    (nzOnClose)="handleClose(t)">{{t}}</nz-tag>
-            <nz-tag *ngIf="!tagInputVisible&&tagTmpList.length<5" (click)="showTagInput()">
-                <i nz-icon nzType="plus"></i> New Tag
-            </nz-tag>
-            <input #inputElement nz-input nzSize="small" *ngIf="tagInputVisible" formControlName="tags"
-                   type="text" style="width: 78px;" (blur)="handleTagInputConfirm()"
-                   (keydown.enter)="handleTagInputConfirm()">
 
-            <div *ngIf="tagListTouched&&formGroup.get('tagList').hasError('required')"
-                 class="errTip">未选择或添加标签
-            </div>
-
-            <nz-card nzSize="small" nzTitle="已有标签" title="最多可选五个标签">
-                <nz-tag *ngFor="let tag of tagNacList"
-                        style="margin: 4px; border: 1px dashed #6A6A6A;user-select: none"
-                        [nzMode]="(tagTmpList.length<5||tagTmpList.indexOf(tag.name) > -1)?'checkable':'default'"
-                        [nzChecked]="tagTmpList.indexOf(tag.name) > -1"
-                        (nzCheckedChange)="tagChange($event,tag.name)">
-                    {{ tag.name }}
-                </nz-tag>
-            </nz-card>
-
-
-        </nz-form-control>
-    </nz-form-item>
     <!--      文章分类      -->
     <nz-form-item>
         <nz-form-label nzSpan="4">文章分类</nz-form-label>
@@ -80,6 +50,40 @@
             <div *ngIf="formGroup.get('url').touched&&formGroup.get('url').hasError('pattern')"
                  class="errTip">原文链接不合法
             </div>
+        </nz-form-control>
+    </nz-form-item>
+
+    <!--     标签       -->
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4" (click)="showTagInput()">文章标签</nz-form-label>
+        <nz-form-control [nzSpan]="19" [nzOffset]="1">
+            <input formControlName="tagList" style="display: none">
+            <nz-tag *ngFor="let t of tagTmpList;let i =index" nzMode="closeable"
+                    (nzOnClose)="handleClose(t)" [nzColor]="color[i]">{{t}}</nz-tag>
+            <div style="display: inline-block; width: 60px">
+                <editable-tag *ngIf="tagTmpList?.length!=5" [autoClear]="false"
+                              [text]="editTagText"
+                              [showConfirmModal]="false"
+                              [showEditIcon]="false"
+                              (inEditStatus)="editTagText=null"
+                              (valueChange)="handleTagInputConfirm($event)"
+                              size="small">
+                    <i nz-icon nzType="plus"></i>
+                </editable-tag>
+            </div>
+
+            <span *ngIf="tagListTouched&&formGroup.get('tagList').hasError('required')" class="errTip">未选择或添加标签</span>
+            <nz-card nzSize="small" nzTitle="已有标签" title="最多可选五个标签" style="margin-top: 10px;">
+                <nz-tag *ngFor="let tag of tagNacList"
+                        style="margin: 4px; border: 1px dashed #6A6A6A;user-select: none"
+                        [nzMode]="(tagTmpList?.length<5||tagTmpList?.indexOf(tag.name) > -1)?'checkable':'default'"
+                        [nzChecked]="tagTmpList&&tagTmpList.indexOf(tag.name) > -1"
+                        (nzCheckedChange)="tagChange($event,tag.name)">
+                    {{ tag.name }}
+                </nz-tag>
+            </nz-card>
+
+
         </nz-form-control>
     </nz-form-item>
 

@@ -15,6 +15,7 @@ import {
     NzSelectModule,
     NzTagModule
 } from 'ng-zorro-antd';
+import {EditableTagModule} from '../admin/components/editable-tag/editable-tag.module';
 
 const routes: Route[] = [
     {path: '**', component: WriteComponent}
@@ -38,6 +39,7 @@ const routes: Route[] = [
         NzSelectModule,
         NzCardModule,
         NzDividerModule,
+        EditableTagModule
     ]
 })
 export class WriteModule {

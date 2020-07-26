@@ -35,7 +35,7 @@ export class WriteComponent implements OnInit {
     userInfo: User;
     categoryList: Tag[];
     tagNacList: { name: string, size: number }[];
-    primaryData = {};
+    primaryData = null;
     // 发布新文章时，文章相同会被拦回 此处判断一下
     title: string;
 
@@ -44,6 +44,8 @@ export class WriteComponent implements OnInit {
     // 同步属性内容
     syncModel(str): void {
         this.article.mdContent = str;
+        // 文章 暂存
+        localStorage.setItem('tmpArticle', JSON.stringify(this.article));
     }
 
 
@@ -109,12 +111,13 @@ export class WriteComponent implements OnInit {
     /**
      * 文章数据提交
      */
-    publishArticle(e: { id: number, type: boolean, tags: string[], category: string, url?: string }) {
+    publishArticle(e: { id: number; type: boolean; tags: string[]; category: string; isUpdate: boolean; url?: string }) {
         this.article.type = e.type;
         this.article.tags = e.tags;
         this.article.category = e.category;
         this.article.url = e.url;
         this.article.id = e.id;
+        this.isUpdate = e.isUpdate
 
         this.modalVisible = false;
 
@@ -123,11 +126,8 @@ export class WriteComponent implements OnInit {
         //     return;
         // }
 
-        // 文章 暂存
-        localStorage.setItem('tmpArticle', JSON.stringify(this.article));
 
         this.article.url = this.article.type ? null : this.article.url;
-
         if (!this.isUpdate) {
             // 非文章更新
 
@@ -149,6 +149,7 @@ export class WriteComponent implements OnInit {
                     if (err.code === 3020) {
                         this.message.error('你没有发布文章的权限,文章替你暂存在本地');
                     }
+                    this.message.error(err.msg);
                 }
             });
 
@@ -163,13 +164,13 @@ export class WriteComponent implements OnInit {
                         this.router.navigateByUrl('article/' + data.result.id);
                     }, 2500);
                 },
-                error: e => {
-                    if (e.code === 3010) {
+                error: err => {
+                    if (err.code === 3010) {
                         this.router.navigateByUrl('login');
-                    } else if (e.code === 3020) {
+                    } else if (err.code === 3020) {
                         this.message.error('你没有更新文章的权限');
                     } else {
-                        this.message.error('失败，原因：' + e.msg);
+                        this.message.error('失败，原因：' + err.msg);
                     }
                 }
             });
