@@ -67,7 +67,8 @@
                               [showEditIcon]="false"
                               (inEditStatus)="editTagText=null"
                               (valueChange)="handleTagInputConfirm($event)"
-                              size="small">
+                              size="small"
+                              [doubleClick]="false">
                     <i nz-icon nzType="plus"></i>
                 </editable-tag>
             </div>
