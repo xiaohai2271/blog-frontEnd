@@ -9,7 +9,7 @@ import {ArticleReq} from '../class/Article';
 import {Category, Tag} from '../class/Tag';
 import {Comment} from '../class/Comment';
 import {CommentReq} from '../class/Comment';
-import {Link} from '../class/Link';
+import {ApplyLinkReq, Link} from '../class/Link';
 import {User} from '../class/User';
 import {LoginReq} from '../class/User';
 
@@ -292,13 +292,20 @@ export class ApiService extends HttpService {
         });
     }
 
-    applyLink(link: Link) {
+    applyLink(link: ApplyLinkReq) {
+        return super.Service<string>({
+            path: '/apply',
+            method: 'POST',
+            data: link
+        });
+    }
+
+    reapplyLink(keyStr: string) {
         return super.Service<string>({
             path: '/apply',
             method: 'POST',
             queryParam: {
-                name: link.name,
-                url: link.url
+                key: keyStr
             }
         });
     }
