@@ -46,14 +46,6 @@ export class LinkComponent implements OnInit {
             name: [null, [Validators.required, Validators.maxLength(255)]],
             url: [null, [Validators.required, Validators.pattern(/^([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/)]]
         });
-        this.applyFormGroup.patchValue({
-            desc: '百度',
-            email: 'a@celess.cn',
-            iconPath: 'baidu.com',
-            linkUrl: 'baidu.com',
-            name: '百度',
-            url: 'baidu.com'
-        })
     }
 
     apply() {
@@ -67,6 +59,7 @@ export class LinkComponent implements OnInit {
                 this.message.success('提交成功，请稍等，即将为你处理');
                 this.loading = false;
                 this.showModal = false;
+                this.applyFormGroup.reset()
             },
             error: err => {
                 if (err.code === 7200) {
@@ -87,6 +80,7 @@ export class LinkComponent implements OnInit {
                 }
                 this.loading = false;
                 this.showModal = false;
+                this.applyFormGroup.reset()
             }
         });
     }
