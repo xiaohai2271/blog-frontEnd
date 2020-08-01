@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {NzMessageService} from 'ng-zorro-antd';
+import {NzMessageService, NzModalService} from 'ng-zorro-antd';
 import {Title} from '@angular/platform-browser';
 import {ApiService} from '../../api/api.service';
-import {Link} from '../../class/Link';
+import {ApplyLinkReq, Link} from '../../class/Link';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
     selector: 'view-link',
@@ -13,7 +14,9 @@ export class LinkComponent implements OnInit {
 
     constructor(private message: NzMessageService,
                 private titleService: Title,
-                private apiService: ApiService) {
+                private apiService: ApiService,
+                private fb: FormBuilder,
+                private modal: NzModalService) {
         titleService.setTitle('小海博客 | 友链');
     }
 
@@ -23,39 +26,69 @@ export class LinkComponent implements OnInit {
     link: Link;
 
     linkList: Link[];
+    loading: boolean = false;
+    applyFormGroup: FormGroup;
 
     ngOnInit() {
         window.scrollTo(0, 0);
         this.link = new Link();
-        this.apiService.links().subscribe(data => {
-                this.linkList = data.result;
-            },
-            error => {
-                this.message.error(error.msg);
-            });
+        this.apiService.links().subscribe({
+            next: data => this.linkList = data.result,
+            error: err => this.message.error(err.msg)
+        });
+        this.applyFormGroup = this.fb.group({
+            urlLinkProtocol: ['http://'],
+            urlProtocol: ['http://'],
+            desc: [null, [Validators.maxLength(255)]],
+            email: [null, [Validators.required, Validators.pattern(/^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/)]],
+            iconPath: [null, [Validators.pattern(/^(https:\/\/|http:\/\/|)([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/)]],
+            linkUrl: [null, [Validators.required, Validators.pattern(/^([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/)]],
+            name: [null, [Validators.required, Validators.maxLength(255)]],
+            url: [null, [Validators.required, Validators.pattern(/^([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/)]]
+        });
+        this.applyFormGroup.patchValue({
+            desc: '百度',
+            email: 'a@celess.cn',
+            iconPath: 'baidu.com',
+            linkUrl: 'baidu.com',
+            name: '百度',
+            url: 'baidu.com'
+        })
     }
 
     apply() {
-        if (this.link.name === '') {
-            this.message.error('网站名称不能为空');
-            return;
-        }
-        if (this.link.url === '') {
-            this.message.error('网站链接不能为空');
-            return;
-        }
-        const regExp = /^(https:\/\/|http:\/\/|)([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/;
-        if (!regExp.test(this.link.url)) {
-            this.message.error('网站链接输入不合法');
-            return;
-        }
-        this.showModal = false;
-        this.apiService.applyLink(this.link).subscribe(data => {
+        const value = this.applyFormGroup.value;
+        value.url = value.urlProtocol + value.url;
+        value.linkUrl = value.urlLinkProtocol + value.linkUrl;
+        const req: ApplyLinkReq = value;
+        this.loading = true;
+        this.apiService.applyLink(req).subscribe({
+            next: data => {
                 this.message.success('提交成功，请稍等，即将为你处理');
+                this.loading = false;
+                this.showModal = false;
             },
-            error => {
-                this.message.error('提交失败，原因：' + error.msg);
-            });
+            error: err => {
+                if (err.code === 7200) {
+                    const key = err.result;
+                    this.modal.create({
+                        nzTitle: '抓取站点失败',
+                        nzContent: '暂未在您的网站友链页抓取到本站链接，是否确认已添加并重新提交邮件申请？',
+                        nzClosable: false,
+                        nzOnOk: () => {
+                            this.apiService.reapplyLink(key).subscribe({
+                                next: data1 => this.message.success('提交成功，请稍等，即将为你处理'),
+                                error: err1 => this.message.error('提交失败，原因：' + err.msg)
+                            })
+                        }
+                    });
+                } else {
+                    this.message.error('提交失败，原因：' + err.msg);
+                }
+                this.loading = false;
+                this.showModal = false;
+            }
+        });
     }
 
     cancel() {
