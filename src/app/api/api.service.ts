@@ -296,13 +296,14 @@ export class ApiService extends HttpService {
         return super.Service<string>({
             path: '/apply',
             method: 'POST',
-            data: link
+            data: link,
+            contentType: 'application/json'
         });
     }
 
     reapplyLink(keyStr: string) {
         return super.Service<string>({
-            path: '/apply',
+            path: '/reapply',
             method: 'POST',
             queryParam: {
                 key: keyStr
