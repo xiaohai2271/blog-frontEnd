@@ -1,21 +1,24 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {LinkComponent} from './link.component';
-import {LinkRoutingModule} from './link-routing.module';
-import {NzButtonModule, NzIconModule, NzInputModule, NzModalModule} from 'ng-zorro-antd';
-import {FormsModule} from '@angular/forms';
+import {NzButtonModule, NzFormModule, NzIconModule, NzInputModule, NzModalModule, NzSelectModule} from 'ng-zorro-antd';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {RouterModule} from '@angular/router';
 
 
 @NgModule({
     declarations: [LinkComponent],
     imports: [
         CommonModule,
-        LinkRoutingModule,
         NzIconModule,
         NzModalModule,
         FormsModule,
         NzButtonModule,
-        NzInputModule
+        NzInputModule,
+        RouterModule.forChild([{path: '**', component: LinkComponent}]),
+        NzFormModule,
+        ReactiveFormsModule,
+        NzSelectModule
     ]
 })
 export class LinkModule {
