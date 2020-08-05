@@ -1,28 +1,34 @@
-import {Injectable} from '@angular/core';
+import {forwardRef, Inject, Injectable, Injector} from '@angular/core';
 import {RequestObj} from '../../class/HttpReqAndResp';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {LocalStorageService} from '../../services/local-storage.service';
 import {Response} from '../../class/HttpReqAndResp';
-import {Observable, Observer, Subject} from 'rxjs';
-import {ErrDispatch} from '../../class/ErrDispatch';
+import {Observable, Observer, Subscription} from 'rxjs';
+import {ErrorService} from '../../services/error.service';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class HttpService {
 
     constructor(private httpClient: HttpClient,
-                protected localStorageService: LocalStorageService) {
+                protected localStorageService: LocalStorageService,
+                private injector: Injector) {
     }
 
-    private errorDispatch: ErrDispatch;
+    private subscriptionQueue: Subscription[] = [];
 
-    setErrDispatch(errDispatch: ErrDispatch) {
-        this.errorDispatch = errDispatch;
-    }
+    // private errorDispatch: ErrDispatch;
+
+    public getSubscriptionQueue = () => this.subscriptionQueue;
+
+    // setErrDispatch(errDispatch: ErrDispatch) {
+    //     this.errorDispatch = errDispatch;
+    // }
 
     Service<T>(request: RequestObj) {
+        const errorService = this.injector.get(ErrorService);
         request.url = null;
         // 设置默认值
         request.contentType = request.contentType == null ? 'application/x-www-form-urlencoded' : request.contentType;
@@ -55,21 +61,30 @@ export class HttpService {
 
         const oob = new Observable<Response<T>>(o => observer = o);
 
-        observable.subscribe(o => {
-            const tokenFromReps = o.headers.get('Authorization');
-            if (tokenFromReps) {
-                this.localStorageService.setToken(tokenFromReps);
-            }
-            if (o.body.code !== 0) {
-                observer.error(o.body);
-                if (this.errorDispatch) {
-                    this.errorDispatch.errHandler(o.body.code, o.body.msg, request);
+        const subscription = observable.subscribe({
+            next: o => {
+                const tokenFromReps = o.headers.get('Authorization');
+                if (tokenFromReps) {
+                    this.localStorageService.setToken(tokenFromReps);
                 }
-            } else {
-                observer.next(o.body);
-            }
-            observer.complete();
+                if (o.body.code !== 0) {
+                    observer.error(o.body);
+                    errorService.httpException(o.body)
+                    // if (this.errorDispatch) {
+                    //     this.errorDispatch.errHandler(o.body.code, o.body.msg, request);
+                    // }
+                } else {
+                    observer.next(o.body);
+                }
+                observer.complete();
+            },
+            error: err => {
+                errorService.httpError(err);
+                this.subscriptionQueue.splice(this.subscriptionQueue.indexOf(subscription), 1)
+            },
+            complete: () => this.subscriptionQueue.splice(this.subscriptionQueue.indexOf(subscription), 1)
         });
+        this.subscriptionQueue.push(subscription);
         return oob;
     }
 

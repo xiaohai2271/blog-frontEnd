@@ -3,7 +3,6 @@ import {environment} from '../../../../../environments/environment';
 import {ApiService} from '../../../../api/api.service';
 import {NzMessageService} from 'ng-zorro-antd';
 import {Router} from '@angular/router';
-import {ErrDispatch} from '../../../../class/ErrDispatch';
 import {RequestObj} from '../../../../class/HttpReqAndResp';
 import {LoginReq} from '../../../../class/User';
 import {Title} from '@angular/platform-browser';
@@ -14,13 +13,12 @@ import {Title} from '@angular/platform-browser';
     styleUrls: ['./registration.component.less'],
     providers: [ApiService]
 })
-export class RegistrationComponent implements OnInit, ErrDispatch {
+export class RegistrationComponent implements OnInit {
 
     constructor(private apiService: ApiService,
                 private  nzMessageService: NzMessageService,
                 private router: Router,
                 private title: Title) {
-        // apiService.setErrDispatch(this);
         this.title.setTitle('小海博客 | 注册');
     }
 
