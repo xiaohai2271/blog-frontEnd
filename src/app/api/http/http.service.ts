@@ -12,7 +12,7 @@ import {ErrorService} from '../../services/error.service';
 export class HttpService {
 
     constructor(private httpClient: HttpClient,
-                protected localStorageService: LocalStorageService,
+                private localStorageService: LocalStorageService,
                 private injector: Injector) {
     }
 
@@ -70,6 +70,7 @@ export class HttpService {
             },
             error: err => {
                 errorService.httpError(err);
+                errorService.checkConnection();
                 this.subscriptionQueue.splice(this.subscriptionQueue.indexOf(subscription), 1)
             },
             complete: () => this.subscriptionQueue.splice(this.subscriptionQueue.indexOf(subscription), 1)
@@ -78,7 +79,7 @@ export class HttpService {
         return oob;
     }
 
-    private get<T>(request: RequestObj) {
+    get<T>(request: RequestObj) {
         return this.httpClient.get<T>(request.url,
             {
                 headers: request.header,
@@ -87,7 +88,7 @@ export class HttpService {
             });
     }
 
-    private post<T>(request: RequestObj) {
+    post<T>(request: RequestObj) {
         return this.httpClient.post<T>(request.url, request.data,
             {
                 headers: request.header,
@@ -96,7 +97,7 @@ export class HttpService {
             });
     }
 
-    private put<T>(request: RequestObj) {
+    put<T>(request: RequestObj) {
         return this.httpClient.put<T>(request.url, request.data,
             {
                 headers: request.header,
@@ -105,7 +106,7 @@ export class HttpService {
             });
     }
 
-    private delete<T>(request: RequestObj) {
+    delete<T>(request: RequestObj) {
         return this.httpClient.delete<T>(request.url,
             {
                 headers: request.header,
