@@ -1,28 +1,27 @@
-import {Injectable} from '@angular/core';
-import {RequestObj} from '../../class/HttpReqAndResp';
+import {Injectable, Injector} from '@angular/core';
+import {RequestObj, Response} from '../../class/HttpReqAndResp';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {LocalStorageService} from '../../services/local-storage.service';
-import {Response} from '../../class/HttpReqAndResp';
-import {Observable, Observer, Subject} from 'rxjs';
-import {ErrDispatch} from '../../class/ErrDispatch';
+import {Observable, Observer, Subscription} from 'rxjs';
+import {ErrorService} from '../../services/error.service';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class HttpService {
 
     constructor(private httpClient: HttpClient,
-                protected localStorageService: LocalStorageService) {
+                private localStorageService: LocalStorageService,
+                private injector: Injector) {
     }
 
-    private errorDispatch: ErrDispatch;
+    private subscriptionQueue: Subscription[] = [];
 
-    setErrDispatch(errDispatch: ErrDispatch) {
-        this.errorDispatch = errDispatch;
-    }
+    public getSubscriptionQueue = () => this.subscriptionQueue;
 
     Service<T>(request: RequestObj) {
+        const errorService = this.injector.get(ErrorService);
         request.url = null;
         // 设置默认值
         request.contentType = request.contentType == null ? 'application/x-www-form-urlencoded' : request.contentType;
@@ -55,25 +54,32 @@ export class HttpService {
 
         const oob = new Observable<Response<T>>(o => observer = o);
 
-        observable.subscribe(o => {
-            const tokenFromReps = o.headers.get('Authorization');
-            if (tokenFromReps) {
-                this.localStorageService.setToken(tokenFromReps);
-            }
-            if (o.body.code !== 0) {
-                observer.error(o.body);
-                if (this.errorDispatch) {
-                    this.errorDispatch.errHandler(o.body.code, o.body.msg, request);
+        const subscription = observable.subscribe({
+            next: o => {
+                const tokenFromReps = o.headers.get('Authorization');
+                if (tokenFromReps) {
+                    this.localStorageService.setToken(tokenFromReps);
                 }
-            } else {
-                observer.next(o.body);
-            }
-            observer.complete();
+                if (o.body.code !== 0) {
+                    observer.error(o.body);
+                    errorService.httpException(o.body)
+                } else {
+                    observer.next(o.body);
+                }
+                observer.complete();
+            },
+            error: err => {
+                errorService.httpError(err);
+                errorService.checkConnection();
+                this.subscriptionQueue.splice(this.subscriptionQueue.indexOf(subscription), 1)
+            },
+            complete: () => this.subscriptionQueue.splice(this.subscriptionQueue.indexOf(subscription), 1)
         });
+        this.subscriptionQueue.push(subscription);
         return oob;
     }
 
-    private get<T>(request: RequestObj) {
+    get<T>(request: RequestObj) {
         return this.httpClient.get<T>(request.url,
             {
                 headers: request.header,
@@ -82,7 +88,7 @@ export class HttpService {
             });
     }
 
-    private post<T>(request: RequestObj) {
+    post<T>(request: RequestObj) {
         return this.httpClient.post<T>(request.url, request.data,
             {
                 headers: request.header,
@@ -91,7 +97,7 @@ export class HttpService {
             });
     }
 
-    private put<T>(request: RequestObj) {
+    put<T>(request: RequestObj) {
         return this.httpClient.put<T>(request.url, request.data,
             {
                 headers: request.header,
@@ -100,7 +106,7 @@ export class HttpService {
             });
     }
 
-    private delete<T>(request: RequestObj) {
+    delete<T>(request: RequestObj) {
         return this.httpClient.delete<T>(request.url,
             {
                 headers: request.header,

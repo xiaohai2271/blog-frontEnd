@@ -3,7 +3,15 @@ import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {AdminLinkComponent} from './admin-link.component';
 import {CommonTableModule} from '../components/common-table/common-table.module';
-import {NzCheckboxModule, NzFormModule, NzInputModule, NzModalModule, NzSelectModule, NzTagModule} from 'ng-zorro-antd';
+import {
+    NzButtonModule,
+    NzCheckboxModule,
+    NzFormModule,
+    NzInputModule,
+    NzModalModule,
+    NzSelectModule,
+    NzTagModule
+} from 'ng-zorro-antd';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
@@ -23,6 +31,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
         NzInputModule,
         NzSelectModule,
         NzTagModule,
+        NzButtonModule,
 
     ]
 })

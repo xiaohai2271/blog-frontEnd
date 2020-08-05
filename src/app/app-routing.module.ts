@@ -11,17 +11,15 @@ const routes: Routes = [
     {path: 'resetPwd', loadChildren: () => import('./view/reset-pwd/reset-pwd.module').then(mod => mod.ResetPwdModule)},
     {path: 'write', loadChildren: () => import('./view/write/write.module').then(mod => mod.WriteModule)},
     {path: 'links', loadChildren: () => import('./view/link/link.module').then(mod => mod.LinkModule)},
+    {path: 'admin', loadChildren: () => import('./view/admin/admin.module').then(mod => mod.AdminModule)},
+    {path: 'maintain', loadChildren: () => import('./view/maintain/maintain.module').then(mod => mod.MaintainModule)},
     {
         path: 'emailVerify',
         loadChildren: () => import('./view/email-verify/email-verify.module').then(mod => mod.EmailVerifyModule)
     },
     {
-        path: 'user', loadChildren: () => import('./view/login-registration/login-registration.module')
-            .then(mod => mod.LoginRegistrationModule)
-    },
-    {
-        path: 'admin',
-        loadChildren: () => import('./view/admin/admin.module').then(mod => mod.AdminModule),
+        path: 'user',
+        loadChildren: () => import('./view/login-registration/login-registration.module').then(mod => mod.LoginRegistrationModule)
     },
     {
         path: '**',

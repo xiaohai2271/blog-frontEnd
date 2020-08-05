@@ -3,11 +3,9 @@ import {ApiService} from '../../api/api.service';
 import {Article} from '../../class/Article';
 import {NzIconService, NzMessageService} from 'ng-zorro-antd';
 import {SvgIconUtil} from '../../utils/svgIconUtil';
-import {PageList} from '../../class/HttpReqAndResp';
-import {ErrDispatch} from '../../class/ErrDispatch';
-import {RequestObj} from '../../class/HttpReqAndResp';
+import {PageList, RequestObj} from '../../class/HttpReqAndResp';
 import {Router} from '@angular/router';
-import {Category, Tag} from '../../class/Tag';
+import {Category} from '../../class/Tag';
 import {Title} from '@angular/platform-browser';
 
 @Component({
@@ -16,7 +14,7 @@ import {Title} from '@angular/platform-browser';
     styleUrls: ['./index.component.less'],
     providers: [ApiService]
 })
-export class IndexComponent implements OnInit, ErrDispatch {
+export class IndexComponent implements OnInit {
 
     constructor(private apiService: ApiService,
                 private iconService: NzIconService,
@@ -24,7 +22,6 @@ export class IndexComponent implements OnInit, ErrDispatch {
                 private router: Router,
                 private title: Title) {
         this.iconService.addIconLiteral('blog:location', SvgIconUtil.locationIcon);
-        apiService.setErrDispatch(this);
         title.setTitle('小海博客');
     }
 

@@ -4,6 +4,7 @@
               [headData]="headData"
               [template]="{open:{temp:open,param:{true:'可见',false:'不可见'}},delete:{temp:deleteTemp,param:{true:'已删除',false:'未删除'}}}"
 >
+    <button nz-button (click)="addLink()">添加</button>
 </common-table>
 
 <ng-template #open let-value="value">
