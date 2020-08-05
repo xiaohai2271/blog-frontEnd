@@ -31,7 +31,7 @@ export class ErrorService {
     public httpException(response: Response<any>) {
         if (!environment.production)
             console.log('exception=>', response)
-        if (response.code === -1 && response.msg === '请求重复') return
+        if (response.code === -1 && response.msg === '重复请求') return
         if (this.componentStateService.currentPath === this.ADMIN_PAGE_PREFIX) {
             this.notification.create('error', `请求失败<${response.code}>`, `${response.msg}`);
         }
