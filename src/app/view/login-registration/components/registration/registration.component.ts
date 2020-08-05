@@ -20,7 +20,7 @@ export class RegistrationComponent implements OnInit, ErrDispatch {
                 private  nzMessageService: NzMessageService,
                 private router: Router,
                 private title: Title) {
-        apiService.setErrDispatch(this);
+        // apiService.setErrDispatch(this);
         this.title.setTitle('小海博客 | 注册');
     }
 

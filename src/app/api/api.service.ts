@@ -1,10 +1,7 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-
+import {forwardRef, Inject, Injectable} from '@angular/core';
 import {Article} from '../class/Article';
 import {HttpService} from './http/http.service';
 import {PageList} from '../class/HttpReqAndResp';
-import {ErrDispatch} from '../class/ErrDispatch';
 import {ArticleReq} from '../class/Article';
 import {Category, Tag} from '../class/Tag';
 import {Comment} from '../class/Comment';
@@ -12,28 +9,21 @@ import {CommentReq} from '../class/Comment';
 import {ApplyLinkReq, Link} from '../class/Link';
 import {User} from '../class/User';
 import {LoginReq} from '../class/User';
-
-import {LocalStorageService} from '../services/local-storage.service';
 import {Visitor} from '../class/Visitor';
 import {UpdateInfo} from '../class/UpdateInfo';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ApiService extends HttpService {
+export class ApiService {
 
-    constructor(httpClient: HttpClient,
-                localStorageService: LocalStorageService) {
-        super(httpClient, localStorageService);
-    }
 
-    setErrDispatch(errDispatch: ErrDispatch) {
-        super.setErrDispatch(errDispatch);
+    constructor(private httpService: HttpService) {
     }
 
     createArticle(article: ArticleReq) {
         article.id = null;
-        return super.Service<Article>({
+        return this.httpService.Service<Article>({
             path: '/admin/article/create',
             contentType: 'application/json',
             method: 'POST',
@@ -42,7 +32,7 @@ export class ApiService extends HttpService {
     }
 
     deleteArticle(id: number) {
-        return super.Service<boolean>({
+        return this.httpService.Service<boolean>({
             path: '/admin/article/del',
             method: 'DELETE',
             queryParam: {articleID: id}
@@ -50,7 +40,7 @@ export class ApiService extends HttpService {
     }
 
     articles(pageNumber: number = 1, pageSize: number = 5) {
-        return super.Service<PageList<Article>>({
+        return this.httpService.Service<PageList<Article>>({
             path: '/articles',
             method: 'GET',
             queryParam: {
@@ -61,7 +51,7 @@ export class ApiService extends HttpService {
     }
 
     adminArticles(pageNumber: number = 1, pageSize: number = 10) {
-        return super.Service<PageList<Article>>({
+        return this.httpService.Service<PageList<Article>>({
             path: '/admin/articles',
             method: 'GET',
             queryParam: {
@@ -72,7 +62,7 @@ export class ApiService extends HttpService {
     }
 
     updateArticle(article: ArticleReq) {
-        return super.Service<Article>({
+        return this.httpService.Service<Article>({
             path: '/admin/article/update',
             method: 'PUT',
             contentType: 'application/json',
@@ -81,7 +71,7 @@ export class ApiService extends HttpService {
     }
 
     getArticle(articleId: number, is4Update: boolean = false) {
-        return super.Service<Article>({
+        return this.httpService.Service<Article>({
             path: `/article/articleID/${articleId}`,
             method: 'GET',
             queryParam: {update: is4Update},
@@ -89,7 +79,7 @@ export class ApiService extends HttpService {
     }
 
     articlesByCategory(category: string, pageNumber: number = 1, pageSize: number = 10) {
-        return super.Service<PageList<Article>>({
+        return this.httpService.Service<PageList<Article>>({
             path: `/articles/category/${category}`,
             method: 'GET',
             queryParam: {
@@ -100,7 +90,7 @@ export class ApiService extends HttpService {
     }
 
     articlesByTag(tag: string, pageNumber: number = 1, pageSize: number = 10) {
-        return super.Service<PageList<Article>>({
+        return this.httpService.Service<PageList<Article>>({
             path: `/articles/tag/${tag}`,
             method: 'GET',
             queryParam: {
@@ -111,14 +101,14 @@ export class ApiService extends HttpService {
     }
 
     categories() {
-        return super.Service<PageList<Category>>({
+        return this.httpService.Service<PageList<Category>>({
             path: '/categories',
             method: 'GET'
         });
     }
 
     createCategory(nameStr: string) {
-        return super.Service<Category>({
+        return this.httpService.Service<Category>({
             path: '/admin/category/create',
             method: 'POST',
             queryParam: {name: nameStr}
@@ -126,7 +116,7 @@ export class ApiService extends HttpService {
     }
 
     deleteCategory(categoryId: number) {
-        return super.Service<boolean>({
+        return this.httpService.Service<boolean>({
             path: '/admin/category/del',
             method: 'DELETE',
             queryParam: {id: categoryId}
@@ -134,7 +124,7 @@ export class ApiService extends HttpService {
     }
 
     updateCategory(categoryId: number, nameStr: string) {
-        return super.Service<Category>({
+        return this.httpService.Service<Category>({
             path: '/admin/category/update',
             method: 'PUT',
             queryParam: {id: categoryId, name: nameStr}
@@ -142,7 +132,7 @@ export class ApiService extends HttpService {
     }
 
     tags(pageNumber: number = 1, pageSize: number = 10) {
-        return super.Service<PageList<Tag>>({
+        return this.httpService.Service<PageList<Tag>>({
             path: '/tags',
             method: 'GET',
             queryParam: {
@@ -153,14 +143,14 @@ export class ApiService extends HttpService {
     }
 
     tagsNac() {
-        return super.Service<{ name: string, size: number }[]>({
+        return this.httpService.Service<{ name: string, size: number }[]>({
             path: '/tags/nac',
             method: 'GET'
         });
     }
 
     createTag(nameStr: string) {
-        return super.Service<Tag>({
+        return this.httpService.Service<Tag>({
             path: '/admin/tag/create',
             method: 'POST',
             queryParam: {name: nameStr}
@@ -168,7 +158,7 @@ export class ApiService extends HttpService {
     }
 
     deleteTag(TagId: number) {
-        return super.Service<boolean>({
+        return this.httpService.Service<boolean>({
             path: '/admin/tag/del',
             method: 'DELETE',
             queryParam: {id: TagId}
@@ -176,7 +166,7 @@ export class ApiService extends HttpService {
     }
 
     updateTag(TagId: number, nameStr: string) {
-        return super.Service<Tag>({
+        return this.httpService.Service<Tag>({
             path: '/admin/tag/update',
             method: 'PUT',
             queryParam: {id: TagId, name: nameStr}
@@ -184,7 +174,7 @@ export class ApiService extends HttpService {
     }
 
     getCommentByTypeForAdmin(pagePath: string, pageNumber: number = 1, pageSize: number = 10) {
-        return super.Service<PageList<Comment>>({
+        return this.httpService.Service<PageList<Comment>>({
             path: `/admin/comment/pagePath/${pagePath}`,
             method: 'GET',
             queryParam: {
@@ -195,7 +185,7 @@ export class ApiService extends HttpService {
     }
 
     getCommentByTypeForUser(pagePath: string, pageNumber: number = 1, pageSize: number = 10) {
-        return super.Service<PageList<Comment>>({
+        return this.httpService.Service<PageList<Comment>>({
             path: `/user/comment/pagePath/${pagePath}`,
             method: 'GET',
             queryParam: {
@@ -206,7 +196,7 @@ export class ApiService extends HttpService {
     }
 
     deleteComment(idNumer: number) {
-        return super.Service<boolean>({
+        return this.httpService.Service<boolean>({
             path: `/user/comment/del`,
             method: 'DELETE',
             queryParam: {id: idNumer}
@@ -214,7 +204,7 @@ export class ApiService extends HttpService {
     }
 
     updateComment(commentReq: CommentReq) {
-        return super.Service<Comment>({
+        return this.httpService.Service<Comment>({
             path: `/user/comment/update`,
             method: 'PUT',
             data: commentReq,
@@ -223,7 +213,7 @@ export class ApiService extends HttpService {
     }
 
     comments(pagePath: string, pageSize: number = 10, pageNumber: number = 1) {
-        return super.Service<PageList<Comment>>({
+        return this.httpService.Service<PageList<Comment>>({
             path: `/comment/pagePath/${pagePath}`,
             method: 'GET',
             queryParam: {
@@ -234,7 +224,7 @@ export class ApiService extends HttpService {
     }
 
     createComment(commentReq: CommentReq) {
-        return super.Service<Comment>({
+        return this.httpService.Service<Comment>({
             path: '/user/comment/create',
             method: 'POST',
             contentType: 'application/json',
@@ -244,7 +234,7 @@ export class ApiService extends HttpService {
 
 
     counts() {
-        return super.Service<{
+        return this.httpService.Service<{
             articleCount: number,
             visitorCount: number,
             categoryCount: number,
@@ -257,7 +247,7 @@ export class ApiService extends HttpService {
     }
 
     adminLinks(pageSize: number = 10, pageNumber: number = 1) {
-        return super.Service<PageList<Link>>({
+        return this.httpService.Service<PageList<Link>>({
             path: '/admin/links',
             method: 'GET',
             queryParam: {
@@ -268,7 +258,7 @@ export class ApiService extends HttpService {
     }
 
     createLink(linkReq: Link) {
-        return super.Service<Link>({
+        return this.httpService.Service<Link>({
             path: '/admin/links/create',
             method: 'POST',
             data: linkReq,
@@ -277,14 +267,14 @@ export class ApiService extends HttpService {
     }
 
     deleteLink(idNumber: number) {
-        return super.Service<boolean>({
+        return this.httpService.Service<boolean>({
             path: `/admin/links/del/${idNumber}`,
             method: 'DELETE',
         });
     }
 
     updateLink(linkReq: Link) {
-        return super.Service<Link>({
+        return this.httpService.Service<Link>({
             path: '/admin/links/update',
             method: 'PUT',
             data: linkReq,
@@ -293,7 +283,7 @@ export class ApiService extends HttpService {
     }
 
     applyLink(link: ApplyLinkReq) {
-        return super.Service<string>({
+        return this.httpService.Service<string>({
             path: '/apply',
             method: 'POST',
             data: link,
@@ -302,7 +292,7 @@ export class ApiService extends HttpService {
     }
 
     reapplyLink(keyStr: string) {
-        return super.Service<string>({
+        return this.httpService.Service<string>({
             path: '/reapply',
             method: 'POST',
             queryParam: {
@@ -312,14 +302,14 @@ export class ApiService extends HttpService {
     }
 
     links() {
-        return super.Service<Link[]>({
+        return this.httpService.Service<Link[]>({
             path: '/links',
             method: 'GET',
         });
     }
 
     verifyImgCode(codeStr: string) {
-        return super.Service<string>({
+        return this.httpService.Service<string>({
             path: '/verCode',
             method: 'POST',
             queryParam: {code: codeStr}
@@ -328,7 +318,7 @@ export class ApiService extends HttpService {
 
 
     login(loginReq: LoginReq) {
-        return super.Service<User>({
+        return this.httpService.Service<User>({
             path: '/login',
             method: 'POST',
             contentType: 'application/json',
@@ -337,14 +327,14 @@ export class ApiService extends HttpService {
     }
 
     logout() {
-        return super.Service<string>({
+        return this.httpService.Service<string>({
             path: '/logout',
             method: 'GET',
         });
     }
 
     registration(emailStr: string, pwd: string) {
-        return super.Service<boolean>({
+        return this.httpService.Service<boolean>({
             path: '/registration',
             method: 'POST',
             queryParam: {
@@ -355,7 +345,7 @@ export class ApiService extends HttpService {
     }
 
     resetPwd(idStr: string, emailStr: string, pwdStr: string) {
-        return super.Service<string>({
+        return this.httpService.Service<string>({
             path: '/resetPwd',
             method: 'POST',
             queryParam: {
@@ -367,7 +357,7 @@ export class ApiService extends HttpService {
     }
 
     emailVerify(idStr: string, emailStr: string) {
-        return super.Service<void>({
+        return this.httpService.Service<void>({
             path: '/emailVerify',
             method: 'POST',
             queryParam: {
@@ -379,7 +369,7 @@ export class ApiService extends HttpService {
 
 
     sendResetPwdEmail(emailStr: string) {
-        return super.Service<string>({
+        return this.httpService.Service<string>({
             path: '/sendResetPwdEmail',
             method: 'POST',
             queryParam: {email: emailStr}
@@ -387,7 +377,7 @@ export class ApiService extends HttpService {
     }
 
     sendVerifyEmail(emailStr: string) {
-        return super.Service<string>({
+        return this.httpService.Service<string>({
             path: '/sendVerifyEmail',
             method: 'POST',
             queryParam: {email: emailStr}
@@ -395,14 +385,14 @@ export class ApiService extends HttpService {
     }
 
     userInfo() {
-        return super.Service<User>({
+        return this.httpService.Service<User>({
             path: '/user/userInfo',
             method: 'GET',
         });
     }
 
     adminUpdateUser(user: User) {
-        return super.Service<User>({
+        return this.httpService.Service<User>({
             path: '/admin/user',
             method: 'PUT',
             data: user,
@@ -411,14 +401,14 @@ export class ApiService extends HttpService {
     }
 
     deleteUser(id: number) {
-        return super.Service<boolean>({
+        return this.httpService.Service<boolean>({
             path: `/admin/user/delete/${id}`,
             method: 'DELETE',
         });
     }
 
     multipleDeleteUser(idArray: number[]) {
-        return super.Service<{ id: number; msg: string; status: boolean }[]>({
+        return this.httpService.Service<{ id: number; msg: string; status: boolean }[]>({
             path: `/admin/user/delete`,
             method: 'DELETE',
             data: idArray,
@@ -428,14 +418,14 @@ export class ApiService extends HttpService {
 
     // 获取邮件是否已注册
     emailStatus(email: string) {
-        return super.Service<boolean>({
+        return this.httpService.Service<boolean>({
             path: `/emailStatus/${email}`,
             method: 'GET'
         })
     }
 
     updateUserInfo(descStr: string, disPlayNameStr: string) {
-        return super.Service<User>({
+        return this.httpService.Service<User>({
             path: '/user/userInfo/update',
             method: 'PUT',
             queryParam: {
@@ -446,7 +436,7 @@ export class ApiService extends HttpService {
     }
 
     adminUsers(pageSize: number = 10, pageNumber: number = 1) {
-        return super.Service<PageList<User>>({
+        return this.httpService.Service<PageList<User>>({
             path: '/admin/users',
             method: 'GET',
             queryParam: {
@@ -457,14 +447,14 @@ export class ApiService extends HttpService {
     }
 
     visit() {
-        return super.Service<Visitor>({
+        return this.httpService.Service<Visitor>({
             path: '/visit',
             method: 'POST'
         });
     }
 
     adminVisitors(location: boolean = false, pageSize: number = 10, pageNumber: number = 1) {
-        return super.Service<PageList<Visitor>>({
+        return this.httpService.Service<PageList<Visitor>>({
             path: '/admin/visitor/page',
             method: 'GET',
             queryParam: {
@@ -476,42 +466,42 @@ export class ApiService extends HttpService {
     }
 
     dayVisitCount() {
-        return super.Service<number>({
+        return this.httpService.Service<number>({
             path: '/dayVisitCount',
             method: 'GET',
         });
     }
 
     getLocalIp() {
-        return super.Service<string>({
+        return this.httpService.Service<string>({
             path: '/ip',
             method: 'GET',
         });
     }
 
     getIpLocation(ip: string) {
-        return super.Service<string>({
+        return this.httpService.Service<string>({
             path: `/ip/${ip}`,
             method: 'GET',
         });
     }
 
     visitorCount() {
-        return super.Service<number>({
+        return this.httpService.Service<number>({
             path: `/visitor/count`,
             method: 'GET',
         });
     }
 
     webUpdate() {
-        return super.Service<{ id: number, info: string, time: string }[]>({
+        return this.httpService.Service<{ id: number, info: string, time: string }[]>({
             path: '/webUpdate',
             method: 'GET'
         });
     }
 
     webUpdatePage(pageSize: number = 10, pageNumber: number = 1) {
-        return super.Service<PageList<{ id: number, info: string, time: string }>>({
+        return this.httpService.Service<PageList<{ id: number, info: string, time: string }>>({
             path: '/webUpdate/pages',
             method: 'GET',
             queryParam: {
@@ -522,7 +512,7 @@ export class ApiService extends HttpService {
     }
 
     lastestUpdate() {
-        return super.Service<{
+        return this.httpService.Service<{
             lastUpdateTime: string;
             lastUpdateInfo: string;
             lastCommit: string;
@@ -536,7 +526,7 @@ export class ApiService extends HttpService {
     }
 
     createWebUpdateInfo(infoStr: string) {
-        return super.Service<UpdateInfo>({
+        return this.httpService.Service<UpdateInfo>({
             path: '/admin/webUpdate/create',
             method: 'POST',
             queryParam: {info: infoStr}
@@ -544,14 +534,14 @@ export class ApiService extends HttpService {
     }
 
     deleteWebUpdateInfo(idNumber: number) {
-        return super.Service<boolean>({
+        return this.httpService.Service<boolean>({
             path: `/admin/webUpdate/del/${idNumber}`,
             method: 'DELETE',
         });
     }
 
     updateWebUpdateInfo(idNumber: number, infoStr: string) {
-        return super.Service<UpdateInfo>({
+        return this.httpService.Service<UpdateInfo>({
             path: '/admin/webUpdate/update',
             method: 'PUT',
             queryParam: {id: idNumber, info: infoStr}
@@ -559,14 +549,14 @@ export class ApiService extends HttpService {
     }
 
     bingPic() {
-        return super.Service<string>({
+        return this.httpService.Service<string>({
             path: '/bingPic',
             method: 'GET'
         });
     }
 
     setPwd(pwdStr: string, newPwdStr: string, confirmPwdStr: string,) {
-        return super.Service<string>({
+        return this.httpService.Service<string>({
             path: '/user/setPwd',
             method: 'POST',
             queryParam: {

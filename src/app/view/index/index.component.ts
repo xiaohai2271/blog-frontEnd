@@ -24,7 +24,7 @@ export class IndexComponent implements OnInit, ErrDispatch {
                 private router: Router,
                 private title: Title) {
         this.iconService.addIconLiteral('blog:location', SvgIconUtil.locationIcon);
-        apiService.setErrDispatch(this);
+        // apiService.setErrDispatch(this);
         title.setTitle('小海博客');
     }
 
