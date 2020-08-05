@@ -4,6 +4,7 @@ import {HttpService} from '../api/http/http.service';
 import {environment} from '../../environments/environment';
 import {Router} from '@angular/router';
 import {ComponentStateService} from './component-state.service';
+import {NzNotificationService} from 'ng-zorro-antd';
 
 @Injectable({
     providedIn: 'root'
@@ -11,11 +12,13 @@ import {ComponentStateService} from './component-state.service';
 export class ErrorService {
 
     constructor(private httpService: HttpService, private router: Router,
-                private componentStateService: ComponentStateService) {
+                private componentStateService: ComponentStateService,
+                private notification: NzNotificationService) {
     }
 
     private static HTTP_ERROR_COUNT: number = 0;
     private readonly MAINTAIN_PAGE_PREFIX = '/maintain'
+    private readonly ADMIN_PAGE_PREFIX = '/admin'
 
     public httpError(err: any) {
         if (!environment.production) {
@@ -28,6 +31,10 @@ export class ErrorService {
     public httpException(response: Response<any>) {
         if (!environment.production)
             console.log('exception=>', response)
+        if (response.code === -1 && response.msg === '请求重复') return
+        if (this.componentStateService.currentPath === this.ADMIN_PAGE_PREFIX) {
+            this.notification.create('error', `请求失败<${response.code}>`, `${response.msg}`);
+        }
     }
 
     public checkConnection() {
@@ -39,8 +46,8 @@ export class ErrorService {
                 url: environment.host + '/headerInfo'
             }
             this.httpService.get(req).subscribe({
-                next: data => null,
-                error: err => {
+                next: () => null,
+                error: () => {
                     if (this.componentStateService.currentPath !== this.MAINTAIN_PAGE_PREFIX) {
                         this.router.navigateByUrl(this.MAINTAIN_PAGE_PREFIX)
                     }
