@@ -37,7 +37,8 @@ export class HeaderComponent implements OnInit {
         });
         // 订阅一级路由的变化
         componentStateService.watchRouterChange().subscribe(prefix => {
-            if (prefix === '/user' || prefix === '/write' || prefix === '/update') {
+            // TODO:: 使用service来获取 size
+            if (prefix === '/user' || prefix === '/write' || prefix === '/update' || prefix === '/maintain') {
                 this.size = 'default';
             } else {
                 this.size = 'large';
