@@ -1,9 +1,8 @@
-import {forwardRef, Inject, Injectable, Injector} from '@angular/core';
-import {RequestObj} from '../../class/HttpReqAndResp';
+import {Injectable, Injector} from '@angular/core';
+import {RequestObj, Response} from '../../class/HttpReqAndResp';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {LocalStorageService} from '../../services/local-storage.service';
-import {Response} from '../../class/HttpReqAndResp';
 import {Observable, Observer, Subscription} from 'rxjs';
 import {ErrorService} from '../../services/error.service';
 
@@ -19,13 +18,7 @@ export class HttpService {
 
     private subscriptionQueue: Subscription[] = [];
 
-    // private errorDispatch: ErrDispatch;
-
     public getSubscriptionQueue = () => this.subscriptionQueue;
-
-    // setErrDispatch(errDispatch: ErrDispatch) {
-    //     this.errorDispatch = errDispatch;
-    // }
 
     Service<T>(request: RequestObj) {
         const errorService = this.injector.get(ErrorService);
@@ -70,9 +63,6 @@ export class HttpService {
                 if (o.body.code !== 0) {
                     observer.error(o.body);
                     errorService.httpException(o.body)
-                    // if (this.errorDispatch) {
-                    //     this.errorDispatch.errHandler(o.body.code, o.body.msg, request);
-                    // }
                 } else {
                     observer.next(o.body);
                 }
