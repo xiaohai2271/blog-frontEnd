@@ -22,6 +22,8 @@ export class AdminLinkComponent implements OnInit {
             name: new FormControl(null, [Validators.required]),
             url: new FormControl(null, [Validators.required, Validators.pattern(/^(https:\/\/|http:\/\/|)([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/)]),
             open: new FormControl(null, [Validators.required]),
+            desc: new FormControl(null, [Validators.maxLength(255)]),
+            iconPath: new FormControl(null, [Validators.pattern(/^(https:\/\/|http:\/\/|)([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/)]),
             oper: new FormControl(null)
         })
     }
@@ -83,13 +85,7 @@ export class AdminLinkComponent implements OnInit {
 
     modalConfirm() {
         this.modalVisible = false;
-        const linkReq: Link = new Link();
-        linkReq.name = this.formGroup.value.name;
-        linkReq.url = this.formGroup.value.url;
-        linkReq.open = this.formGroup.value.open;
-        // 暂时设置未空
-        linkReq.desc = '';
-        linkReq.iconPath = '';
+        const linkReq: Link = this.formGroup.value
         const oper = this.formGroup.value.oper;
         let observable: Observable<Response<Link>>;
         if (oper === 'edit') {
