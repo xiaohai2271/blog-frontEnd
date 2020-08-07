@@ -7,13 +7,14 @@
             [style.color]="colors[i].fontColor">
             <a [href]="link.url" target="_blank" [title]="link.desc||link.name" [style.color]="colors[i].fontColor">
                 <div class="link-name">
-                    <i nz-icon nzType="link" nzTheme="outline"></i>
+                    <i nz-icon nzType="link" nzTheme="outline" [style.color]="colors[i].fontColor"></i>
                     {{link.name}}
                 </div>
                 <div class="link-info" [style.color]="colors[i].fontColor">
                     <div class="link-icon">
                         <img *ngIf="link.iconPath" [src]="link.iconPath" [alt]="link.iconPath">
-                        <i *ngIf="!link.iconPath" nz-icon nzType="link" nzTheme="outline"></i>
+                        <i *ngIf="!link.iconPath" nz-icon nzType="link" nzTheme="outline"
+                           [style.color]="colors[i].fontColor"></i>
                     </div>
                     <p>
                         {{link.desc || '该站长暂时未留下网站简介'}}
