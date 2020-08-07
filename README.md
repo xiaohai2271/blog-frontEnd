@@ -51,15 +51,13 @@
 
 ##### 构建
 
->
->
-> > 1. 进入index目录
-> > 2. npm install
-> > 3. 修改环境数据中的host
+> > 
+> > 1. npm install
+> > 2. 修改环境数据中的host
 > > 
 > >    -  ` /src/environments/environment.ts` (本地开发环境) 
 > >    -  `/src/environments/environment-prod.ts`（线上发布环境）
-> > 4. ng build --prod
+> > 3. ng build --prod
 >
 >
 >可使用项目根目录的`build.sh` 脚本进行构建，但是 两个项目中的环境里面的变量仍需自己修改
@@ -68,7 +66,7 @@
 
 ##### 发布
 
-- 将`index/dist/index`下的全部文件上传到网站根目录 
+- 将`dist/index`下的全部文件上传到网站根目录 
 
 - 目录结构如下:
 
