@@ -3,24 +3,54 @@
         <i nz-icon nzType="smile" nzTheme="outline" class="titleTag"></i><span class="title">友情链接</span>
     </div>
     <ul class="partner-sites">
-        <li *ngFor="let link of linkList">
-            <i nz-icon nzType="link" nzTheme="outline"></i>
-            <a [href]="link.url" target="_blank" [title]="link.name">{{link.name}}</a>
+        <li *ngFor="let link of linkList;let i = index" [style.background]="colors[i].bgColor"
+            [style.color]="colors[i].fontColor">
+            <a [href]="link.url" target="_blank" [title]="link.desc||link.name" [style.color]="colors[i].fontColor">
+                <div class="link-name">
+                    <i nz-icon nzType="link" nzTheme="outline"></i>
+                    {{link.name}}
+                </div>
+                <div class="link-info" [style.color]="colors[i].fontColor">
+                    <div class="link-icon">
+                        <img *ngIf="link.iconPath" [src]="link.iconPath" [alt]="link.iconPath">
+                        <i *ngIf="!link.iconPath" nz-icon nzType="link" nzTheme="outline"></i>
+                    </div>
+                    <p>
+                        {{link.desc || '该站长暂时未留下网站简介'}}
+                    </p>
+                </div>
+            </a>
         </li>
         <li class="applylink" (click)="showModal=!showModal">申请友链</li>
     </ul>
-
-
 </div>
+
 <div class="placard am-animation-slide-bottom">
     <div class="title">
         <i nz-icon nzType="smile" nzTheme="outline" class="titleTag"></i><span class="title">友链公告</span>
     </div>
+    <br>
+    <p style="padding-left: 30px;">
+        <i class="fa fa-check" style="color: green"></i>原创优先&nbsp;
+        <i class="fa fa-check" style="color: green"></i>技术优先&nbsp;
+        <i class="fa fa-close" style="color: red"></i>经常宕机&nbsp;
+        <i class="fa fa-close" style="color: red"></i>不合法规&nbsp;
+        <i class="fa fa-close" style="color: red"></i>插边球站&nbsp;
+        <i class="fa fa-close" style="color: red"></i>红标报毒&nbsp;
+    </p>
     <ul class="placard-content">
         <li>请确认贵站可正常访问</li>
         <li>原创博客、技术博客、游记博客优先</li>
-        <li>博客内容时常更新</li>
-        <li><strong>提交申请时若为https链接请带上https否则将视为http</strong></li>
+        <li>交换友链请先在您的网站添加本站链接</li>
+        <p style="margin: 20px;">
+            本站信息 <br>
+            名称：小海博客<br>
+            网址：https://www.celess.cn/<br>
+            图标：https://www.celess.cn/logo.ico<br>
+            描述：小海博客，记录学习成长历程,主要关注与java后端的技术学习
+        </p>
+        <li>本站的友链申请会自动进行抓取，并在12h内进行审核</li>
+
     </ul>
 </div>
 
