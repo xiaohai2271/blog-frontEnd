@@ -4,6 +4,7 @@ import {Title} from '@angular/platform-browser';
 import {ApiService} from '../../api/api.service';
 import {ApplyLinkReq, Link} from '../../class/Link';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Color, RandomColor} from '../../utils/color';
 
 @Component({
     selector: 'view-link',
@@ -28,13 +29,17 @@ export class LinkComponent implements OnInit {
     linkList: Link[];
     loading: boolean = false;
     applyFormGroup: FormGroup;
+    colors: Color[];
+    private lastUrl: string = '';
+
 
     ngOnInit() {
         window.scrollTo(0, 0);
         this.link = new Link();
         this.apiService.links().subscribe({
             next: data => this.linkList = data.result,
-            error: err => this.message.error(err.msg)
+            error: err => this.message.error(err.msg),
+            complete: () => this.colors = RandomColor(this.linkList.length)
         });
         this.applyFormGroup = this.fb.group({
             urlLinkProtocol: ['http://'],
@@ -46,6 +51,13 @@ export class LinkComponent implements OnInit {
             name: [null, [Validators.required, Validators.maxLength(255)]],
             url: [null, [Validators.required, Validators.pattern(/^([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/)]]
         });
+        this.applyFormGroup.controls.url.valueChanges.subscribe({
+            next: data => {
+                const linkUrlData: string = this.applyFormGroup.value.linkUrl || '';
+                this.applyFormGroup.patchValue({linkUrl: linkUrlData.replace(this.lastUrl, data)});
+                this.lastUrl = data;
+            },
+        })
     }
 
     apply() {

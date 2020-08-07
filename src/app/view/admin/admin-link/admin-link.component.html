@@ -20,14 +20,14 @@
           (nzOnCancel)="modalVisible = false" [nzClosable]="true" [nzOkDisabled]="!formGroup.valid">
     <form nz-form [formGroup]="formGroup">
         <nz-form-item>
-            <nz-form-label nzRequired>网站名称</nz-form-label>
-            <nz-form-control nzErrorTip="网站名称不可为空">
+            <nz-form-label nzFlex="80px" nzRequired>网站名称</nz-form-label>
+            <nz-form-control nzFlex="auto" nzErrorTip="网站名称不可为空">
                 <input nz-input formControlName="name">
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-            <nz-form-label nzRequired>网站链接</nz-form-label>
-            <nz-form-control [nzErrorTip]="nameErrTip">
+            <nz-form-label nzFlex="80px" nzRequired>网站链接</nz-form-label>
+            <nz-form-control nzFlex="auto" [nzErrorTip]="nameErrTip">
                 <input nz-input formControlName="url">
                 <ng-template #nameErrTip>
                     <div *ngIf="formGroup.controls.url.hasError('required')">网站链接不可为空</div>
@@ -37,13 +37,32 @@
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-            <nz-form-label nzRequired>是否公开</nz-form-label>
-            <nz-form-control nzErrorTip="不可为空">
+            <nz-form-label nzFlex="80px" nzRequired>是否公开</nz-form-label>
+            <nz-form-control nzFlex="auto" nzErrorTip="不可为空">
                 <nz-select nzPlaceHolder="请选择" formControlName="open" [nzAllowClear]="true">
                     <nz-option [nzValue]="true" nzLabel="公开"></nz-option>
                     <nz-option [nzValue]="false" nzLabel="不公开"></nz-option>
                 </nz-select>
             </nz-form-control>
         </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzFlex="80px">网站图标</nz-form-label>
+            <nz-form-control nzFlex="auto" nzErrorTip="链接格式不正确">
+                <nz-input-group [nzSuffix]="icon" nzSize="large">
+                    <input nz-input formControlName="iconPath">
+                </nz-input-group>
+                <ng-template #icon>
+                    <img style="width: 25px;height: 25px" *ngIf="formGroup.value.iconPath"
+                         [src]="formGroup.value.iconPath" alt="icon">
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzFlex="80px">网站描述</nz-form-label>
+            <nz-form-control nzFlex="auto" nzErrorTip="可输入最大文字长度为255">
+                <textarea nz-input formControlName="desc" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+
     </form>
 </nz-modal>
