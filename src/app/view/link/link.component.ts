@@ -30,6 +30,7 @@ export class LinkComponent implements OnInit {
     loading: boolean = false;
     applyFormGroup: FormGroup;
     colors: Color[];
+    private lastUrl: string = '';
 
 
     ngOnInit() {
@@ -50,6 +51,13 @@ export class LinkComponent implements OnInit {
             name: [null, [Validators.required, Validators.maxLength(255)]],
             url: [null, [Validators.required, Validators.pattern(/^([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/)]]
         });
+        this.applyFormGroup.controls.url.valueChanges.subscribe({
+            next: data => {
+                const linkUrlData: string = this.applyFormGroup.value.linkUrl || '';
+                this.applyFormGroup.patchValue({linkUrl: linkUrlData.replace(this.lastUrl, data)});
+                this.lastUrl = data;
+            },
+        })
     }
 
     apply() {

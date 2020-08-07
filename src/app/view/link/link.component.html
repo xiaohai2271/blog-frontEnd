@@ -122,7 +122,13 @@
             <nz-form-item>
                 <nz-form-label nzFlex="100px">网站图标</nz-form-label>
                 <nz-form-control nzFlex="auto" nzErrorTip="链接格式不正确">
-                    <input nz-input formControlName="iconPath">
+                    <nz-input-group [nzSuffix]="icon" nzSize="large">
+                        <input nz-input formControlName="iconPath">
+                    </nz-input-group>
+                    <ng-template #icon>
+                        <img style="width: 25px;height: 25px" *ngIf="applyFormGroup.value.iconPath"
+                             [src]="applyFormGroup.value.iconPath" alt="icon">
+                    </ng-template>
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
