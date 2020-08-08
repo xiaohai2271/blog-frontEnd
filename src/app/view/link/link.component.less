@@ -165,23 +165,20 @@ i {
   border-radius: 4px;
 }
 
-@keyframes hiddenAnimation {
-  form {
-    height: 100%;
-  }
-  to {
-    height: 0%;
-  }
-}
-
 @media only screen and ( max-width: 768px ) {
   .site-middle, .placard {
     margin-left: 2px;
     width: 96%;
   }
 
+  .partner-sites{
+    padding: 0 30px;
+  }
   .partner-sites li {
     float: left;
     width: 100%;
+    max-width: 100%;
+    min-width: 80%;
+    margin-right: 10px;
   }
 }
