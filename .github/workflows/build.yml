@@ -29,12 +29,12 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
           source: "index.tar"
-          target: "/www/wwwroot/celess.cn"
+          target: "/www/wwwroot/www.celess.cn"
 
       - name: Run SSH command
         uses: garygrossgarten/github-action-ssh@v0.5.0
         with:
-          command: cd /www/wwwroot/celess.cn && bash deploy.sh
+          command: cd /www/wwwroot/www.celess.cn && bash deploy.sh
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
