@@ -81,10 +81,10 @@
           nzTitle="表格字段设置(可拖动排序)"
 >
     <button nz-button nzType="primary" (click)="reset()" [disabled]="!changed">重置</button>
-    <nz-table [nzData]="editData" nzSize="small" nzPageSize="10000" nzShowPagination="false">
+    <nz-table [nzData]="filedData" nzSize="small" nzPageSize="10000" nzShowPagination="false">
         <tbody cdkDropList (cdkDropListDropped)="drop($event)">
-        <ng-template ngFor [ngForOf]="editData" let-item let-index="index">
-            <tr *ngIf="!item.isActionColumns" cdkDrag>
+        <ng-template ngFor [ngForOf]="filedData" let-item let-index="index">
+            <tr *ngIf="!item.isActionColumns" cdkDrag (click)="click()">
                 <td>{{index + 1}}</td>
                 <td style="text-align: center">{{item.title}}</td>
                 <td style="text-align: center">{{item.fieldValue}}</td>

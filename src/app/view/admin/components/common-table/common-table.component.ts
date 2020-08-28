@@ -33,16 +33,16 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     dataList: PageList<T> = new PageList<T>();
     settingModalVisible: boolean = false;
     filedData: Data<T>[];
-    editData: Data<T>[];
     changed: boolean = false;
     visibleFieldLength: number = 0;
 
     ngOnInit(): void {
         if (localStorage.getItem(this.request.path)) {
-            this.filedData = JSON.parse(localStorage.getItem(this.request.path));
+            this.filedData = this.cloneData(localStorage.getItem(this.request.path));
             this.changed = true;
         } else {
-            this.filedData = JSON.parse(JSON.stringify(this.headData));
+            this.filedData = this.cloneData(this.headData)
+            console.log(this.filedData)
         }
         this.calculateVisibleFieldLength();
 
@@ -117,29 +117,27 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
 
     showFieldSetting() {
         this.settingModalVisible = true;
-        this.editData = JSON.parse(JSON.stringify(this.filedData));
     }
 
     ok() {
         this.calculateVisibleFieldLength();
         this.settingModalVisible = !this.settingModalVisible;
-        if (JSON.stringify(this.filedData) === JSON.stringify(this.editData)) {
-            return;
+        if (!this.changed) {
+            return
         }
         this.dataList = JSON.parse(JSON.stringify(this.dataList));
-        this.filedData = this.editData;
         localStorage.setItem(this.request.path, JSON.stringify(this.filedData))
         this.changed = true;
     }
 
     drop(event: CdkDragDrop<T, any>) {
-        moveItemInArray(this.editData, event.previousIndex, event.currentIndex);
+        this.changed = true;
+        moveItemInArray(this.filedData, event.previousIndex, event.currentIndex);
     }
 
     reset = () => {
         localStorage.removeItem(this.request.path);
-        this.filedData = JSON.parse(JSON.stringify(this.headData))
-        this.editData = JSON.parse(JSON.stringify(this.headData));
+        this.filedData = this.cloneData(this.headData);
         this.changed = false;
         this.calculateVisibleFieldLength();
     }
@@ -147,4 +145,22 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     cancel = () => this.settingModalVisible = false;
 
     calculateVisibleFieldLength = () => this.filedData.filter(value => value.show).length;
+
+    cloneData = (source: Data<T>[] | string): Data<T>[] => {
+        let dist: Data<T>[];
+        if (typeof source === 'string') {
+            dist = JSON.parse(source);
+        } else {
+            dist = JSON.parse(JSON.stringify(source));
+        }
+        const action = this.headData.filter(value => value.isActionColumns).pop();
+        const del = dist.filter(value => value.isActionColumns).pop()
+        dist.splice(dist.indexOf(del), 1);
+        dist.push(action);
+        return dist;
+    }
+
+    click() {
+        this.changed = true;
+    }
 }
