@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {Data} from './data';
 import {PageList, RequestObj} from '../../../../class/HttpReqAndResp';
 import {HttpService} from '../../../../api/http/http.service';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
     selector: 'common-table',
@@ -17,7 +18,7 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     /**
      * 设置readonly data 因为后面有使用eval 为了安全
      */
-    @Input() headData: Data<T>[];
+    @Input() private headData: Data<T>[];
     @Input() request: RequestObj;
     @Input() cardTitle: string | null;
     @Input() template: {
@@ -30,8 +31,21 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     loading: boolean = true;
 
     dataList: PageList<T> = new PageList<T>();
+    settingModalVisible: boolean = false;
+    filedData: Data<T>[];
+    editData: Data<T>[];
+    changed: boolean = false;
+    visibleFieldLength: number = 0;
 
     ngOnInit(): void {
+        if (localStorage.getItem(this.request.path)) {
+            this.filedData = JSON.parse(localStorage.getItem(this.request.path));
+            this.changed = true;
+        } else {
+            this.filedData = JSON.parse(JSON.stringify(this.headData));
+        }
+        this.calculateVisibleFieldLength();
+
         if (!this.template) this.template = {}
         this.headData.forEach(dat => {
             if (!dat.action) return;
@@ -100,4 +114,37 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
         }
         return context;
     }
+
+    showFieldSetting() {
+        this.settingModalVisible = true;
+        this.editData = JSON.parse(JSON.stringify(this.filedData));
+    }
+
+    ok() {
+        this.calculateVisibleFieldLength();
+        this.settingModalVisible = !this.settingModalVisible;
+        if (JSON.stringify(this.filedData) === JSON.stringify(this.editData)) {
+            return;
+        }
+        this.dataList = JSON.parse(JSON.stringify(this.dataList));
+        this.filedData = this.editData;
+        localStorage.setItem(this.request.path, JSON.stringify(this.filedData))
+        this.changed = true;
+    }
+
+    drop(event: CdkDragDrop<T, any>) {
+        moveItemInArray(this.editData, event.previousIndex, event.currentIndex);
+    }
+
+    reset = () => {
+        localStorage.removeItem(this.request.path);
+        this.filedData = JSON.parse(JSON.stringify(this.headData))
+        this.editData = JSON.parse(JSON.stringify(this.headData));
+        this.changed = false;
+        this.calculateVisibleFieldLength();
+    }
+
+    cancel = () => this.settingModalVisible = false;
+
+    calculateVisibleFieldLength = () => this.filedData.filter(value => value.show).length;
 }

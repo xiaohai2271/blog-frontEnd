@@ -1,10 +1,12 @@
-<nz-card *ngIf="cardTitle" nzSize="small" [nzExtra]="refresh" [nzTitle]="cardTitle" [nzLoading]="loading">
+<nz-card *ngIf="cardTitle" nzSize="small" [nzExtra]="extra" [nzTitle]="cardTitle" [nzLoading]="loading">
     <ng-container *ngTemplateOutlet="table"></ng-container>
 </nz-card>
 
 <ng-container [ngTemplateOutlet]="table" *ngIf="!cardTitle"></ng-container>
 
-<ng-template #refresh>
+<ng-template #extra>
+    <i nz-icon nzType="setting" nzTheme="outline" title="设置" (click)="showFieldSetting()"
+       style="cursor: pointer;margin-right: 10px"></i>
     <i nz-icon nzType="reload" nzTheme="outline" (click)="getData()" title="刷新" style="cursor: pointer"></i>
 </ng-template>
 
@@ -17,11 +19,11 @@
               [nzPageSize]="dataList.pageSize"
               (nzPageIndexChange)="getData()"
               nzFrontPagination="false"
-              [nzScroll]="{x:'1300px'}"
+              [nzScroll]="{x:visibleFieldLength*100+'px'}"
               [nzLoading]="loading">
         <thead>
         <tr>
-            <ng-container *ngFor="let data of headData">
+            <ng-container *ngFor="let data of filedData">
                 <th *ngIf="data.show">
                     {{data.title}}
                 </th>
@@ -30,7 +32,7 @@
         </thead>
         <tbody>
         <tr *ngFor="let t of dataList.list;let index = index">
-            <ng-container *ngFor="let data of headData">
+            <ng-container *ngFor="let data of filedData">
                 <td *ngIf="data.show"
                     nz-typography
                     nzEllipsis
@@ -70,3 +72,27 @@
         </tbody>
     </nz-table>
 </ng-template>
+
+
+<nz-modal [(nzVisible)]="settingModalVisible"
+          [nzClosable]="true"
+          (nzOnCancel)="cancel()"
+          (nzOnOk)="ok()"
+          nzTitle="表格字段设置(可拖动排序)"
+>
+    <button nz-button nzType="primary" (click)="reset()" [disabled]="!changed">重置</button>
+    <nz-table [nzData]="editData" nzSize="small" nzPageSize="10000" nzShowPagination="false">
+        <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+        <ng-template ngFor [ngForOf]="editData" let-item let-index="index">
+            <tr *ngIf="!item.isActionColumns" cdkDrag>
+                <td>{{index + 1}}</td>
+                <td style="text-align: center">{{item.title}}</td>
+                <td style="text-align: center">{{item.fieldValue}}</td>
+                <td style="text-align: right">
+                    <nz-switch [(ngModel)]="item.show" nzSize="small"></nz-switch>
+                </td>
+            </tr>
+        </ng-template>
+        </tbody>
+    </nz-table>
+</nz-modal>
