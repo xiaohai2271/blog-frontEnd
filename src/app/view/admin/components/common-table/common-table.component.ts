@@ -15,9 +15,6 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
 
     }
 
-    /**
-     * 设置readonly data 因为后面有使用eval 为了安全
-     */
     @Input() private headData: Data<T>[];
     @Input() request: RequestObj;
     @Input() cardTitle: string | null;
@@ -115,9 +112,10 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
         return context;
     }
 
-    showFieldSetting() {
-        this.settingModalVisible = true;
-    }
+    showFieldSetting = () => this.settingModalVisible = true;
+
+    cancel = () => this.settingModalVisible = false;
+    calculateVisibleFieldLength = () => this.filedData.filter(value => value.show).length;
 
     ok() {
         this.calculateVisibleFieldLength();
@@ -142,10 +140,6 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
         this.calculateVisibleFieldLength();
     }
 
-    cancel = () => this.settingModalVisible = false;
-
-    calculateVisibleFieldLength = () => this.filedData.filter(value => value.show).length;
-
     cloneData = (source: Data<T>[] | string): Data<T>[] => {
         let dist: Data<T>[];
         if (typeof source === 'string') {
@@ -160,7 +154,17 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
         return dist;
     }
 
-    click() {
-        this.changed = true;
+    /**
+     * 字段编辑项被点击
+     */
+    click = () => {
+        this.changed = false;
+        for (let i = 0; i < this.filedData.length; i++) {
+            const d1 = this.filedData[i];
+            const d2 = this.headData[i];
+            if (d1.fieldValue !== d2.fieldValue || d1.show !== d2.show) {
+                this.changed = true;
+            }
+        }
     }
 }
