@@ -12,7 +12,7 @@ export class Data<T> {
             [value: string]: string
         }
     };
-    order?: number;
+    // order?: number;
     action ?: {
         name: string,
         color?: string,
