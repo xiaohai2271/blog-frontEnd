@@ -24,7 +24,7 @@
         <thead>
         <tr>
             <ng-container *ngFor="let data of filedData">
-                <th *ngIf="data.show">
+                <th *ngIf="data.show" [nzWidth]="data.isActionColumns?data.action.length*80+'px':null">
                     {{data.title}}
                 </th>
             </ng-container>
