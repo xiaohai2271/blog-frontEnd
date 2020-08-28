@@ -62,14 +62,14 @@ export class HttpService {
                 }
                 if (o.body.code !== 0) {
                     observer.error(o.body);
-                    errorService.httpException(o.body)
+                    errorService.httpException(o.body, request)
                 } else {
                     observer.next(o.body);
                 }
                 observer.complete();
             },
             error: err => {
-                errorService.httpError(err);
+                errorService.httpError(err,request);
                 errorService.checkConnection();
                 this.subscriptionQueue.splice(this.subscriptionQueue.indexOf(subscription), 1)
             },
