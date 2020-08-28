@@ -22,7 +22,6 @@ export class AdminComponent implements OnInit {
                 complete: () => null,
                 error: (err) => null,
                 next: data => {
-                    console.log('更新user')
                     this.user = data.result
                     if (data.result) this.initHelloWords()
                 }
@@ -68,7 +67,6 @@ export class AdminComponent implements OnInit {
 
     checkSamePwd = () => {
         return (control: AbstractControl): { [key: string]: any } | null => {
-            console.log('a')
             const newPwd = this.resetPwdFormGroup && this.resetPwdFormGroup.value.newPwd;
             return control.value !== newPwd ? {pwdNotSame: true} : null;
         };

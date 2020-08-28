@@ -39,7 +39,6 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
             this.changed = true;
         } else {
             this.filedData = this.cloneData(this.headData)
-            console.log(this.filedData)
         }
         this.calculateVisibleFieldLength();
 
@@ -76,7 +75,6 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.request && !changes.request.isFirstChange()) {
-            console.log(changes.request)
             this.request = changes.request.currentValue;
             this.getData().unsubscribe();
             this.getData();
