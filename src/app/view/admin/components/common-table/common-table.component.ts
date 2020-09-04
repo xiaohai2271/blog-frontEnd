@@ -146,6 +146,9 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
             dist = JSON.parse(JSON.stringify(source));
         }
         const action = this.headData.filter(value => value.isActionColumns).pop();
+        if (!action) {
+            return dist;
+        }
         const del = dist.filter(value => value.isActionColumns).pop()
         dist.splice(dist.indexOf(del), 1);
         dist.push(action);
