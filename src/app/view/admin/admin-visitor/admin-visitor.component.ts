@@ -17,14 +17,6 @@ export class AdminVisitorComponent implements OnInit {
     headData: Data<Visitor>[];
     request: RequestObj
 
-    /***
-     * browserName: "Chrome 8"
-     browserVersion: "83.0.4103.116"
-     date: "2020-07-11 09:30:13"
-     id: 3131
-     ip: "127.0.0.1"
-     osname: "Windows 10"
-     */
     ngOnInit(): void {
         this.title.setTitle('小海博客 | 访客信息管理')
         this.request = {
@@ -33,7 +25,7 @@ export class AdminVisitorComponent implements OnInit {
             queryParam: {
                 count: 1,
                 page: 10,
-                showLocation: location
+                showLocation: true
             }
         }
         this.headData = [
