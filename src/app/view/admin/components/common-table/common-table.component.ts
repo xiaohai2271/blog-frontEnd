@@ -59,10 +59,13 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
         this.loading = true;
         const pageValue = this.dataList.pageNum ? this.dataList.pageNum : 1;
         const countValue = this.dataList.pageSize ? this.dataList.pageSize : 10
-        this.request.queryParam = {
-            page: pageValue,
-            count: countValue
-        }
+
+        this.request.queryParam.page = pageValue;
+        this.request.queryParam.count = countValue;
+        // this.request.queryParam = {
+        //     page: pageValue,
+        //     count: countValue
+        // }
         this.pageInfo.emit({page: pageValue, pageSize: countValue})
         return this.httpService.Service<PageList<T>>(this.request).subscribe({
             next: resp => {

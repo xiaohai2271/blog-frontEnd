@@ -6,7 +6,7 @@ export class RequestObj {
     method: 'GET' | 'POST' | 'PUT' | 'DELETE';
     data?: {};
     contentType?: 'application/json' | 'application/x-www-form-urlencoded';
-    queryParam?: {};
+    queryParam?: { [key: string]: any };
     header?: HttpHeaders | {
         [header: string]: string | string[];
     };
