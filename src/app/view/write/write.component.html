@@ -4,7 +4,7 @@
         <button nz-button nzType="primary" id="submit" (click)="articleSubmit()">提交</button>
     </div>
 
-    <div id="md" appEditorMd [editormdConfig]="conf" (onEditorChange)="syncModel($event)">
+    <div id="md" appEditorMd [editormdConfig]="conf" (editorChange)="syncModel($event)">
         <textarea style="display: block;" [(ngModel)]="article.mdContent"></textarea>
     </div>
 </div>
