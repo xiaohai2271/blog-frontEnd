@@ -22,7 +22,6 @@
     "@angular/service-worker": "^10.1.1",
     "jquery": "^3.5.1",
     "ng-zorro-antd": "^9.3.0",
-    "nrm": "^1.2.1",
     "rxjs": "^6.6.3",
     "tslib": "^2.0.1",
     "zone.js": "^0.11.1"
