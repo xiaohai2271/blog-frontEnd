@@ -1,6 +1,5 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ArticleReq} from '../../class/Article';
-import {EditorConfig} from '../../class/EditorConfig';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from '../../api/api.service';
 import {NzMessageService} from 'ng-zorro-antd';
@@ -8,6 +7,7 @@ import {User} from '../../class/User';
 import {Tag} from '../../class/Tag';
 import {Title} from '@angular/platform-browser';
 import {GlobalUserService} from '../../services/global-user.service';
+import Vditor from 'vditor';
 
 @Component({
     selector: 'view-write',
@@ -26,9 +26,9 @@ export class WriteComponent implements OnInit {
     }
 
     modalVisible: boolean = false;
-    conf = new EditorConfig();
     articleId: number;
     isUpdate = false;
+    vditor: Vditor;
 
     public article: ArticleReq = new ArticleReq();
 
@@ -41,24 +41,30 @@ export class WriteComponent implements OnInit {
 
     private lastShowTime: number;
 
-    // 同步属性内容
-    syncModel(str): void {
-        this.article.mdContent = str;
-        // 文章 暂存
-        localStorage.setItem('tmpArticle', JSON.stringify(this.article));
-    }
-
-
     ngOnInit(): void {
-        this.articleId = this.activatedRoute.snapshot.queryParams.id;
-        if (this.articleId != null) {
-            this.isUpdate = true;
-            this.getArticle();
-        }
-        if (!this.articleId && localStorage.getItem('tmpArticle')) {
-            this.article = JSON.parse(localStorage.getItem('tmpArticle'));
-        }
-        this.setSuitableHeight();
+        this.vditor = new Vditor('vditor', {
+            width: '100%',
+            height: (window.innerHeight - 120),
+            placeholder: '欢迎来到小海的创作中心',
+            mode: 'sv',
+            toolbarConfig: {
+                pin: true,
+            },
+            cache: {
+                enable: false,
+            },
+            after: () => {
+                // 判断是更新文章还是恢复文章
+                this.articleId = this.activatedRoute.snapshot.queryParams.id;
+                if (this.articleId != null) {
+                    this.isUpdate = true;
+                    this.getArticle();
+                }
+                if (!this.articleId && localStorage.getItem('tmpArticle')) {
+                    this.article = JSON.parse(localStorage.getItem('tmpArticle'));
+                }
+            }
+        });
         // 用户权限判断
         this.userService.watchUserInfo({
             complete: () => null,
@@ -91,12 +97,6 @@ export class WriteComponent implements OnInit {
         });
     }
 
-    /**
-     * 设置高度
-     */
-    setSuitableHeight() {
-        this.conf.height = (window.innerHeight - 120) + '';
-    }
 
     // 提交按钮的事件
     articleSubmit() {
@@ -200,6 +200,7 @@ export class WriteComponent implements OnInit {
                     url: this.article.url,
                     id: this.article.id
                 };
+                this.vditor.setValue(this.article.mdContent)
             },
             error: e => {
                 if (e.code === 2010) {
