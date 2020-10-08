@@ -17,15 +17,13 @@ jobs:
           node-version: '12.x'
       - run: npm install
       - run: npm run lint && npm run build:prod
+      - run: cd dist/index/ && tar -cf index.tar ./* && mv index.tar ../../
 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.1.4
         with:
           name: dist
           path: ./dist/index/*
-
-      - name: Package products
-      - run: cd dist/index/ && tar -cf index.tar ./* && cp index.tar ../../
 
       - name: SCP
         uses: appleboy/scp-action@master
