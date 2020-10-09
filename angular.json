@@ -34,18 +34,11 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
-              "src/assets/editor/css/editormd.css",
               "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
               "src/styles.less"
             ],
             "scripts": [
-              "./node_modules/jquery/dist/jquery.min.js",
-              "src/assets/editor/lib/marked.min.js",
-              "src/assets/editor/lib/prettify.min.js",
-              "src/assets/editor/lib/underscore.min.js",
-              "src/assets/editor/lib/flowchart.min.js",
-              "src/assets/editor/lib/jquery.flowchart.min.js",
-              "src/assets/editor/editormd.min.js"
+              "./node_modules/jquery/dist/jquery.min.js"
             ]
           },
           "configurations": {

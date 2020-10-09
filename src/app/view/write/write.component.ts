@@ -1,6 +1,5 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ArticleReq} from '../../class/Article';
-import {EditorConfig} from '../../class/EditorConfig';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from '../../api/api.service';
 import {NzMessageService} from 'ng-zorro-antd';
@@ -8,6 +7,10 @@ import {User} from '../../class/User';
 import {Tag} from '../../class/Tag';
 import {Title} from '@angular/platform-browser';
 import {GlobalUserService} from '../../services/global-user.service';
+import Vditor from 'vditor';
+import {environment} from '../../../environments/environment';
+import {LocalStorageService} from '../../services/local-storage.service';
+import {Response} from '../../class/HttpReqAndResp';
 
 @Component({
     selector: 'view-write',
@@ -20,15 +23,16 @@ export class WriteComponent implements OnInit {
                 private activatedRoute: ActivatedRoute,
                 private apiService: ApiService,
                 private userService: GlobalUserService,
+                private localStorageService: LocalStorageService,
                 private message: NzMessageService,
                 private titleService: Title) {
         this.titleService.setTitle('小海博客 | 创作');
     }
 
     modalVisible: boolean = false;
-    conf = new EditorConfig();
     articleId: number;
     isUpdate = false;
+    vditor: Vditor;
 
     public article: ArticleReq = new ArticleReq();
 
@@ -41,28 +45,12 @@ export class WriteComponent implements OnInit {
 
     private lastShowTime: number;
 
-    // 同步属性内容
-    syncModel(str): void {
-        this.article.mdContent = str;
-        // 文章 暂存
-        localStorage.setItem('tmpArticle', JSON.stringify(this.article));
-    }
-
-
     ngOnInit(): void {
-        this.articleId = this.activatedRoute.snapshot.queryParams.id;
-        if (this.articleId != null) {
-            this.isUpdate = true;
-            this.getArticle();
-        }
-        if (!this.articleId && localStorage.getItem('tmpArticle')) {
-            this.article = JSON.parse(localStorage.getItem('tmpArticle'));
-        }
-        this.setSuitableHeight();
+        this.vditor = new Vditor('vditor', this.initOption());
         // 用户权限判断
         this.userService.watchUserInfo({
             complete: () => null,
-            error: (err) => {
+            error: () => {
                 if (!this.lastShowTime || Date.now() - this.lastShowTime > 1000) {
                     this.message.info('你暂时还没有登录，请点击右上角登录后开始创作');
                     this.lastShowTime = Date.now();
@@ -85,18 +73,12 @@ export class WriteComponent implements OnInit {
             next: data => {
                 this.categoryList = data.result.list;
             },
-            error: err => {
+            error: () => {
                 this.message.error('获取分类信息失败');
             }
         });
     }
 
-    /**
-     * 设置高度
-     */
-    setSuitableHeight() {
-        this.conf.height = (window.innerHeight - 120) + '';
-    }
 
     // 提交按钮的事件
     articleSubmit() {
@@ -105,7 +87,7 @@ export class WriteComponent implements OnInit {
             this.message.warning(this.article.title === '' ? '标题不能为空' : '文章不能为空');
             return;
         }
-
+        this.article.mdContent = this.vditor.getValue();
     }
 
     /**
@@ -200,6 +182,7 @@ export class WriteComponent implements OnInit {
                     url: this.article.url,
                     id: this.article.id
                 };
+                this.vditor.setValue(this.article.mdContent)
             },
             error: e => {
                 if (e.code === 2010) {
@@ -208,5 +191,71 @@ export class WriteComponent implements OnInit {
                 }
             }
         });
+    }
+
+    private initOption(): IOptions {
+        return {
+            width: '100%',
+            height: (window.innerHeight - 120),
+            placeholder: '欢迎来到小海的创作中心',
+            mode: 'sv',
+            outline: true,
+            toolbarConfig: {
+                pin: true,
+            },
+            preview: {
+                hljs: {
+                    lineNumber: true
+                },
+                markdown: {
+                    autoSpace: true,
+                    fixTermTypo: true,
+                    chinesePunct: true,
+                    toc: false,
+                    linkBase: ''
+                }
+
+            },
+            cache: {
+                enable: false,
+            },
+            counter: {
+                enable: true
+            },
+            upload: {
+                url: environment.host + '/fileUpload',
+                format: (files: File[], responseText: string) => {
+                    const data: Response<[{ originalFilename: string, host: string, path: string, success: boolean }]>
+                        = JSON.parse(responseText);
+                    const result = {
+                        msg: data.msg,
+                        code: data.code,
+                        data: {
+                            errFiles: [],
+                            succMap: {}
+                        }
+                    }
+                    data.result.filter(value => value.success)
+                        .forEach(value => result.data.succMap[value.originalFilename] = value.host + value.path);
+                    data.result.filter(value => !value.success)
+                        .forEach(value => result.data.errFiles.push(value.originalFilename));
+                    return JSON.stringify(result);
+                },
+                setHeaders: () => {
+                    return {Authorization: this.localStorageService.getToken()}
+                }
+            },
+            after: () => {
+                // 判断是更新文章还是恢复文章
+                this.articleId = this.activatedRoute.snapshot.queryParams.id;
+                if (this.articleId != null) {
+                    this.isUpdate = true;
+                    this.getArticle();
+                }
+                if (!this.articleId && localStorage.getItem('tmpArticle')) {
+                    this.article = JSON.parse(localStorage.getItem('tmpArticle'));
+                }
+            }
+        }
     }
 }
