@@ -8,7 +8,7 @@ import {Tag} from '../../class/Tag';
 import {Title} from '@angular/platform-browser';
 import {GlobalUserService} from '../../services/global-user.service';
 import Vditor from 'vditor';
-import {environment} from "../../../environments/environment";
+import {environment} from '../../../environments/environment';
 
 @Component({
     selector: 'view-write',
