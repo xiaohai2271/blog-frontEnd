@@ -9,6 +9,8 @@ import {Title} from '@angular/platform-browser';
 import {GlobalUserService} from '../../services/global-user.service';
 import Vditor from 'vditor';
 import {environment} from '../../../environments/environment';
+import {LocalStorageService} from '../../services/local-storage.service';
+import {Response} from '../../class/HttpReqAndResp';
 
 @Component({
     selector: 'view-write',
@@ -21,6 +23,7 @@ export class WriteComponent implements OnInit {
                 private activatedRoute: ActivatedRoute,
                 private apiService: ApiService,
                 private userService: GlobalUserService,
+                private localStorageService: LocalStorageService,
                 private message: NzMessageService,
                 private titleService: Title) {
         this.titleService.setTitle('小海博客 | 创作');
@@ -43,58 +46,11 @@ export class WriteComponent implements OnInit {
     private lastShowTime: number;
 
     ngOnInit(): void {
-        this.vditor = new Vditor('vditor', {
-            width: '100%',
-            height: (window.innerHeight - 120),
-            placeholder: '欢迎来到小海的创作中心',
-            mode: 'sv',
-            outline: true,
-            toolbarConfig: {
-                pin: true,
-            },
-            preview: {
-                hljs: {
-                    lineNumber: true
-                },
-                markdown: {
-                    autoSpace: true,
-                    fixTermTypo: true,
-                    chinesePunct: true,
-                    toc: false,
-                    linkBase: ''
-                }
-
-            },
-
-            cache: {
-                enable: false,
-            },
-            counter: {
-                enable: true
-            },
-            upload: {
-                url: environment.host + '/fileUpload',
-                format: (files: File[], responseText: string) => {
-                    console.log(responseText)
-                    return null;
-                }
-            },
-            after: () => {
-                // 判断是更新文章还是恢复文章
-                this.articleId = this.activatedRoute.snapshot.queryParams.id;
-                if (this.articleId != null) {
-                    this.isUpdate = true;
-                    this.getArticle();
-                }
-                if (!this.articleId && localStorage.getItem('tmpArticle')) {
-                    this.article = JSON.parse(localStorage.getItem('tmpArticle'));
-                }
-            }
-        });
+        this.vditor = new Vditor('vditor', this.initOption());
         // 用户权限判断
         this.userService.watchUserInfo({
             complete: () => null,
-            error: (err) => {
+            error: () => {
                 if (!this.lastShowTime || Date.now() - this.lastShowTime > 1000) {
                     this.message.info('你暂时还没有登录，请点击右上角登录后开始创作');
                     this.lastShowTime = Date.now();
@@ -117,7 +73,7 @@ export class WriteComponent implements OnInit {
             next: data => {
                 this.categoryList = data.result.list;
             },
-            error: err => {
+            error: () => {
                 this.message.error('获取分类信息失败');
             }
         });
@@ -235,5 +191,71 @@ export class WriteComponent implements OnInit {
                 }
             }
         });
+    }
+
+    private initOption(): IOptions {
+        return {
+            width: '100%',
+            height: (window.innerHeight - 120),
+            placeholder: '欢迎来到小海的创作中心',
+            mode: 'sv',
+            outline: true,
+            toolbarConfig: {
+                pin: true,
+            },
+            preview: {
+                hljs: {
+                    lineNumber: true
+                },
+                markdown: {
+                    autoSpace: true,
+                    fixTermTypo: true,
+                    chinesePunct: true,
+                    toc: false,
+                    linkBase: ''
+                }
+
+            },
+            cache: {
+                enable: false,
+            },
+            counter: {
+                enable: true
+            },
+            upload: {
+                url: environment.host + '/fileUpload',
+                format: (files: File[], responseText: string) => {
+                    const data: Response<[{ originalFilename: string, host: string, path: string, success: boolean }]>
+                        = JSON.parse(responseText);
+                    const result = {
+                        msg: data.msg,
+                        code: data.code,
+                        data: {
+                            errFiles: [],
+                            succMap: {}
+                        }
+                    }
+                    data.result.filter(value => value.success)
+                        .forEach(value => result.data.succMap[value.originalFilename] = value.host + value.path);
+                    data.result.filter(value => !value.success)
+                        .forEach(value => result.data.errFiles.push(value.originalFilename));
+                    return JSON.stringify(result);
+                },
+                setHeaders: () => {
+                    return {Authorization: this.localStorageService.getToken()}
+                }
+            },
+            after: () => {
+                // 判断是更新文章还是恢复文章
+                this.articleId = this.activatedRoute.snapshot.queryParams.id;
+                if (this.articleId != null) {
+                    this.isUpdate = true;
+                    this.getArticle();
+                }
+                if (!this.articleId && localStorage.getItem('tmpArticle')) {
+                    this.article = JSON.parse(localStorage.getItem('tmpArticle'));
+                }
+            }
+        }
     }
 }
