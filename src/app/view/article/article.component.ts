@@ -66,7 +66,7 @@ export class ArticleComponent implements OnInit {
                 autoSpace: true,
                 fixTermTypo: true,
                 chinesePunct: true,
-                linkBase: 'location.href',
+                linkBase: location.href,
                 toc: true,
                 mark: true
             },
