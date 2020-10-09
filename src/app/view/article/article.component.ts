@@ -58,7 +58,7 @@ export class ArticleComponent implements OnInit {
 
     parseMd(md: string) {
         const option: IPreviewOptions = {
-            anchor: 2,
+            anchor: 1,
             hljs: {
                 lineNumber: true
             },
@@ -66,11 +66,22 @@ export class ArticleComponent implements OnInit {
                 autoSpace: true,
                 fixTermTypo: true,
                 chinesePunct: true,
+                linkBase: 'location.href',
                 toc: true,
-                linkBase: location.href
+                mark: true
+            },
+            after: () => {
+                //  处理锚点
+                const tocList: HTMLCollection = this.divElement.nativeElement
+                    .getElementsByClassName('vditor-toc')[0]
+                    .getElementsByTagName(`a`);
+                for (let i = 0; i < tocList.length; i++) {
+                    const linkValue = tocList.item(i).getAttribute('href');
+                    tocList.item(i).setAttribute('href', window.location.pathname + linkValue);
+                }
             }
         };
-        VditorPreview.preview(this.divElement.nativeElement, md);
+        VditorPreview.preview(this.divElement.nativeElement, md, option);
     }
 
     toArticle(id: number) {
