@@ -4,10 +4,6 @@
         <button nz-button nzType="primary" id="submit" (click)="articleSubmit()">提交</button>
     </div>
     <div id="vditor"></div>
-
-    <!--    <div id="md" appEditorMd [editormdConfig]="conf" (editorChange)="syncModel($event)">-->
-    <!--        <textarea style="display: block;" [(ngModel)]="article.mdContent"></textarea>-->
-    <!--    </div>-->
 </div>
 
 <nz-modal [(nzVisible)]="modalVisible" [nzTitle]="title" [nzContent]="content" [nzFooter]="null"

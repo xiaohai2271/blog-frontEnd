@@ -3,10 +3,11 @@ import {CommonModule} from '@angular/common';
 import {WriteComponent} from './write.component';
 import {Route, RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {EditorMdDirective} from './editor-md/editor-md.directive';
 import {PublishFormComponent} from './components/publish-form/publish-form.component';
 import {
-    NzButtonModule, NzCardModule, NzDividerModule,
+    NzButtonModule,
+    NzCardModule,
+    NzDividerModule,
     NzFormModule,
     NzIconModule,
     NzInputModule,
@@ -23,7 +24,7 @@ const routes: Route[] = [
 
 
 @NgModule({
-    declarations: [WriteComponent, EditorMdDirective, PublishFormComponent],
+    declarations: [WriteComponent, PublishFormComponent],
     imports: [
         CommonModule,
         RouterModule.forChild(routes),

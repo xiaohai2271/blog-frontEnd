@@ -73,9 +73,8 @@ export class ArticleComponent implements OnInit {
             after: () => {
                 //  处理锚点
                 const tocList: HTMLCollection = this.divElement.nativeElement
-                    .getElementsByClassName('vditor-toc')[0]
-                    .getElementsByTagName(`a`);
-                for (let i = 0; i < tocList.length; i++) {
+                    .getElementsByClassName('vditor-toc')[0]?.getElementsByTagName(`a`);
+                for (let i = 0; i < tocList?.length; i++) {
                     const linkValue = tocList.item(i).getAttribute('href');
                     tocList.item(i).setAttribute('href', window.location.pathname + linkValue);
                 }
