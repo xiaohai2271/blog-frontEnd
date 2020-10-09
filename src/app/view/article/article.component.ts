@@ -1,15 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from '../../api/api.service';
 import {Article} from '../../class/Article';
 import {Title} from '@angular/platform-browser';
 import {User} from '../../class/User';
-import {CommentReq} from '../../class/Comment';
+import {Comment, CommentReq} from '../../class/Comment';
 import {PageList} from '../../class/HttpReqAndResp';
-import {Comment} from '../../class/Comment';
 import {GlobalUserService} from '../../services/global-user.service';
+import VditorPreview from 'vditor/dist/method.min'
 
-declare var editormd;
 declare var $;
 
 @Component({
@@ -40,6 +39,9 @@ export class ArticleComponent implements OnInit {
     avatarImgUrl: string;
     pid: number;
     content: string;
+    @ViewChild('divElement') divElement: ElementRef;
+
+    // private vditor: Vditor;
 
     ngOnInit() {
         this.toArticle(this.articleId);
@@ -55,17 +57,20 @@ export class ArticleComponent implements OnInit {
     }
 
     parseMd(md: string) {
-        editormd.markdownToHTML('article-content', {
-            markdown: this.article.mdContent,
-            htmlDecode: 'style,script,iframe',  // you can filter tags decode
-            toc: false,
-            tocm: false,    // Using [TOCM]
-            // tocContainer: '#article-slider', // 自定义 ToC 容器层
-            // tocDropdown: true,
-            emoji: true,
-            taskList: true,
-            flowChart: true,  // 默认不解析
-        });
+        const option: IPreviewOptions = {
+            anchor: 2,
+            hljs: {
+                lineNumber: true
+            },
+            markdown: {
+                autoSpace: true,
+                fixTermTypo: true,
+                chinesePunct: true,
+                toc: true,
+                linkBase: location.href
+            }
+        };
+        VditorPreview.preview(this.divElement.nativeElement, md);
     }
 
     toArticle(id: number) {
