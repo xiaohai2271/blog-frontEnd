@@ -39,8 +39,18 @@ export class ErrorService {
         if (this.componentStateService.currentPath === this.ADMIN_PAGE_PREFIX) {
             this.notification.create('error', `请求失败<${response.code}>`, `${response.msg}`);
         }
-        // 3830 token签名错误
-        if (response.code === 3830) {
+        /***
+         * 3700, "登陆过期"
+         * 3710, "账户已注销"
+         * 3711, "账户不可用"
+         * 3800, "密码不正确"
+         * 3810, "Token过期"
+         * 3820, "Token格式不对"
+         * 3820, "Token格式不对"
+         * 3830, "Token签名错误"
+         * 3840, "不支持的Token"
+         */
+        if (response.code > 3700 && response.code < 3900) {
             this.localStorageService.removeToken();
         }
     }
