@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ArticleReq} from '../../class/Article';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from '../../api/api.service';
@@ -17,7 +17,7 @@ import {Response} from '../../class/HttpReqAndResp';
     templateUrl: './write.component.html',
     styleUrls: ['./write.component.less']
 })
-export class WriteComponent implements OnInit {
+export class WriteComponent implements OnInit, OnDestroy {
 
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
@@ -44,11 +44,12 @@ export class WriteComponent implements OnInit {
     title: string;
 
     private lastShowTime: number;
+    private userInfoSub: { unsubscribe: () => void }
 
     ngOnInit(): void {
         this.vditor = new Vditor('vditor', this.initOption());
         // 用户权限判断
-        this.userService.watchUserInfo({
+        this.userInfoSub = this.userService.watchUserInfo({
             complete: () => null,
             error: () => {
                 if (!this.lastShowTime || Date.now() - this.lastShowTime > 1000) {
@@ -77,6 +78,10 @@ export class WriteComponent implements OnInit {
                 this.message.error('获取分类信息失败');
             }
         });
+    }
+
+    ngOnDestroy(): void {
+        this.userInfoSub.unsubscribe();
     }
 
 
