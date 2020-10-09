@@ -8,6 +8,7 @@ import {Tag} from '../../class/Tag';
 import {Title} from '@angular/platform-browser';
 import {GlobalUserService} from '../../services/global-user.service';
 import Vditor from 'vditor';
+import {environment} from "../../../environments/environment";
 
 @Component({
     selector: 'view-write',
@@ -47,11 +48,36 @@ export class WriteComponent implements OnInit {
             height: (window.innerHeight - 120),
             placeholder: '欢迎来到小海的创作中心',
             mode: 'sv',
+            outline: true,
             toolbarConfig: {
                 pin: true,
             },
+            preview: {
+                hljs: {
+                    lineNumber: true
+                },
+                markdown: {
+                    autoSpace: true,
+                    fixTermTypo: true,
+                    chinesePunct: true,
+                    toc: false,
+                    linkBase: ''
+                }
+
+            },
+
             cache: {
                 enable: false,
+            },
+            counter: {
+                enable: true
+            },
+            upload: {
+                url: environment.host + '/fileUpload',
+                format: (files: File[], responseText: string) => {
+                    console.log(responseText)
+                    return null;
+                }
             },
             after: () => {
                 // 判断是更新文章还是恢复文章
@@ -105,7 +131,7 @@ export class WriteComponent implements OnInit {
             this.message.warning(this.article.title === '' ? '标题不能为空' : '文章不能为空');
             return;
         }
-
+        this.article.mdContent = this.vditor.getValue();
     }
 
     /**
