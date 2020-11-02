@@ -22,7 +22,7 @@
     "@angular/router": "^10.1.1",
     "@angular/service-worker": "^10.1.1",
     "jquery": "^3.5.1",
-    "ng-zorro-antd": "^9.3.0",
+    "ng-zorro-antd": "^10.1.0",
     "rxjs": "^6.6.3",
     "tslib": "^2.0.3",
     "vditor": "^3.5.5",
