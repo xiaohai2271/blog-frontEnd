@@ -5,7 +5,10 @@ import {AdminTagComponent} from './admin-tag.component';
 import {FormsModule} from '@angular/forms';
 import {CommonTableModule} from '../components/common-table/common-table.module';
 import {EditableTagModule} from '../components/editable-tag/editable-tag.module';
-import {NzButtonModule, NzCardModule, NzIconModule, NzTabsModule} from 'ng-zorro-antd';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 
 @NgModule({

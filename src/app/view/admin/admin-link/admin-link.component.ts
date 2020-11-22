@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {RequestObj, Response} from '../../../class/HttpReqAndResp';
 import {Link} from '../../../class/Link';
 import {ApiService} from '../../../api/api.service';
-import {NzMessageService} from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {Title} from '@angular/platform-browser';

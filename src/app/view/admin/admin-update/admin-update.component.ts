@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NzMessageService} from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import {Title} from '@angular/platform-browser';
 import {Observable} from 'rxjs';
 import {ApiService} from '../../../api/api.service';

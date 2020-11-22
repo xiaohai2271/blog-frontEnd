@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {PageList} from '../../class/HttpReqAndResp';
 import {Article} from '../../class/Article';
 import {ApiService} from '../../api/api.service';
-import {NzMessageService} from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import {Location} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {Title} from '@angular/platform-browser';

@@ -4,7 +4,8 @@ import {RouterModule} from '@angular/router';
 import {AdminArticleComponent} from './admin-article.component';
 import {CommonTableModule} from '../components/common-table/common-table.module';
 import {FormsModule} from '@angular/forms';
-import {NzCheckboxModule, NzTagModule} from 'ng-zorro-antd';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 
 @NgModule({
     declarations: [

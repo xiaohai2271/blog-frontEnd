@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
-import {NzMessageService, UploadFile} from 'ng-zorro-antd';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {NzUploadFile} from 'ng-zorro-antd/upload';
 import {Router} from '@angular/router';
 import {GlobalUserService} from '../../services/global-user.service';
 import {User} from '../../class/User';
@@ -71,7 +72,7 @@ export class AdminComponent implements OnInit {
             return control.value !== newPwd ? {pwdNotSame: true} : null;
         };
     }
-    uploadHeader = (file: UploadFile): object | Observable<{}> => {
+    uploadHeader = (file: NzUploadFile): object | Observable<{}> => {
         return {Authorization: this.localStorageService.getToken()}
     };
 

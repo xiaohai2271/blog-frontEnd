@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../../api/api.service';
 import {Tag} from '../../class/Tag';
-import {NzMessageService} from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import {PageList} from '../../class/HttpReqAndResp';
 import {Article} from '../../class/Article';
 import {ActivatedRoute} from '@angular/router';

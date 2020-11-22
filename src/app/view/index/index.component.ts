@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../../api/api.service';
 import {Article} from '../../class/Article';
-import {NzIconService, NzMessageService} from 'ng-zorro-antd';
+import { NzIconService } from 'ng-zorro-antd/icon';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import {SvgIconUtil} from '../../utils/svgIconUtil';
 import {PageList, RequestObj} from '../../class/HttpReqAndResp';
 import {Router} from '@angular/router';
