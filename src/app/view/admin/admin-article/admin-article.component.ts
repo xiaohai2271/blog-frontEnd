@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {NzMessageService} from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import {ApiService} from '../../../api/api.service';
 import {RequestObj} from '../../../class/HttpReqAndResp';
 import {Article} from '../../../class/Article';

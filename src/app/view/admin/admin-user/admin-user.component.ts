@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NzMessageService} from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import {Title} from '@angular/platform-browser';
 import {FormControl, FormGroup} from '@angular/forms';
 import {RequestObj} from '../../../class/HttpReqAndResp';

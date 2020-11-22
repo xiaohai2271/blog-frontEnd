@@ -6,7 +6,11 @@ import {RegistrationComponent} from './components/registration/registration.comp
 import {LoginRegistrationRoutingModule} from './login-registration-routing.module';
 import {LoginRegistrationComponent} from './login-registration.component';
 import {FormsModule} from '@angular/forms';
-import {NzButtonModule, NzFormModule, NzGridModule, NzInputModule, NzModalModule} from 'ng-zorro-antd';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 
 @NgModule({

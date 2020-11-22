@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {forwardRef, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
-import {NgZorroAntdModule, NZ_I18N, zh_CN} from 'ng-zorro-antd';
+import {NZ_I18N, zh_CN} from 'ng-zorro-antd/i18n';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -20,6 +20,16 @@ import {ComponentStateService} from './services/component-state.service';
 import {GlobalUserService} from './services/global-user.service';
 import {LocalStorageService} from './services/local-storage.service';
 import {ApiService} from './api/api.service';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {NzBackTopModule} from 'ng-zorro-antd/back-top';
+import {NzModalModule} from 'ng-zorro-antd/modal';
+import {NzNotificationService} from 'ng-zorro-antd/notification';
+import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
+import {NzIconModule} from 'ng-zorro-antd/icon';
+import {NzAvatarModule} from 'ng-zorro-antd/avatar';
+import {NzButtonModule} from 'ng-zorro-antd/button';
+import {NzGridModule} from 'ng-zorro-antd/grid';
+import {NzDividerModule} from 'ng-zorro-antd/divider';
 
 
 registerLocaleData(zh);
@@ -33,13 +43,20 @@ registerLocaleData(zh);
     imports: [
         BrowserModule,
         AppRoutingModule,
-        NgZorroAntdModule,
         FormsModule,
         HttpClientModule,
         BrowserAnimationsModule,
         LoginRegistrationModule,
         AdminModule,
-        ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production})
+        ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
+        NzBackTopModule,
+        NzModalModule,
+        NzDropDownModule,
+        NzIconModule,
+        NzAvatarModule,
+        NzButtonModule,
+        NzGridModule,
+        NzDividerModule
     ],
     providers: [
         ComponentStateService,
@@ -47,6 +64,8 @@ registerLocaleData(zh);
         LocalStorageService,
         HttpService,
         ApiService,
+        NzMessageService,
+        NzNotificationService,
         ErrorService,
         {provide: NZ_I18N, useValue: zh_CN},
     ],

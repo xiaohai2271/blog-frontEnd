@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {environment} from '../../../../../environments/environment';
 import {ApiService} from '../../../../api/api.service';
-import {NzMessageService} from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import {Router} from '@angular/router';
 import {RequestObj} from '../../../../class/HttpReqAndResp';
 import {LoginReq} from '../../../../class/User';

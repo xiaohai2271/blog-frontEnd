@@ -3,7 +3,7 @@ import {RequestObj, Response} from '../class/HttpReqAndResp';
 import {environment} from '../../environments/environment';
 import {Router} from '@angular/router';
 import {ComponentStateService} from './component-state.service';
-import {NzNotificationService} from 'ng-zorro-antd';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import {HttpService} from '../api/http/http.service';
 import {LocalStorageService} from './local-storage.service';
 
