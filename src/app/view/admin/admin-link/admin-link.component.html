@@ -1,34 +1,34 @@
 <common-table #commonTableComponent
-              cardTitle="友链管理"
-              [request]="request"
               [headData]="headData"
+              [request]="request"
               [template]="{open:{temp:open,param:{true:'可见',false:'不可见'}},delete:{temp:deleteTemp,param:{true:'已删除',false:'未删除'}}}"
+              cardTitle="友链管理"
 >
-    <button nz-button (click)="addLink()">添加</button>
+    <button (click)="addLink()" nz-button>添加</button>
 </common-table>
 
 <ng-template #open let-value="value">
-    <label nz-checkbox nzDisabled [ngModel]="value"></label>
+    <label [ngModel]="value" nz-checkbox nzDisabled></label>
 </ng-template>
 
-<ng-template let-value="value" let-originValue="originValue" #deleteTemp>
-    <nz-tag [nzColor]="'blue'" *ngIf="originValue=='false'">{{value}}</nz-tag>
-    <nz-tag [nzColor]="'#ff5500'" *ngIf="originValue!='false'">{{value}}</nz-tag>
+<ng-template #deleteTemp let-originValue="originValue" let-value="value">
+    <nz-tag *ngIf="originValue=='false'" [nzColor]="'blue'">{{value}}</nz-tag>
+    <nz-tag *ngIf="originValue!='false'" [nzColor]="'#ff5500'">{{value}}</nz-tag>
 </ng-template>
 
-<nz-modal [(nzVisible)]="modalVisible" [nzTitle]="modalTitle" (nzOnOk)="modalConfirm()"
-          (nzOnCancel)="modalVisible = false" [nzClosable]="true" [nzOkDisabled]="!formGroup.valid">
-    <form nz-form [formGroup]="formGroup">
+<nz-modal (nzOnCancel)="modalVisible = false" (nzOnOk)="modalConfirm()" [(nzVisible)]="modalVisible"
+          [nzClosable]="true" [nzOkDisabled]="!formGroup.valid" [nzTitle]="modalTitle">
+    <form [formGroup]="formGroup" nz-form>
         <nz-form-item>
             <nz-form-label nzFlex="80px" nzRequired>网站名称</nz-form-label>
-            <nz-form-control nzFlex="auto" nzErrorTip="网站名称不可为空">
-                <input nz-input formControlName="name">
+            <nz-form-control nzErrorTip="网站名称不可为空" nzFlex="auto">
+                <input formControlName="name" nz-input>
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>
             <nz-form-label nzFlex="80px" nzRequired>网站链接</nz-form-label>
-            <nz-form-control nzFlex="auto" [nzErrorTip]="nameErrTip">
-                <input nz-input formControlName="url">
+            <nz-form-control [nzErrorTip]="nameErrTip" nzFlex="auto">
+                <input formControlName="url" nz-input>
                 <ng-template #nameErrTip>
                     <div *ngIf="formGroup.controls.url.hasError('required')">网站链接不可为空</div>
                     <div *ngIf="formGroup.controls.url.hasError('pattern')">网站链接格式不正确</div>
@@ -38,8 +38,8 @@
         </nz-form-item>
         <nz-form-item>
             <nz-form-label nzFlex="80px" nzRequired>是否公开</nz-form-label>
-            <nz-form-control nzFlex="auto" nzErrorTip="不可为空">
-                <nz-select nzPlaceHolder="请选择" formControlName="open" [nzAllowClear]="true">
+            <nz-form-control nzErrorTip="不可为空" nzFlex="auto">
+                <nz-select [nzAllowClear]="true" formControlName="open" nzPlaceHolder="请选择">
                     <nz-option [nzValue]="true" nzLabel="公开"></nz-option>
                     <nz-option [nzValue]="false" nzLabel="不公开"></nz-option>
                 </nz-select>
@@ -47,20 +47,20 @@
         </nz-form-item>
         <nz-form-item>
             <nz-form-label nzFlex="80px">网站图标</nz-form-label>
-            <nz-form-control nzFlex="auto" nzErrorTip="链接格式不正确">
+            <nz-form-control nzErrorTip="链接格式不正确" nzFlex="auto">
                 <nz-input-group [nzSuffix]="icon" nzSize="large">
-                    <input nz-input formControlName="iconPath">
+                    <input formControlName="iconPath" nz-input>
                 </nz-input-group>
                 <ng-template #icon>
-                    <img style="width: 25px;height: 25px" *ngIf="formGroup.value.iconPath"
-                         [src]="formGroup.value.iconPath" alt="icon">
+                    <img *ngIf="formGroup.value.iconPath" [src]="formGroup.value.iconPath"
+                         alt="icon" style="width: 25px;height: 25px">
                 </ng-template>
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>
             <nz-form-label nzFlex="80px">网站描述</nz-form-label>
-            <nz-form-control nzFlex="auto" nzErrorTip="可输入最大文字长度为255">
-                <textarea nz-input formControlName="desc" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+            <nz-form-control nzErrorTip="可输入最大文字长度为255" nzFlex="auto">
+                <textarea [nzAutosize]="{ minRows: 2, maxRows: 6 }" formControlName="desc" nz-input></textarea>
             </nz-form-control>
         </nz-form-item>
 

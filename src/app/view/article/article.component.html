@@ -1,6 +1,6 @@
 <div id="main">
 
-    <div id="article-content" #divElement></div>
+    <div #divElement id="article-content"></div>
     <ng-template [ngIf]="article">
         <span id="over">over</span>
 
@@ -15,20 +15,20 @@
         <div class="article-tag" id="tag">
             <!-- TODO -->
             <span *ngFor="let item of (article.tags||'')" class="tag">
-                        <i nz-icon nzType="tag" nzTheme="fill"></i>
-                        <a class="tag" [routerLink]="['/tags/'+item.name]">{{item.name}}</a>
+                        <i nz-icon nzTheme="fill" nzType="tag"></i>
+                        <a [routerLink]="['/tags/'+item.name]" class="tag">{{item.name}}</a>
             </span>
         </div>
 
         <div class="article-bAnda">
             <a (click)="toArticle(article.nextArticle.id)" [class.disabled]="!article.nextArticle">
-                <i nz-icon nzType="left" nzTheme="outline"></i>
+                <i nz-icon nzTheme="outline" nzType="left"></i>
                 {{(article.nextArticle && article.nextArticle.title) || '无'}}
             </a>
             <a (click)="toArticle(article.preArticle.id)" [class.disabled]="!article.preArticle"
-               style="float: right" id="pre">
+               id="pre" style="float: right">
                 {{(article.preArticle && article.preArticle.title) || '无'}}
-                <i nz-icon nzType="right" nzTheme="outline"></i>
+                <i nz-icon nzTheme="outline" nzType="right"></i>
             </a>
         </div>
 
@@ -36,18 +36,18 @@
     </ng-template>
 
     <nz-comment id="f-comment">
-        <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="avatarImgUrl"></nz-avatar>
+        <nz-avatar [nzSrc]="avatarImgUrl" nz-comment-avatar nzIcon="user"></nz-avatar>
         <nz-comment-content>
             <nz-form-item>
-                            <textarea [(ngModel)]="comment.content" nz-input rows="4" [disabled]="!user"
-                                      [nzAutosize]="{ minRows: 2, maxRows: user?6:2 }"></textarea>
-                <span *ngIf="!user">请先 <a routerLink="/user/login"
-                                          [queryParams]="{url:'/article/'+articleId}">登录</a></span>
+                            <textarea [(ngModel)]="comment.content" [disabled]="!user" [nzAutosize]="{ minRows: 2, maxRows: user?6:2 }" nz-input
+                                      rows="4"></textarea>
+                <span *ngIf="!user">请先 <a [queryParams]="{url:'/article/'+articleId}"
+                                          routerLink="/user/login">登录</a></span>
             </nz-form-item>
             <nz-form-item>
-                <button nz-button nzType="primary" [nzLoading]="!user&&submitting"
-                        [disabled]="!comment.content"
-                        (click)="submitComment(true)">评论
+                <button (click)="submitComment(true)" [disabled]="!comment.content" [nzLoading]="!user&&submitting"
+                        nz-button
+                        nzType="primary">评论
                 </button>
             </nz-form-item>
         </nz-comment-content>
@@ -61,28 +61,28 @@
         <nz-list [nzLoading]="!commentPage">
             <nz-list-item *ngFor="let comment of commentPage.list">
                 <nz-comment [nzAuthor]="comment.fromUser.displayName" [nzDatetime]="comment.date" style="width: 100%">
-                    <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="comment.fromUser.avatarImgUrl"
-                               *ngIf="comment.fromUser.avatarImgUrl">
+                    <nz-avatar *ngIf="comment.fromUser.avatarImgUrl" [nzSrc]="comment.fromUser.avatarImgUrl" nz-comment-avatar
+                               nzIcon="user">
                     </nz-avatar>
-                    <nz-avatar nz-comment-avatar nzIcon="user" [nzText]="comment.fromUser.displayName"
-                               *ngIf="!comment.fromUser.avatarImgUrl">
+                    <nz-avatar *ngIf="!comment.fromUser.avatarImgUrl" [nzText]="comment.fromUser.displayName" nz-comment-avatar
+                               nzIcon="user">
                     </nz-avatar>
                     <nz-comment-content>
                         <p style="font-size: larger">{{ comment.content }}</p>
                     </nz-comment-content>
                     <nz-comment-action>
-                        <i nz-icon nzType="message" nzTheme="outline"></i>
-                        <button nz-button nzType="link" (click)="resp(comment.id,comment.fromUser.displayName)">回复
+                        <i nz-icon nzTheme="outline" nzType="message"></i>
+                        <button (click)="resp(comment.id,comment.fromUser.displayName)" nz-button nzType="link">回复
                         </button>
                     </nz-comment-action>
 
                     <nz-list-item *ngFor="let com of comment.respComment">
                         <nz-comment [nzAuthor]="com.fromUser.displayName" [nzDatetime]="com.date">
-                            <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="com.fromUser.avatarImgUrl"
-                                       *ngIf="com.fromUser.avatarImgUrl">
+                            <nz-avatar *ngIf="com.fromUser.avatarImgUrl" [nzSrc]="com.fromUser.avatarImgUrl" nz-comment-avatar
+                                       nzIcon="user">
                             </nz-avatar>
-                            <nz-avatar nz-comment-avatar nzIcon="user" [nzText]="com.fromUser.displayName"
-                                       *ngIf="!com.fromUser.avatarImgUrl">
+                            <nz-avatar *ngIf="!com.fromUser.avatarImgUrl" [nzText]="com.fromUser.displayName" nz-comment-avatar
+                                       nzIcon="user">
                             </nz-avatar>
                             <nz-comment-content>
                                 <p style="font-size: larger">{{ com.content }}</p>
@@ -96,18 +96,18 @@
 
                     <nz-form-item *ngIf="pid==comment.id">
                         <nz-input-group [nzAddOnBefore]="respName">
-                            <textarea nz-input [(ngModel)]="content" placeholder="写出你的想法"
-                                      [nzAutosize]="{ minRows: 2, maxRows: 6 }" [disabled]="!user">
+                            <textarea [(ngModel)]="content" [disabled]="!user" [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+                                      nz-input placeholder="写出你的想法">
                             </textarea>
                             <ng-template #respName>
                                 <span>@{{name}}</span>
                             </ng-template>
                         </nz-input-group>
-                        <div *ngIf="!user">请先 <a routerLink="/user/login"
-                                                 [queryParams]="{url:'/article/'+articleId}">登录</a></div>
-                        <button nz-button (click)="pid=null" style="margin-top: 10px;">取消</button>
-                        <button nz-button nzType="primary" (click)="submitComment(false)"
-                                style="margin-left: 30px;margin-top: 10px;" [nzLoading]="!user&&submitting">回复
+                        <div *ngIf="!user">请先 <a [queryParams]="{url:'/article/'+articleId}"
+                                                 routerLink="/user/login">登录</a></div>
+                        <button (click)="pid=null" nz-button style="margin-top: 10px;">取消</button>
+                        <button (click)="submitComment(false)" [nzLoading]="!user&&submitting" nz-button
+                                nzType="primary" style="margin-left: 30px;margin-top: 10px;">回复
                         </button>
 
                     </nz-form-item>

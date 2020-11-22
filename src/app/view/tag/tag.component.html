@@ -1,9 +1,9 @@
 <div id="main">
     <div id="category">
         <ul *ngIf="tagList.length">
-            <c-tag-tag *ngFor="let tag of tagList"
-                       [tag]="tag"
-                       (tagClick)="changeTag(tag)">
+            <c-tag-tag (tagClick)="changeTag(tag)"
+                       *ngFor="let tag of tagList"
+                       [tag]="tag">
 
             </c-tag-tag>
         </ul>
@@ -14,7 +14,7 @@
         <span style="font-weight: bolder;">{{name}}</span>
     </span>
 
-    <ul id="detail" *ngIf="articleList&&articleList.list.length">
+    <ul *ngIf="articleList&&articleList.list.length" id="detail">
         <c-article-detail-card *ngFor="let article of articleList.list"
                                [data]="article" [showMediaArea]="false" [showTagArea]="false">
         </c-article-detail-card>

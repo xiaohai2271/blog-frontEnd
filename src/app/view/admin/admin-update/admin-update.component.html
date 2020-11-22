@@ -1,8 +1,8 @@
-<common-table [request]="request" [headData]="headData" cardTitle="更新管理">
-    <button nz-button (click)="showModal()">新增</button>
+<common-table [headData]="headData" [request]="request" cardTitle="更新管理">
+    <button (click)="showModal()" nz-button>新增</button>
 </common-table>
 
-<nz-modal [(nzVisible)]="modalData.visible" [nzClosable]="true" (nzOnCancel)="modalData.visible = false"
-          (nzOnOk)="confirm()" [nzTitle]="modalData.title">
-    <textarea nz-input [(ngModel)]="modalData.content" [nzAutosize]="{ minRows: 2, maxRows: 8 }"></textarea>
+<nz-modal (nzOnCancel)="modalData.visible = false" (nzOnOk)="confirm()" [(nzVisible)]="modalData.visible"
+          [nzClosable]="true" [nzTitle]="modalData.title">
+    <textarea [(ngModel)]="modalData.content" [nzAutosize]="{ minRows: 2, maxRows: 8 }" nz-input></textarea>
 </nz-modal>

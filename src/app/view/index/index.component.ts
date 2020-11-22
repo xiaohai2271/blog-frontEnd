@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../../api/api.service';
 import {Article} from '../../class/Article';
-import { NzIconService } from 'ng-zorro-antd/icon';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {NzIconService} from 'ng-zorro-antd/icon';
+import {NzMessageService} from 'ng-zorro-antd/message';
 import {SvgIconUtil} from '../../utils/svgIconUtil';
 import {PageList, RequestObj} from '../../class/HttpReqAndResp';
 import {Router} from '@angular/router';
@@ -17,19 +17,9 @@ import {Title} from '@angular/platform-browser';
 })
 export class IndexComponent implements OnInit {
 
-    constructor(private apiService: ApiService,
-                private iconService: NzIconService,
-                private nzMessageService: NzMessageService,
-                private router: Router,
-                private title: Title) {
-        this.iconService.addIconLiteral('blog:location', SvgIconUtil.locationIcon);
-        title.setTitle('小海博客');
-    }
-
     readonly logoImgUrl: string = 'https://56462271.oss-cn-beijing.aliyuncs.com/web/logo.png';
     readonly qqQrImgUrl: string = 'https://56462271.oss-cn-beijing.aliyuncs.com/web/qq.jpg';
     readonly wxQrImgUrl: string = 'https://56462271.oss-cn-beijing.aliyuncs.com/web/wx.jpg';
-
     imgUrl: string;
     desc: string;
     articles: PageList<Article>;
@@ -50,6 +40,15 @@ export class IndexComponent implements OnInit {
         committerDate: string;
         commitUrl: string
     };
+
+    constructor(private apiService: ApiService,
+                private iconService: NzIconService,
+                private nzMessageService: NzMessageService,
+                private router: Router,
+                private title: Title) {
+        this.iconService.addIconLiteral('blog:location', SvgIconUtil.locationIcon);
+        title.setTitle('小海博客');
+    }
 
     ngOnInit() {
         this.imgUrl = this.logoImgUrl;

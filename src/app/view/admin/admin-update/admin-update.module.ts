@@ -5,9 +5,9 @@ import {AdminUpdateComponent} from './admin-update.component';
 
 import {FormsModule} from '@angular/forms';
 import {CommonTableModule} from '../components/common-table/common-table.module';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzModalModule } from 'ng-zorro-antd/modal';
+import {NzButtonModule} from 'ng-zorro-antd/button';
+import {NzInputModule} from 'ng-zorro-antd/input';
+import {NzModalModule} from 'ng-zorro-antd/modal';
 
 
 @NgModule({

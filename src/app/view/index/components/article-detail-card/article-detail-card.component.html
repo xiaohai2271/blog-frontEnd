@@ -1,19 +1,19 @@
-<nz-card id="article-card" [nzLoading]="data==null">
+<nz-card [nzLoading]="data==null" id="article-card">
     <h1><a [routerLink]="'/article/'+data.id">{{data.title}}</a></h1>
     <div>
-        <span *ngIf="showMediaArea" id="article-original" [ngClass]="data.original?'original':'reproduced'">
+        <span *ngIf="showMediaArea" [ngClass]="data.original?'original':'reproduced'" id="article-original">
             {{data.original ? '原创' : '转载'}}
         </span>
         <span *ngIf="showMediaArea" class="badge">
-            <i nz-icon nzType="calendar" nzTheme="outline"></i>
+            <i nz-icon nzTheme="outline" nzType="calendar"></i>
             <span>{{data.publishDateFormat}}</span>
         </span>
         <span *ngIf="showMediaArea" class="badge">
-            <i nz-icon nzType="user" nzTheme="outline"></i>
+            <i nz-icon nzTheme="outline" nzType="user"></i>
             <span>{{data.author.displayName}}</span>
         </span>
         <span *ngIf="showMediaArea" class="badge">
-            <i nz-icon nzType="file" nzTheme="outline"></i>
+            <i nz-icon nzTheme="outline" nzType="file"></i>
             <span>
                 <a [routerLink]="'/categories/'+data.category">{{data.category}}</a>
             </span>
@@ -21,13 +21,13 @@
     </div>
     <p>{{data.summary}}</p>
     <span style="float: right;margin-bottom: 10px">
-        <a [routerLink]="'/article/'+data.id">阅读更多<i nz-icon nzType="right" nzTheme="outline"></i></a>
+        <a [routerLink]="'/article/'+data.id">阅读更多<i nz-icon nzTheme="outline" nzType="right"></i></a>
     </span>
     <ng-template [ngIf]="showTagArea&&data.tags.length>0">
         <nz-divider></nz-divider>
         <div>
         <span *ngFor="let tag of data.tags">
-            <i nz-icon nzType="tag" nzTheme="outline"></i>
+            <i nz-icon nzTheme="outline" nzType="tag"></i>
             <a [routerLink]="'/tags/'+tag.name">{{tag.name}}</a>
         </span>
         </div>

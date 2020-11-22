@@ -1,12 +1,5 @@
 import {Injectable} from '@angular/core';
-import {
-    CanActivate,
-    ActivatedRouteSnapshot,
-    RouterStateSnapshot,
-    UrlTree,
-    Router,
-    CanActivateChild
-} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import {Observable, Observer} from 'rxjs';
 import {User} from '../../class/User';
 import {GlobalUserService} from '../../services/global-user.service';
@@ -16,14 +9,14 @@ import {GlobalUserService} from '../../services/global-user.service';
 })
 export class AuthGuard implements CanActivate {
 
-    constructor(private userService: GlobalUserService, private router: Router) {
-    }
-
     userInfo: User;
     visitCount: number = 0; // 记录一共走过几次canActivate
     private path: string;
     private readonly loginPath: string = '/user/login';
     private observable: Observable<boolean>;
+
+    constructor(private userService: GlobalUserService, private router: Router) {
+    }
 
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
         this.path = state.url.indexOf('?') > 0 ? state.url.substr(0, state.url.indexOf('?')) : state.url;

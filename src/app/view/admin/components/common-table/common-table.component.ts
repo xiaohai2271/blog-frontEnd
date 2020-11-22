@@ -11,11 +11,6 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 })
 export class CommonTableComponent<T> implements OnInit, OnChanges {
 
-    constructor(private httpService: HttpService) {
-
-    }
-
-    @Input() private headData: Data<T>[];
     @Input() request: RequestObj;
     @Input() cardTitle: string | null;
     @Input() template: {
@@ -26,12 +21,16 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     };
     @Output() pageInfo = new EventEmitter<{ page: number, pageSize: number }>();
     loading: boolean = true;
-
     dataList: PageList<T> = new PageList<T>();
     settingModalVisible: boolean = false;
     filedData: Data<T>[];
     changed: boolean = false;
     visibleFieldLength: number = 0;
+    @Input() private headData: Data<T>[];
+
+    constructor(private httpService: HttpService) {
+
+    }
 
     ngOnInit(): void {
         if (localStorage.getItem(this.request.path)) {

@@ -1,20 +1,20 @@
 <div class="site-middle am-animation-slide-top">
     <div class="title">
-        <i nz-icon nzType="smile" nzTheme="outline" class="titleTag"></i><span class="title">友情链接</span>
+        <i class="titleTag" nz-icon nzTheme="outline" nzType="smile"></i><span class="title">友情链接</span>
     </div>
     <ul class="partner-sites">
         <li *ngFor="let link of linkList;let i = index" [style.background]="colors[i].bgColor"
             [style.color]="colors[i].fontColor">
-            <a [href]="link.url" target="_blank" [title]="link.desc||link.name" [style.color]="colors[i].fontColor">
+            <a [href]="link.url" [style.color]="colors[i].fontColor" [title]="link.desc||link.name" target="_blank">
                 <div class="link-name">
-                    <i nz-icon nzType="link" nzTheme="outline" [style.color]="colors[i].fontColor"></i>
+                    <i [style.color]="colors[i].fontColor" nz-icon nzTheme="outline" nzType="link"></i>
                     {{link.name}}
                 </div>
-                <div class="link-info" [style.color]="colors[i].fontColor">
+                <div [style.color]="colors[i].fontColor" class="link-info">
                     <div class="link-icon">
-                        <img *ngIf="link.iconPath" [src]="link.iconPath" [alt]="link.iconPath">
-                        <i *ngIf="!link.iconPath" nz-icon nzType="link" nzTheme="outline"
-                           [style.color]="colors[i].fontColor"></i>
+                        <img *ngIf="link.iconPath" [alt]="link.iconPath" [src]="link.iconPath">
+                        <i *ngIf="!link.iconPath" [style.color]="colors[i].fontColor" nz-icon nzTheme="outline"
+                           nzType="link"></i>
                     </div>
                     <p>
                         {{link.desc || '该站长暂时未留下网站简介'}}
@@ -22,13 +22,13 @@
                 </div>
             </a>
         </li>
-        <li class="applylink" (click)="showModal=!showModal">申请友链</li>
+        <li (click)="showModal=!showModal" class="applylink">申请友链</li>
     </ul>
 </div>
 
 <div class="placard am-animation-slide-bottom">
     <div class="title">
-        <i nz-icon nzType="smile" nzTheme="outline" class="titleTag"></i><span class="title">友链公告</span>
+        <i class="titleTag" nz-icon nzTheme="outline" nzType="smile"></i><span class="title">友链公告</span>
     </div>
     <br>
     <p style="padding-left: 30px;">
@@ -50,18 +50,18 @@
     </ul>
 </div>
 
-<nz-modal [(nzVisible)]="showModal" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter"
-          (nzOnCancel)="cancel()" nzWidth="650">
+<nz-modal (nzOnCancel)="cancel()" [(nzVisible)]="showModal" [nzContent]="modalContent" [nzFooter]="modalFooter"
+          [nzTitle]="modalTitle" nzWidth="650">
     <ng-template #modalTitle>
         <h2 style="text-align: center">申请友链</h2>
     </ng-template>
 
     <ng-template #modalContent>
-        <form nz-form [formGroup]="applyFormGroup">
+        <form [formGroup]="applyFormGroup" nz-form>
             <nz-form-item>
                 <nz-form-label nzFlex="100px" nzRequired>网站名称</nz-form-label>
-                <nz-form-control nzFlex="auto" [nzErrorTip]="nameErrTip">
-                    <input nz-input formControlName="name">
+                <nz-form-control [nzErrorTip]="nameErrTip" nzFlex="auto">
+                    <input formControlName="name" nz-input>
                     <ng-template #nameErrTip>
                         <div *ngIf="applyFormGroup.controls.name.hasError('required')">网站名称不可为空</div>
                         <div *ngIf="applyFormGroup.controls.name.hasError('maxlength')">最大长度为255</div>
@@ -70,8 +70,8 @@
             </nz-form-item>
             <nz-form-item>
                 <nz-form-label nzFlex="100px" nzRequired>站长邮箱</nz-form-label>
-                <nz-form-control nzFlex="auto" [nzErrorTip]="emailErrTip">
-                    <input nz-input formControlName="email">
+                <nz-form-control [nzErrorTip]="emailErrTip" nzFlex="auto">
+                    <input formControlName="email" nz-input>
                     <ng-template #emailErrTip>
                         <div *ngIf="applyFormGroup.controls.email.hasError('required')">站长邮箱不可为空</div>
                         <div *ngIf="applyFormGroup.controls.email.hasError('pattern')">邮箱格式不正确</div>
@@ -81,7 +81,7 @@
 
             <nz-form-item>
                 <nz-form-label nzFlex="100px" nzRequired>首页链接</nz-form-label>
-                <nz-form-control nzFlex="auto" [nzErrorTip]="urlErrTip">
+                <nz-form-control [nzErrorTip]="urlErrTip" nzFlex="auto">
                     <nz-input-group [nzAddOnBefore]="protocol" nzCompact>
                         <ng-template #protocol>
                             <nz-select formControlName="urlProtocol">
@@ -89,7 +89,7 @@
                                 <nz-option nzLabel="Https://" nzValue="https://"></nz-option>
                             </nz-select>
                         </ng-template>
-                        <input nz-input formControlName="url">
+                        <input formControlName="url" nz-input>
                         <ng-template #urlErrTip>
                             <div *ngIf="applyFormGroup.controls.url.hasError('required')">首页链接不可为空</div>
                             <div *ngIf="applyFormGroup.controls.url.hasError('pattern')">链接格式不正确</div>
@@ -99,7 +99,7 @@
             </nz-form-item>
             <nz-form-item>
                 <nz-form-label nzFlex="100px" nzRequired>友链页链接</nz-form-label>
-                <nz-form-control nzFlex="auto" [nzErrorTip]="urlLinkErrTip">
+                <nz-form-control [nzErrorTip]="urlLinkErrTip" nzFlex="auto">
                     <nz-input-group [nzAddOnBefore]="protocol">
                         <ng-template #protocol>
                             <nz-select formControlName="urlLinkProtocol">
@@ -107,7 +107,7 @@
                                 <nz-option nzLabel="Https://" nzValue="https://"></nz-option>
                             </nz-select>
                         </ng-template>
-                        <input nz-input formControlName="linkUrl">
+                        <input formControlName="linkUrl" nz-input>
                         <ng-template #urlLinkErrTip>
                             <div *ngIf="applyFormGroup.controls.linkUrl.hasError('required')">首页链接不可为空</div>
                             <div *ngIf="applyFormGroup.controls.linkUrl.hasError('pattern')">链接格式不正确</div>
@@ -117,28 +117,28 @@
             </nz-form-item>
             <nz-form-item>
                 <nz-form-label nzFlex="100px">网站图标</nz-form-label>
-                <nz-form-control nzFlex="auto" nzErrorTip="链接格式不正确">
+                <nz-form-control nzErrorTip="链接格式不正确" nzFlex="auto">
                     <nz-input-group [nzSuffix]="icon" nzSize="large">
-                        <input nz-input formControlName="iconPath">
+                        <input formControlName="iconPath" nz-input>
                     </nz-input-group>
                     <ng-template #icon>
-                        <img style="width: 25px;height: 25px" *ngIf="applyFormGroup.value.iconPath"
-                             [src]="applyFormGroup.value.iconPath" alt="icon">
+                        <img *ngIf="applyFormGroup.value.iconPath" [src]="applyFormGroup.value.iconPath"
+                             alt="icon" style="width: 25px;height: 25px">
                     </ng-template>
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
                 <nz-form-label nzFlex="100px">网站描述</nz-form-label>
-                <nz-form-control nzFlex="auto" nzErrorTip="可输入最大文字长度为255">
-                    <textarea nz-input formControlName="desc" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+                <nz-form-control nzErrorTip="可输入最大文字长度为255" nzFlex="auto">
+                    <textarea [nzAutosize]="{ minRows: 2, maxRows: 6 }" formControlName="desc" nz-input></textarea>
                 </nz-form-control>
             </nz-form-item>
         </form>
     </ng-template>
 
     <ng-template #modalFooter>
-        <button nz-button (click)="cancel()">取消</button>
-        <button nz-button nzType="primary" (click)="apply()" [disabled]="!applyFormGroup.valid" [nzLoading]="loading">
+        <button (click)="cancel()" nz-button>取消</button>
+        <button (click)="apply()" [disabled]="!applyFormGroup.valid" [nzLoading]="loading" nz-button nzType="primary">
             提交
         </button>
     </ng-template>

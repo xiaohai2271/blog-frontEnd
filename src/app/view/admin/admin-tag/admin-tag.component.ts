@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {NzMessageService} from 'ng-zorro-antd/message';
 import {Category, Tag} from '../../../class/Tag';
 import {ApiService} from '../../../api/api.service';
-import {PageList, RequestObj} from '../../../class/HttpReqAndResp';
+import {RequestObj} from '../../../class/HttpReqAndResp';
 import {Title} from '@angular/platform-browser';
 import {Data} from '../components/common-table/data';
 import {CommonTableComponent} from '../components/common-table/common-table.component';
@@ -14,9 +14,6 @@ import {EditableTagComponent} from '../components/editable-tag/editable-tag.comp
     templateUrl: './admin-tag.component.html'
 })
 export class AdminTagComponent implements OnInit {
-
-    constructor(private apiService: ApiService, private nzMessageService: NzMessageService, private title: Title, private router: Router) {
-    }
 
     categoryCTData: { headData: Data<Category>[], commonTable: CommonTableComponent<Category>, request: RequestObj } = {
         headData: null,
@@ -31,8 +28,11 @@ export class AdminTagComponent implements OnInit {
     @ViewChild('categoryCTComponent', {static: true}) categoryCTComponent: CommonTableComponent<Category>
     @ViewChild('tagCTComponent', {static: true}) tagCTComponent: CommonTableComponent<Tag>
     @ViewChild('editableTagComponent') editableTagComponent: EditableTagComponent
-    private updateData: any;
     getData: any;
+    private updateData: any;
+
+    constructor(private apiService: ApiService, private nzMessageService: NzMessageService, private title: Title, private router: Router) {
+    }
 
     ngOnInit(): void {
         this.title.setTitle('小海博客 | 标签分类管理')

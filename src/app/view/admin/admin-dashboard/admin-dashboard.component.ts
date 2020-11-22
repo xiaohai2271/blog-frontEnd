@@ -11,12 +11,6 @@ import {Title} from '@angular/platform-browser';
     styleUrls: ['./admin-dashboard.component.less']
 })
 export class AdminDashboardComponent implements OnInit {
-    constructor(private apiService: ApiService, private userService: GlobalUserService, private http: HttpClient,
-                private title: Title) {
-        this.title.setTitle('小海博客 | 后台管理');
-        this.getUserInfo();
-    }
-
     logLoading: boolean = true;
     logText: string = null;
     counts: {
@@ -26,10 +20,15 @@ export class AdminDashboardComponent implements OnInit {
         tagCount: number,
         commentCount: number
     } = {articleCount: 0, visitorCount: 0, categoryCount: 0, tagCount: 0, commentCount: 0}
-
     dayVisitCount: number = 0;
     userInfo: User = new User();
     private isRequested: boolean = false;
+
+    constructor(private apiService: ApiService, private userService: GlobalUserService, private http: HttpClient,
+                private title: Title) {
+        this.title.setTitle('小海博客 | 后台管理');
+        this.getUserInfo();
+    }
 
     ngOnInit(): void {
     }

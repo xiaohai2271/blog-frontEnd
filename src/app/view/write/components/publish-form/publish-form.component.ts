@@ -1,6 +1,6 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Category, Tag} from '../../../../class/Tag';
+import {Category} from '../../../../class/Tag';
 import {ColorList} from '../../../../utils/color'
 
 @Component({
@@ -10,11 +10,7 @@ import {ColorList} from '../../../../utils/color'
 })
 export class PublishFormComponent implements OnInit {
 
-    constructor(private fb: FormBuilder) {
-    }
-
     @ViewChild('inputElement', {static: true}) tagInputElement: ElementRef;
-
     @Input() tagNacList: { name: string, size: number }[];
     @Input() categoryList: Category[];
     @Input() primaryData: { id: number, type: boolean, tags: string[], category: string, url?: string };
@@ -26,14 +22,16 @@ export class PublishFormComponent implements OnInit {
         isUpdate: boolean,
         url?: string
     }>();
-
     formGroup: FormGroup;
     tagTmpList: string[] = [];
     tagInputVisible: boolean = false;
     tagListTouched: boolean = false;
     editTagText: string = '新增';
-
     color: string[] = [];
+
+    constructor(private fb: FormBuilder) {
+    }
+
     randomColor = () => this.color = ColorList.map(c => c.bgColor).sort(() => Math.floor(Math.random() * 2));
 
     ngOnInit(): void {

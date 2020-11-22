@@ -1,26 +1,26 @@
-<nz-card *ngIf="cardTitle" nzSize="small" [nzExtra]="extra" [nzTitle]="cardTitle" [nzLoading]="loading">
+<nz-card *ngIf="cardTitle" [nzExtra]="extra" [nzLoading]="loading" [nzTitle]="cardTitle" nzSize="small">
     <ng-container *ngTemplateOutlet="table"></ng-container>
 </nz-card>
 
-<ng-container [ngTemplateOutlet]="table" *ngIf="!cardTitle"></ng-container>
+<ng-container *ngIf="!cardTitle" [ngTemplateOutlet]="table"></ng-container>
 
 <ng-template #extra>
-    <i nz-icon nzType="setting" nzTheme="outline" title="设置" (click)="showFieldSetting()"
-       style="cursor: pointer;margin-right: 10px"></i>
-    <i nz-icon nzType="reload" nzTheme="outline" (click)="getData()" title="刷新" style="cursor: pointer"></i>
+    <i (click)="showFieldSetting()" nz-icon nzTheme="outline" nzType="setting" style="cursor: pointer;margin-right: 10px"
+       title="设置"></i>
+    <i (click)="getData()" nz-icon nzTheme="outline" nzType="reload" style="cursor: pointer" title="刷新"></i>
 </ng-template>
 
 <ng-template #table>
     <ng-content></ng-content>
-    <nz-table nzTableLayout="fixed"
-              [nzData]="dataList.list"
-              [nzTotal]="dataList.total"
+    <nz-table (nzPageIndexChange)="getData()"
               [(nzPageIndex)]="dataList.pageNum"
+              [nzData]="dataList.list"
+              [nzLoading]="loading"
               [nzPageSize]="dataList.pageSize"
-              (nzPageIndexChange)="getData()"
-              nzFrontPagination="false"
               [nzScroll]="{x:visibleFieldLength*100+'px'}"
-              [nzLoading]="loading">
+              [nzTotal]="dataList.total"
+              nzFrontPagination="false"
+              nzTableLayout="fixed">
         <thead>
         <tr>
             <ng-container *ngFor="let data of filedData">
@@ -34,12 +34,12 @@
         <tr *ngFor="let t of dataList.list;let index = index">
             <ng-container *ngFor="let data of filedData">
                 <td *ngIf="data.show"
-                    nz-typography
-                    nzEllipsis
                     [nzEllipsisRows]="data.isActionColumns?3:1"
                     [nzTooltipTitle]="data.isActionColumns ? null : data.title+' : '+getValue(index,data.fieldValue)"
-                    nzTooltipPlacement="top"
-                    nz-tooltip>
+                    nz-tooltip
+                    nz-typography
+                    nzEllipsis
+                    nzTooltipPlacement="top">
                     <ng-template [ngIf]="!data.isActionColumns">
                         <ng-template [ngIf]="template[data.fieldValue]">
                             <ng-container
@@ -51,15 +51,15 @@
                         </ng-template>
                     </ng-template>
                     <ng-container *ngIf="data.isActionColumns">
-                        <a *ngFor="let action of data.action; let i = index"
-                           (mouseenter)="action.hover(t)"
+                        <a (mouseenter)="action.hover(t)"
                            (mouseout)="null"
-                           [ngStyle]="{'color':action.color,'font-size':action.fontSize}"
-                           nz-popconfirm
-                           [nzPopconfirmTitle]="'是否确认'+action.name+'该数据?'"
-                           [nzCondition]="!action.needConfirm"
                            (nzOnConfirm)="action.click(t)"
-                           [title]="action.name">
+                           *ngFor="let action of data.action; let i = index"
+                           [ngStyle]="{'color':action.color,'font-size':action.fontSize}"
+                           [nzCondition]="!action.needConfirm"
+                           [nzPopconfirmTitle]="'是否确认'+action.name+'该数据?'"
+                           [title]="action.name"
+                           nz-popconfirm>
                             {{action.name}}
                             <ng-template [ngIf]="i!=data.action.length-1">
                                 <nz-divider nzType="vertical"></nz-divider>
@@ -74,17 +74,17 @@
 </ng-template>
 
 
-<nz-modal [(nzVisible)]="settingModalVisible"
-          [nzClosable]="true"
-          (nzOnCancel)="cancel()"
+<nz-modal (nzOnCancel)="cancel()"
           (nzOnOk)="ok()"
+          [(nzVisible)]="settingModalVisible"
+          [nzClosable]="true"
           nzTitle="表格字段设置(可拖动排序)"
 >
-    <button nz-button nzType="primary" (click)="reset()" [disabled]="!changed">重置</button>
-    <nz-table [nzData]="filedData" nzSize="small" nzPageSize="10000" nzShowPagination="false">
-        <tbody cdkDropList (cdkDropListDropped)="drop($event)">
-        <ng-template ngFor [ngForOf]="filedData" let-item let-index="index">
-            <tr *ngIf="!item.isActionColumns" cdkDrag (click)="click()">
+    <button (click)="reset()" [disabled]="!changed" nz-button nzType="primary">重置</button>
+    <nz-table [nzData]="filedData" nzPageSize="10000" nzShowPagination="false" nzSize="small">
+        <tbody (cdkDropListDropped)="drop($event)" cdkDropList>
+        <ng-template [ngForOf]="filedData" let-index="index" let-item ngFor>
+            <tr (click)="click()" *ngIf="!item.isActionColumns" cdkDrag>
                 <td>{{index + 1}}</td>
                 <td style="text-align: center">{{item.title}}</td>
                 <td style="text-align: center">{{item.fieldValue}}</td>

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {NzMessageService} from 'ng-zorro-antd/message';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from '../../api/api.service';
 import {Title} from '@angular/platform-browser';
@@ -11,6 +11,12 @@ import {Title} from '@angular/platform-browser';
 })
 export class ResetPwdComponent implements OnInit {
 
+    pwd: string;
+    rePwd: string;
+    iserror: boolean = false;
+    private email: string;
+    private verifyId: string;
+
     constructor(private message: NzMessageService,
                 private router: Router,
                 private routerinfo: ActivatedRoute,
@@ -18,14 +24,6 @@ export class ResetPwdComponent implements OnInit {
                 private title: Title) {
         this.title.setTitle('小海博客 | 重置密码 ');
     }
-
-    pwd: string;
-    rePwd: string;
-
-    private email: string;
-    private verifyId: string;
-
-    iserror: boolean = false;
 
     ngOnInit(): void {
         this.email = this.routerinfo.snapshot.queryParams.email;

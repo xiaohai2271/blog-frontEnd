@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {RequestObj, Response} from '../../../class/HttpReqAndResp';
 import {Link} from '../../../class/Link';
 import {ApiService} from '../../../api/api.service';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {NzMessageService} from 'ng-zorro-antd/message';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {Title} from '@angular/platform-browser';
@@ -14,6 +14,13 @@ import {Data} from '../components/common-table/data';
     templateUrl: './admin-link.component.html'
 })
 export class AdminLinkComponent implements OnInit {
+
+    modalVisible: boolean = false;
+    modalTitle: string = '';
+    formGroup: FormGroup;
+    request: RequestObj;
+    @ViewChild('commonTableComponent') commonTableComponent: CommonTableComponent<Link>
+    headData: Data<Link>[];
 
     constructor(private apiService: ApiService, private messageService: NzMessageService, private title: Title) {
         this.title.setTitle('小海博客 | 友链管理');
@@ -27,14 +34,6 @@ export class AdminLinkComponent implements OnInit {
             oper: new FormControl(null)
         })
     }
-
-
-    modalVisible: boolean = false;
-    modalTitle: string = '';
-    formGroup: FormGroup;
-    request: RequestObj;
-    @ViewChild('commonTableComponent') commonTableComponent: CommonTableComponent<Link>
-    headData: Data<Link>[];
 
     ngOnInit(): void {
         this.request = {

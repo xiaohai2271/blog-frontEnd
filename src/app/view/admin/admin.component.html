@@ -1,40 +1,40 @@
 <c-admin-header (infoClicked)="showInfoDrawer()"></c-admin-header>
 <nz-layout class="layout">
-    <nz-sider nzCollapsible
+    <nz-sider *ngIf="user"
               [(nzCollapsed)]="isCollapsed"
               [nzBreakpoint]="'lg'"
               [nzCollapsedWidth]="0"
               [nzZeroTrigger]="zeroTrigger"
-              nzTheme="light"
-              *ngIf="user">
-        <ul nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+              nzCollapsible
+              nzTheme="light">
+        <ul [nzInlineCollapsed]="isCollapsed" nz-menu nzMode="inline" nzTheme="light">
             <li nz-menu-item routerLink="/admin">
-                <i nz-icon nzType="dashboard" nzTheme="outline"></i>
+                <i nz-icon nzTheme="outline" nzType="dashboard"></i>
                 <span>后台首页</span>
             </li>
 
-            <li nz-submenu nzTitle="文章管理" nzIcon="file" *ngIf="user.role=='admin'">
+            <li *ngIf="user.role=='admin'" nz-submenu nzIcon="file" nzTitle="文章管理">
                 <ul>
                     <li nz-menu-item>
                         <a routerLink="/write">
-                            <i nz-icon nzType="form" nzTheme="outline"></i>
+                            <i nz-icon nzTheme="outline" nzType="form"></i>
                             <span>新增文章</span>
                         </a>
                     </li>
                     <li nz-menu-item routerLink="/admin/article">
-                        <i nz-icon nzType="ordered-list" nzTheme="outline"></i>
+                        <i nz-icon nzTheme="outline" nzType="ordered-list"></i>
                         <span>文章列表</span>
                     </li>
                 </ul>
             </li>
 
             <li nz-menu-item routerLink="/admin/comment">
-                <i nz-icon nzType="message" nzTheme="outline"></i>
+                <i nz-icon nzTheme="outline" nzType="message"></i>
                 <span>评论管理</span>
             </li>
 
-            <li nz-menu-item routerLink="/admin/tag" *ngIf="user.role=='admin'">
-                <i nz-icon nzType="tags" nzTheme="outline"></i>
+            <li *ngIf="user.role=='admin'" nz-menu-item routerLink="/admin/tag">
+                <i nz-icon nzTheme="outline" nzType="tags"></i>
                 <span>标签管理</span>
             </li>
 
@@ -43,37 +43,37 @@
             <!--                <span>分类管理</span>-->
             <!--            </li>-->
 
-            <li nz-menu-item routerLink="/admin/user" *ngIf="user.role=='admin'">
-                <i nz-icon nzType="user" nzTheme="outline"></i>
+            <li *ngIf="user.role=='admin'" nz-menu-item routerLink="/admin/user">
+                <i nz-icon nzTheme="outline" nzType="user"></i>
                 <span>用户管理</span>
             </li>
 
-            <li nz-menu-item routerLink="/admin/link" *ngIf="user.role=='admin'">
-                <i nz-icon nzType="link" nzTheme="outline"></i>
+            <li *ngIf="user.role=='admin'" nz-menu-item routerLink="/admin/link">
+                <i nz-icon nzTheme="outline" nzType="link"></i>
                 <span>友链管理</span>
             </li>
 
-            <li nz-menu-item routerLink="/admin/visitor" *ngIf="user.role=='admin'">
-                <i nz-icon nzType="chrome" nzTheme="outline"></i>
+            <li *ngIf="user.role=='admin'" nz-menu-item routerLink="/admin/visitor">
+                <i nz-icon nzTheme="outline" nzType="chrome"></i>
                 <span>访问管理</span>
             </li>
 
-            <li nz-menu-item routerLink="/admin/update" *ngIf="user.role=='admin'">
-                <i nz-icon nzType="arrow-up" nzTheme="outline"></i>
+            <li *ngIf="user.role=='admin'" nz-menu-item routerLink="/admin/update">
+                <i nz-icon nzTheme="outline" nzType="arrow-up"></i>
                 <span>更新管理</span>
             </li>
 
-            <li nz-menu-item (click)="infoDrawerVisible = true">
-                <i nz-icon nzType="idcard" nzTheme="outline"></i>
+            <li (click)="infoDrawerVisible = true" nz-menu-item>
+                <i nz-icon nzTheme="outline" nzType="idcard"></i>
                 <span>查看信息</span>
             </li>
 
             <!--TODO : do something here ..... -->
-            <nz-card class="myCard" *ngIf="!isCollapsed&&user.role=='admin'">
+            <nz-card *ngIf="!isCollapsed&&user.role=='admin'" class="myCard">
                 <p>别管别人言语</p>
                 <p>做最好的自己</p>
             </nz-card>
-            <nz-card class="myCard" *ngIf="!isCollapsed&&user.role=='user'">
+            <nz-card *ngIf="!isCollapsed&&user.role=='user'" class="myCard">
                 <p>欢迎来访小海博客</p>
             </nz-card>
 
@@ -88,95 +88,95 @@
         <nz-footer>© <a href="https://www.celess.cn">小海博客</a> - Design by 小海</nz-footer>
     </nz-layout>
 </nz-layout>
-<nz-drawer [nzClosable]="false" [nzVisible]="infoDrawerVisible" nzPlacement="right"
-           [nzTitle]="sayHelloTemp" (nzOnClose)="infoDrawerVisible = false" nzWidth="300px">
+<nz-drawer (nzOnClose)="infoDrawerVisible = false" [nzClosable]="false" [nzTitle]="sayHelloTemp"
+           [nzVisible]="infoDrawerVisible" nzPlacement="right" nzWidth="300px">
     <p>您最近一次登录是在:</p>
     <p>{{user && user.recentlyLandedDate}}</p>
     <nz-divider></nz-divider>
     <div style="text-align: center;margin-bottom: 10px;">
-        <nz-avatar [nzSize]="64" [nzSrc]="user.avatarImgUrl"
-                   *ngIf="user.avatarImgUrl!==noAvatarUrl"></nz-avatar>
-        <nz-avatar [nzSize]="64" [nzText]="user.displayName" style="background: #f56a00"
-                   *ngIf="user.avatarImgUrl===noAvatarUrl"></nz-avatar>
+        <nz-avatar *ngIf="user.avatarImgUrl!==noAvatarUrl" [nzSize]="64"
+                   [nzSrc]="user.avatarImgUrl"></nz-avatar>
+        <nz-avatar *ngIf="user.avatarImgUrl===noAvatarUrl" [nzSize]="64" [nzText]="user.displayName"
+                   style="background: #f56a00"></nz-avatar>
 
-        <nz-upload style="display: block" [nzAction]="host+'/user/imgUpload'" nzWithCredentials="true" nzLimit="1"
-                   (nzChange)="avatarUpload($event)" [nzHeaders]="uploadHeader">
+        <nz-upload (nzChange)="avatarUpload($event)" [nzAction]="host+'/user/imgUpload'" [nzHeaders]="uploadHeader" nzLimit="1"
+                   nzWithCredentials="true" style="display: block">
             <button nz-button nzBlock nzType="link"><i nz-icon nzType="upload"></i>修改头像</button>
         </nz-upload>
     </div>
     <nz-descriptions [nzColumn]="1">
         <nz-descriptions-item nzTitle="邮箱">
             <div>
-                <i nz-icon nzType="mail" class="icon" nzTheme="twotone"></i>
+                <i class="icon" nz-icon nzTheme="twotone" nzType="mail"></i>
                 <span>{{user && user.email}}</span>
-                <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
+                <i (click)="showEditInfoModal()" class="edit-icon" nz-icon nzTheme="twotone" nzType="edit"></i>
             </div>
         </nz-descriptions-item>
         <nz-descriptions-item nzTitle="昵称">
             <div>
-                <i nz-icon nzType="crown" class="icon" nzTheme="twotone"></i>
+                <i class="icon" nz-icon nzTheme="twotone" nzType="crown"></i>
                 <span>{{user && user.displayName}}</span>
-                <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
+                <i (click)="showEditInfoModal()" class="edit-icon" nz-icon nzTheme="twotone" nzType="edit"></i>
             </div>
         </nz-descriptions-item>
-        <nz-descriptions-item nzTitle="描述" *ngIf="user&&user.desc">
-            <i nz-icon nzType="info-circle" class="icon" nzTheme="twotone"></i>
-            <span nz-tooltip [nzTooltipTitle]="user.desc" nzTooltipPlacement="left" nz-typography [nzEllipsis]="true"
-                  [nzContent]="user.desc" style="max-width: 100px">{{user.desc}}</span>
-            <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showEditInfoModal()"></i>
+        <nz-descriptions-item *ngIf="user&&user.desc" nzTitle="描述">
+            <i class="icon" nz-icon nzTheme="twotone" nzType="info-circle"></i>
+            <span [nzContent]="user.desc" [nzEllipsis]="true" [nzTooltipTitle]="user.desc" nz-tooltip nz-typography
+                  nzTooltipPlacement="left" style="max-width: 100px">{{user.desc}}</span>
+            <i (click)="showEditInfoModal()" class="edit-icon" nz-icon nzTheme="twotone" nzType="edit"></i>
         </nz-descriptions-item>
         <nz-descriptions-item nzTitle="密码">
-            <i nz-icon nzType="fire" nzTheme="twotone"> </i>
+            <i nz-icon nzTheme="twotone" nzType="fire"> </i>
             <span> *********</span>
-            <i nz-icon nzType="edit" class="edit-icon" nzTheme="twotone" (click)="showResetPwdModal()"></i>
+            <i (click)="showResetPwdModal()" class="edit-icon" nz-icon nzTheme="twotone" nzType="edit"></i>
         </nz-descriptions-item>
     </nz-descriptions>
 
     <nz-divider></nz-divider>
 
     <!--    <div >-->
-    <button nz-button nzDanger nzBlock nzType="primary" (click)="logout()">注销</button>
+    <button (click)="logout()" nz-button nzBlock nzDanger nzType="primary">注销</button>
     <!--    </div>-->
     <!--  TODO: 展示更多信息  -->
 </nz-drawer>
 
-<nz-modal [(nzVisible)]="editInfoModalVisible" (nzOnOk)="modalConfirm()" (nzOnCancel)="editInfoModalVisible=false"
+<nz-modal (nzOnCancel)="editInfoModalVisible=false" (nzOnOk)="modalConfirm()" [(nzVisible)]="editInfoModalVisible"
           nzTitle="编辑信息">
-    <form nz-form [formGroup]="editInfoFormGroup" (ngSubmit)="modalConfirm()">
+    <form (ngSubmit)="modalConfirm()" [formGroup]="editInfoFormGroup" nz-form>
         <nz-form-item>
             <nz-form-label>邮箱</nz-form-label>
             <nz-form-control>
-                <input nz-input disabled formControlName="email">
+                <input disabled formControlName="email" nz-input>
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>
             <nz-form-label>昵称</nz-form-label>
             <nz-form-control>
-                <input nz-input formControlName="displayName" placeholder="默认为你的邮箱地址">
+                <input formControlName="displayName" nz-input placeholder="默认为你的邮箱地址">
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>
             <nz-form-label>描述</nz-form-label>
             <nz-form-control>
-                <input nz-input formControlName="desc" placeholder="请输入自我介绍">
+                <input formControlName="desc" nz-input placeholder="请输入自我介绍">
             </nz-form-control>
         </nz-form-item>
     </form>
 </nz-modal>
 
-<nz-modal [(nzVisible)]="resetPwdModalVisible" nzClosable="true" (nzOnCancel)="resetPwdModalVisible = false"
-          (nzOnOk)="resetPwdConfirm()" nzTitle="修改密码" [nzOkDisabled]="!resetPwdFormGroup.valid">
-    <form nz-form (submit)="resetPwdConfirm()" [formGroup]="resetPwdFormGroup">
+<nz-modal (nzOnCancel)="resetPwdModalVisible = false" (nzOnOk)="resetPwdConfirm()" [(nzVisible)]="resetPwdModalVisible"
+          [nzOkDisabled]="!resetPwdFormGroup.valid" nzClosable="true" nzTitle="修改密码">
+    <form (submit)="resetPwdConfirm()" [formGroup]="resetPwdFormGroup" nz-form>
         <nz-form-item>
             <nz-form-label nzRequired>原密码</nz-form-label>
             <nz-form-control nzErrorTip="原密码不可为空">
-                <input type="password" name="xxx" nz-input formControlName="originPwd">
+                <input formControlName="originPwd" name="xxx" nz-input type="password">
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>
             <nz-form-label nzRequired>新密码</nz-form-label>
             <nz-form-control [nzErrorTip]="newPwdErrTip">
-                <input type="password" name="xxx" nz-input formControlName="newPwd">
+                <input formControlName="newPwd" name="xxx" nz-input type="password">
             </nz-form-control>
             <ng-template #newPwdErrTip>
                 <div *ngIf="resetPwdFormGroup.controls.newPwd.hasError('required')">新密码不可为空</div>
@@ -188,7 +188,7 @@
         <nz-form-item>
             <nz-form-label nzRequired>确认密码</nz-form-label>
             <nz-form-control [nzErrorTip]="newPwdConfirmErrTip">
-                <input type="password" nz-input name="xxx" formControlName="newPwdConfirm">
+                <input formControlName="newPwdConfirm" name="xxx" nz-input type="password">
             </nz-form-control>
             <ng-template #newPwdConfirmErrTip>
                 <div *ngIf="resetPwdFormGroup.controls.newPwdConfirm.hasError('required')">确认密码不可为空</div>
@@ -202,10 +202,10 @@
 </nz-modal>
 
 <ng-template #zeroTrigger>
-    <i nz-icon nzType="menu-fold" nzTheme=outline></i>
+    <i nz-icon nzTheme=outline nzType="menu-fold"></i>
 </ng-template>
 
 <ng-template #sayHelloTemp>
     <span>{{sayHelloContent}}</span>
-    <i nz-icon [nzType]="'smile'" [nzTheme]="'twotone'" nzTwotoneColor="#52c41a" style="margin-left: 5px"></i>
+    <i [nzTheme]="'twotone'" [nzType]="'smile'" nz-icon nzTwotoneColor="#52c41a" style="margin-left: 5px"></i>
 </ng-template>

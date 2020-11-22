@@ -1,44 +1,44 @@
 <common-table #commonTableComponent
-              [request]="request"
               [headData]="headData"
-              cardTitle="评论管理"
-              [template]="{status:{temp:status,param:{'0':' 正常 ','3':'已删除'}},content:{temp:content}}">
+              [request]="request"
+              [template]="{status:{temp:status,param:{'0':' 正常 ','3':'已删除'}},content:{temp:content}}"
+              cardTitle="评论管理">
 </common-table>
 
-<ng-template let-originValue="originValue" let-value="value" #status>
-    <nz-tag nzColor="geekblue" *ngIf="originValue==0">{{value}}</nz-tag>
-    <nz-tag nzColor="#f50" *ngIf="originValue==3">{{value}}</nz-tag>
+<ng-template #status let-originValue="originValue" let-value="value">
+    <nz-tag *ngIf="originValue==0" nzColor="geekblue">{{value}}</nz-tag>
+    <nz-tag *ngIf="originValue==3" nzColor="#f50">{{value}}</nz-tag>
 </ng-template>
 
-<ng-template #content let-value="value" let-data="data">
+<ng-template #content let-data="data" let-value="value">
     <editable-tag #editableTagComponent
+                  (modalOK)="textChange($event,data)"
                   [key]="data.id"
                   [showBorder]="false"
-                  [text]="value"
                   [showConfirmModal]="true"
-                  (modalOK)="textChange($event,data)">
+                  [text]="value">
     </editable-tag>
 </ng-template>
 
-<nz-modal nzTitle="查看" [nzClosable]="true" [(nzVisible)]="modalData.visible" (nzOnOk)="modalData.visible=false"
-          [nzCancelText]="null">
+<nz-modal (nzOnOk)="modalData.visible=false" [(nzVisible)]="modalData.visible" [nzCancelText]="null" [nzClosable]="true"
+          nzTitle="查看">
     <ng-template #commentTemplateRef let-comment="comment">
         <nz-comment [nzAuthor]="comment && comment.fromUser.displayName" [nzDatetime]="comment&&comment.date">
-            <nz-avatar nz-comment-avatar nzIcon="user"
-                       [nzSrc]="comment && comment.fromUser && comment.fromUser.avatarImgUrl"></nz-avatar>
+            <nz-avatar [nzSrc]="comment && comment.fromUser && comment.fromUser.avatarImgUrl" nz-comment-avatar
+                       nzIcon="user"></nz-avatar>
             <nz-comment-content>
                 <p>{{ comment && comment.content }}</p>
             </nz-comment-content>
-<!--            <nz-comment-action>Reply to</nz-comment-action>-->
+            <!--            <nz-comment-action>Reply to</nz-comment-action>-->
             <ng-container *ngIf="comment&&comment.children && comment.children.length">
-                <ng-template ngFor let-child [ngForOf]="comment&&comment.children">
-                    <ng-template [ngTemplateOutlet]="commentTemplateRef" [ngTemplateOutletContext]="{ comment: child }">
+                <ng-template [ngForOf]="comment&&comment.children" let-child ngFor>
+                    <ng-template [ngTemplateOutletContext]="{ comment: child }" [ngTemplateOutlet]="commentTemplateRef">
                     </ng-template>
                 </ng-template>
             </ng-container>
         </nz-comment>
     </ng-template>
 
-    <ng-template [ngTemplateOutlet]="commentTemplateRef" [ngTemplateOutletContext]="{ comment: modalData.comment }">
+    <ng-template [ngTemplateOutletContext]="{ comment: modalData.comment }" [ngTemplateOutlet]="commentTemplateRef">
     </ng-template>
 </nz-modal>

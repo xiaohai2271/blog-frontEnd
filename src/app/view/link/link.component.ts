@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {NzModalService} from 'ng-zorro-antd/modal';
 import {Title} from '@angular/platform-browser';
 import {ApiService} from '../../api/api.service';
 import {ApplyLinkReq, Link} from '../../class/Link';
@@ -14,6 +14,15 @@ import {Color, RandomColor} from '../../utils/color';
 })
 export class LinkComponent implements OnInit {
 
+    showModal = false;
+    // 申请时的链接
+    link: Link;
+    linkList: Link[];
+    loading: boolean = false;
+    applyFormGroup: FormGroup;
+    colors: Color[];
+    private lastUrl: string = '';
+
     constructor(private message: NzMessageService,
                 private titleService: Title,
                 private apiService: ApiService,
@@ -21,18 +30,6 @@ export class LinkComponent implements OnInit {
                 private modal: NzModalService) {
         titleService.setTitle('小海博客 | 友链');
     }
-
-    showModal = false;
-
-    // 申请时的链接
-    link: Link;
-
-    linkList: Link[];
-    loading: boolean = false;
-    applyFormGroup: FormGroup;
-    colors: Color[];
-    private lastUrl: string = '';
-
 
     ngOnInit() {
         window.scrollTo(0, 0);

@@ -1,32 +1,32 @@
-<common-table cardTitle="文章管理"
-                #commonTableComponent
-                [headData]="headData"
-                [request]="request"
-                [template]="{
+<common-table #commonTableComponent
+              [headData]="headData"
+              [request]="request"
+              [template]="{
                     original:{temp:original,param:{true:'原创',false:'转载'}},
                     readingNumber:{temp:readingNumber},
                     likeCount:{temp:likeCount},
                     dislikeCount:{temp:dislikeCount},
                     open:{temp:open}
-                }">
+                }"
+              cardTitle="文章管理">
 </common-table>
 
-<ng-template let-value="value" let-originValue="originValue" #original>
+<ng-template #original let-originValue="originValue" let-value="value">
     <nz-tag [nzColor]="originValue?'green':'#ff5500'">{{value}}</nz-tag>
 </ng-template>
 
-<ng-template let-value="value" #readingNumber>
+<ng-template #readingNumber let-value="value">
     <nz-tag nzColor="purple">{{value}}</nz-tag>
 </ng-template>
 
-<ng-template let-value="value" #likeCount>
+<ng-template #likeCount let-value="value">
     <nz-tag nzColor="blue">{{value}}</nz-tag>
 </ng-template>
 
-<ng-template let-value="value" #dislikeCount>
+<ng-template #dislikeCount let-value="value">
     <nz-tag nzColor="magenta">{{value}}</nz-tag>
 </ng-template>
 
 <ng-template #open let-value="value">
-    <label nz-checkbox nzDisabled [ngModel]="value"></label>
+    <label [ngModel]="value" nz-checkbox nzDisabled></label>
 </ng-template>

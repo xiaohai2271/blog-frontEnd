@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {NzMessageService} from 'ng-zorro-antd/message';
 import {ApiService} from '../../../api/api.service';
 import {RequestObj} from '../../../class/HttpReqAndResp';
 import {Article} from '../../../class/Article';
@@ -14,6 +14,10 @@ import {Router} from '@angular/router';
 })
 export class AdminArticleComponent implements OnInit {
 
+    request: RequestObj;
+    headData: Data<Article>[]
+    @ViewChild('commonTableComponent') private commonTableComponent: CommonTableComponent<Article>
+
     constructor(private apiService: ApiService, private nzMessage: NzMessageService, private title: Title,
                 private router: Router) {
         this.request = {
@@ -25,10 +29,6 @@ export class AdminArticleComponent implements OnInit {
             }
         }
     }
-
-    request: RequestObj;
-    headData: Data<Article>[]
-    @ViewChild('commonTableComponent') private commonTableComponent: CommonTableComponent<Article>
 
     ngOnInit(): void {
         this.title.setTitle('小海博客 | 文章管理')

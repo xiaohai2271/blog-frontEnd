@@ -9,16 +9,15 @@ import {Router} from '@angular/router';
 })
 export class TagTagComponent implements OnInit {
 
-    constructor(private router: Router) {
-    }
-
     @Input() tag: { name: string, size: number };
     @Input() size: 'default' | 'large' = 'default';
     @Input() clickable: boolean; // default true
     @Input() enableCount: boolean; // default true
     @Output() tagClick = new EventEmitter();
-
     randColor: { bgColor: string, fontColor: string };
+
+    constructor(private router: Router) {
+    }
 
     ngOnInit() {
         const randomNumber = Math.floor(ColorList.length * Math.random());

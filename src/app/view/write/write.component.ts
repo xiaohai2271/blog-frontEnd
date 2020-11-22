@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ArticleReq} from '../../class/Article';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from '../../api/api.service';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {NzMessageService} from 'ng-zorro-antd/message';
 import {User} from '../../class/User';
 import {Tag} from '../../class/Tag';
 import {Title} from '@angular/platform-browser';
@@ -19,6 +19,20 @@ import {Response} from '../../class/HttpReqAndResp';
 })
 export class WriteComponent implements OnInit, OnDestroy {
 
+    modalVisible: boolean = false;
+    articleId: number;
+    isUpdate = false;
+    vditor: Vditor;
+    public article: ArticleReq = new ArticleReq();
+    userInfo: User;
+    categoryList: Tag[];
+    tagNacList: { name: string, size: number }[];
+    primaryData = null;
+    // 发布新文章时，文章相同会被拦回 此处判断一下
+    title: string;
+    private lastShowTime: number;
+    private userInfoSub: { unsubscribe: () => void }
+
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private apiService: ApiService,
@@ -28,23 +42,6 @@ export class WriteComponent implements OnInit, OnDestroy {
                 private titleService: Title) {
         this.titleService.setTitle('小海博客 | 创作');
     }
-
-    modalVisible: boolean = false;
-    articleId: number;
-    isUpdate = false;
-    vditor: Vditor;
-
-    public article: ArticleReq = new ArticleReq();
-
-    userInfo: User;
-    categoryList: Tag[];
-    tagNacList: { name: string, size: number }[];
-    primaryData = null;
-    // 发布新文章时，文章相同会被拦回 此处判断一下
-    title: string;
-
-    private lastShowTime: number;
-    private userInfoSub: { unsubscribe: () => void }
 
     ngOnInit(): void {
         this.vditor = new Vditor('vditor', this.initOption());

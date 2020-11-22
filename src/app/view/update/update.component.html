@@ -4,7 +4,7 @@
         <div class="container">
             <div class="zh-update">
                 <div class="zh-update-log">
-                    <div class="zh-update-log-title" *ngIf="lastUpdate">
+                    <div *ngIf="lastUpdate" class="zh-update-log-title">
                         <h1>更新日志</h1>
                         <p>最后更新于:
                             <nz-tag nzColor="red">{{lastUpdate.lastUpdateTime}}</nz-tag>
@@ -17,11 +17,11 @@
                         </p>
                         <p>最后提交内容:
                             <a [href]="lastUpdate.commitUrl" target="_blank">
-                                <nz-tag nzColor="#f50" class="pointer">{{lastUpdate.lastCommit}}</nz-tag>
+                                <nz-tag class="pointer" nzColor="#f50">{{lastUpdate.lastCommit}}</nz-tag>
                             </a>
                             By
                             <a href="https://github.com/xiaohai2271" target="_blank">
-                                <nz-tag nzColor="cyan" class="pointer">{{lastUpdate.committerAuthor}}</nz-tag>
+                                <nz-tag class="pointer" nzColor="cyan">{{lastUpdate.committerAuthor}}</nz-tag>
                             </a>
                         </p>
                         <p>
@@ -33,7 +33,7 @@
                     <div class="zh-update-log-content">
 
 
-                        <div class="update-log am-animation-slide-bottom" *ngFor="let update of webUpdate">
+                        <div *ngFor="let update of webUpdate" class="update-log am-animation-slide-bottom">
                             <div class="update-log-date">
                                 <h2><span style="font-size: x-large"># </span> {{update.time}}</h2>
                             </div>

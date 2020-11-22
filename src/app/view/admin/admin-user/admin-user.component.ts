@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {NzMessageService} from 'ng-zorro-antd/message';
 import {Title} from '@angular/platform-browser';
 import {FormControl, FormGroup} from '@angular/forms';
 import {RequestObj} from '../../../class/HttpReqAndResp';
@@ -13,6 +13,17 @@ import {Data} from '../components/common-table/data';
     templateUrl: './admin-user.component.html'
 })
 export class AdminUserComponent implements OnInit {
+
+    user: User;
+    modalData = {
+        visible: false,
+        title: null,
+        isEdit: false,
+        resetPwd: false
+    }
+    formGroup: FormGroup;
+    headData: Data<User>[];
+    request: RequestObj;
 
     constructor(private apiService: ApiService, private title: Title, private messageService: NzMessageService,
                 private userService: GlobalUserService) {
@@ -31,18 +42,6 @@ export class AdminUserComponent implements OnInit {
             complete: null
         })
     }
-
-    user: User;
-    modalData = {
-        visible: false,
-        title: null,
-        isEdit: false,
-        resetPwd: false
-    }
-    formGroup: FormGroup;
-
-    headData: Data<User>[];
-    request: RequestObj;
 
     ngOnInit(): void {
         this.title.setTitle('小海博客 | 用户管理')

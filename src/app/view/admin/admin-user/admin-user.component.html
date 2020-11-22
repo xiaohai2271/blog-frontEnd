@@ -1,56 +1,56 @@
 <common-table [headData]="headData"
               [request]="request"
-              cardTitle="用户信息管理"
               [template]="{role:{temp:role},emailStatus:{temp:emailStatus,param:{true:'已验证',false:'未验证'}}}"
+              cardTitle="用户信息管理"
 >
 </common-table>
-<ng-template let-value="value" #role>
-    <nz-tag [nzColor]="'blue'" *ngIf="value == 'admin'">{{value}}</nz-tag>
-    <nz-tag [nzColor]="'purple'" *ngIf="value == 'user'">{{value}}</nz-tag>
+<ng-template #role let-value="value">
+    <nz-tag *ngIf="value == 'admin'" [nzColor]="'blue'">{{value}}</nz-tag>
+    <nz-tag *ngIf="value == 'user'" [nzColor]="'purple'">{{value}}</nz-tag>
 </ng-template>
-<ng-template let-value="value" let-originValue="originValue" #emailStatus>
-    <nz-tag [nzColor]="'green'" *ngIf="originValue !='false'">{{value}}</nz-tag>
-    <nz-tag [nzColor]="'red'" *ngIf="originValue !='true'">{{value}}</nz-tag>
+<ng-template #emailStatus let-originValue="originValue" let-value="value">
+    <nz-tag *ngIf="originValue !='false'" [nzColor]="'green'">{{value}}</nz-tag>
+    <nz-tag *ngIf="originValue !='true'" [nzColor]="'red'">{{value}}</nz-tag>
 </ng-template>
 
-<nz-modal [(nzVisible)]="modalData.visible" [nzClosable]="true" [nzTitle]="modalData.title"
-          (nzOnCancel)="modalData.visible = false" (nzOnOk)="modalConfirm()"
+<nz-modal (nzOnCancel)="modalData.visible = false" (nzOnOk)="modalConfirm()" [(nzVisible)]="modalData.visible"
+          [nzClosable]="true" [nzContent]="showContent"
           [nzFooter]="modalData.isEdit?editContentFooter:showContentFooter"
-          [nzContent]="showContent">
+          [nzTitle]="modalData.title">
     <ng-template #showContent>
-        <form nz-form [formGroup]="formGroup" (ngSubmit)="modalConfirm()">
+        <form (ngSubmit)="modalConfirm()" [formGroup]="formGroup" nz-form>
             <nz-form-item>
-                <nz-form-label nzSpan="4" nzRequired>邮箱</nz-form-label>
+                <nz-form-label nzRequired nzSpan="4">邮箱</nz-form-label>
                 <nz-form-control nzSpan="18">
-                    <input type="email" nz-input formControlName="email"
-                           [disabled]="!modalData.isEdit">
+                    <input [disabled]="!modalData.isEdit" formControlName="email" nz-input
+                           type="email">
                 </nz-form-control>
             </nz-form-item>
 
             <nz-form-item>
-                <nz-form-label nzSpan="4" nzRequired>昵称</nz-form-label>
+                <nz-form-label nzRequired nzSpan="4">昵称</nz-form-label>
                 <nz-form-control nzSpan="18">
-                    <input type="text" nz-input formControlName="displayName" [disabled]="!modalData.isEdit">
+                    <input [disabled]="!modalData.isEdit" formControlName="displayName" nz-input type="text">
                 </nz-form-control>
             </nz-form-item>
 
 
             <nz-form-item>
-                <nz-form-label nzSpan="4" nzRequired>角色</nz-form-label>
+                <nz-form-label nzRequired nzSpan="4">角色</nz-form-label>
                 <nz-form-control nzSpan="18">
-                    <nz-select formControlName="role" [nzDisabled]="!modalData.isEdit||formGroup.value.id==user.id">
-                        <nz-option nzValue="admin" nzLabel="admin"></nz-option>
-                        <nz-option nzValue="user" nzLabel="user"></nz-option>
+                    <nz-select [nzDisabled]="!modalData.isEdit||formGroup.value.id==user.id" formControlName="role">
+                        <nz-option nzLabel="admin" nzValue="admin"></nz-option>
+                        <nz-option nzLabel="user" nzValue="user"></nz-option>
                     </nz-select>
                 </nz-form-control>
             </nz-form-item>
 
             <nz-form-item>
-                <nz-form-label nzSpan="4" nzRequired>状态</nz-form-label>
+                <nz-form-label nzRequired nzSpan="4">状态</nz-form-label>
                 <nz-form-control nzSpan="18">
-                    <nz-radio-group formControlName="emailStatus" [nzDisabled]="!modalData.isEdit">
-                        <label nz-radio [nzValue]="true">邮箱已验证</label>
-                        <label nz-radio [nzValue]="false">邮箱未验证</label>
+                    <nz-radio-group [nzDisabled]="!modalData.isEdit" formControlName="emailStatus">
+                        <label [nzValue]="true" nz-radio>邮箱已验证</label>
+                        <label [nzValue]="false" nz-radio>邮箱未验证</label>
                     </nz-radio-group>
                 </nz-form-control>
             </nz-form-item>
@@ -58,14 +58,14 @@
             <nz-form-item *ngIf="modalData.isEdit">
                 <nz-form-label nzSpan="4">密码</nz-form-label>
                 <nz-form-control nzSpan="18">
-                    <a *ngIf="!modalData.resetPwd" (click)="modalData.resetPwd = true">
-                        重设密码<i nz-icon nzType="edit" nzTheme="twotone" style="margin-left: 10px;"></i>
+                    <a (click)="modalData.resetPwd = true" *ngIf="!modalData.resetPwd">
+                        重设密码<i nz-icon nzTheme="twotone" nzType="edit" style="margin-left: 10px;"></i>
                     </a>
                     <nz-input-group *ngIf="modalData.resetPwd" [nzSuffix]="cancelBtn" nzSize="small">
-                        <input type="password" nz-input formControlName="pwd" autocomplete="new-password"
-                               [disabled]="!modalData.isEdit">
+                        <input [disabled]="!modalData.isEdit" autocomplete="new-password" formControlName="pwd" nz-input
+                               type="password">
                         <ng-template #cancelBtn>
-                            <button nz-button (click)="modalData.resetPwd = false" nzSize="small" nzType="link">取消
+                            <button (click)="modalData.resetPwd = false" nz-button nzSize="small" nzType="link">取消
                             </button>
                         </ng-template>
                     </nz-input-group>
@@ -75,20 +75,20 @@
             <nz-form-item>
                 <nz-form-label nzSpan="4">描述</nz-form-label>
                 <nz-form-control nzSpan="18">
-                    <textarea nz-input [nzAutosize]="{ minRows: 2, maxRows: 4 }" formControlName="desc"
-                              [disabled]="!modalData.isEdit"></textarea>
+                    <textarea [disabled]="!modalData.isEdit" [nzAutosize]="{ minRows: 2, maxRows: 4 }" formControlName="desc"
+                              nz-input></textarea>
                 </nz-form-control>
             </nz-form-item>
         </form>
     </ng-template>
 
     <ng-template #showContentFooter>
-        <button nz-button (click)="modalData.visible = false">关闭</button>
+        <button (click)="modalData.visible = false" nz-button>关闭</button>
     </ng-template>
 
     <ng-template #editContentFooter>
-        <button nz-button (click)="modalData.visible = false">取消</button>
-        <button nz-button (click)="modalConfirm()" nzType="primary">提交</button>
+        <button (click)="modalData.visible = false" nz-button>取消</button>
+        <button (click)="modalConfirm()" nz-button nzType="primary">提交</button>
     </ng-template>
 
 </nz-modal>

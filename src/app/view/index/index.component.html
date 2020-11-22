@@ -1,83 +1,83 @@
-<div nz-row id="index-container">
-    <div nz-col nzSpan="14" nzOffset="2" id="index-left">
+<div id="index-container" nz-row>
+    <div id="index-left" nz-col nzOffset="2" nzSpan="14">
         <ng-template [ngIf]="articles&&articles.total">
             <c-article-detail-card *ngFor="let item of articles.list" [data]="item">
             </c-article-detail-card>
         </ng-template>
-        <nz-pagination style="text-align: center"
+        <nz-pagination (nzPageIndexChange)="getArticles($event)"
                        *ngIf="articles" [nzPageIndex]="articles.pageNum"
-                       [nzTotal]="articles.total"
                        [nzPageSize]="articles.pageSize"
-                       (nzPageIndexChange)="getArticles($event)">
+                       [nzTotal]="articles.total"
+                       style="text-align: center">
 
         </nz-pagination>
     </div>
-    <div nz-col nzSpan="5" nzOffset="1" id="index-right">
+    <div id="index-right" nz-col nzOffset="1" nzSpan="5">
         <!--   关于博主     -->
         <c-card-detail title="关于博主">
             <div id="index-bloger-container" title="">
-                <img id="index-bloger-pic"
-                     [src]="imgUrl" alt="pic">
+                <img [src]="imgUrl"
+                     alt="pic" id="index-bloger-pic">
                 <div id="index-bloger-desc">
-                    <p><span style="font-weight: bold;font-size: x-large;"
-                             [title]="desc"> 郑 海</span></p>
+                    <p><span [title]="desc"
+                             style="font-weight: bold;font-size: x-large;"> 郑 海</span></p>
                     <p><i nz-icon nzType="blog:location"></i> Location : 武汉</p>
-                    <p><i nz-icon nzType="github" nzTheme="outline"></i>
-                        Github : <a target="_blank" href="https://github.com/xiaohai2271"> link>></a>
+                    <p><i nz-icon nzTheme="outline" nzType="github"></i>
+                        Github : <a href="https://github.com/xiaohai2271" target="_blank"> link>></a>
                     </p>
                 </div>
             </div>
             <div id="index-bloger-button-area" title="">
                 <div id="index-bloger-qq-btn">
-                    <i nz-icon nzType="qq" title="QQ二维码" nzTheme="outline"
-                       style="color: #ff8936;border-color: #ff8936;cursor: pointer"
-                       (mouseenter)="changeImg(qqQrImgUrl)" (mouseleave)="changeImg()"></i>
+                    <i (mouseenter)="changeImg(qqQrImgUrl)" (mouseleave)="changeImg()" nz-icon nzTheme="outline"
+                       nzType="qq"
+                       style="color: #ff8936;border-color: #ff8936;cursor: pointer" title="QQ二维码"></i>
                 </div>
                 <div id="index-bloger-wx-btn">
-                    <i nz-icon nzType="wechat" title="微信二维码" nzTheme="outline"
-                       style="color: #7bcfa6;border-color: #7bcfa6;cursor: pointer"
-                       (mouseenter)="changeImg(wxQrImgUrl)" (mouseleave)="changeImg()"></i>
+                    <i (mouseenter)="changeImg(wxQrImgUrl)" (mouseleave)="changeImg()" nz-icon nzTheme="outline"
+                       nzType="wechat"
+                       style="color: #7bcfa6;border-color: #7bcfa6;cursor: pointer" title="微信二维码"></i>
                 </div>
             </div>
         </c-card-detail>
 
         <!--  分类云  -->
         <c-card-detail title="分类云">
-            <div title="" style="text-align: center;user-select: none">
-                <c-tag-tag *ngFor="let category of categoryList"
-                           [tag]="{name:category.name,size:category.articles.length}"
-                           (tagClick)="toCategory(category.name)">
+            <div style="text-align: center;user-select: none" title="">
+                <c-tag-tag (tagClick)="toCategory(category.name)"
+                           *ngFor="let category of categoryList"
+                           [tag]="{name:category.name,size:category.articles.length}">
                 </c-tag-tag>
             </div>
         </c-card-detail>
 
         <!--  标签云  -->
         <c-card-detail title="标签云">
-            <div title="" style="text-align: center;user-select: none">
-                <c-tag-tag *ngFor="let tag of tagNameAndNumber" [tag]="tag" (tagClick)="toTag(tag.name)">
+            <div style="text-align: center;user-select: none" title="">
+                <c-tag-tag (tagClick)="toTag(tag.name)" *ngFor="let tag of tagNameAndNumber" [tag]="tag">
                 </c-tag-tag>
             </div>
         </c-card-detail>
 
         <!--  网站信息  -->
-        <c-card-detail title="网站信息" id="index-site-info">
+        <c-card-detail id="index-site-info" title="网站信息">
             <p *ngIf="counts && counts.articleCount">
-                <i nz-icon nzType="info-circle" nzTheme="outline"></i>文章总数: {{counts.articleCount}}篇
+                <i nz-icon nzTheme="outline" nzType="info-circle"></i>文章总数: {{counts.articleCount}}篇
             </p>
             <p *ngIf="counts && counts.categoryCount">
-                <i nz-icon nzType="info-circle" nzTheme="outline"></i>分类总数: {{counts.categoryCount}}个
+                <i nz-icon nzTheme="outline" nzType="info-circle"></i>分类总数: {{counts.categoryCount}}个
             </p>
             <p *ngIf="counts && counts.tagCount">
-                <i nz-icon nzType="info-circle" nzTheme="outline"></i>标签总数: {{counts.tagCount}}个
+                <i nz-icon nzTheme="outline" nzType="info-circle"></i>标签总数: {{counts.tagCount}}个
             </p>
             <p *ngIf="counts && counts.visitorCount">
-                <i nz-icon nzType="info-circle" nzTheme="outline"></i>访客总数: {{counts.visitorCount}}次
+                <i nz-icon nzTheme="outline" nzType="info-circle"></i>访客总数: {{counts.visitorCount}}次
             </p>
             <p *ngIf="lastestUpdate">
-                <i nz-icon nzType="info-circle" nzTheme="outline"></i>上次更新时间: {{lastestUpdate.lastUpdateTime}}
+                <i nz-icon nzTheme="outline" nzType="info-circle"></i>上次更新时间: {{lastestUpdate.lastUpdateTime}}
             </p>
             <p *ngIf="lastestUpdate&&lastestUpdate.committerDate">
-                <i nz-icon nzType="info-circle" nzTheme="outline"></i>上次提交代码时间: {{lastestUpdate.committerDate}}
+                <i nz-icon nzTheme="outline" nzType="info-circle"></i>上次提交代码时间: {{lastestUpdate.committerDate}}
             </p>
         </c-card-detail>
 

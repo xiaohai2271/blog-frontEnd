@@ -11,12 +11,12 @@ import {ErrorService} from '../../services/error.service';
 })
 export class HttpService {
 
+    private subscriptionQueue: Subscription[] = [];
+
     constructor(private httpClient: HttpClient,
                 private localStorageService: LocalStorageService,
                 private injector: Injector) {
     }
-
-    private subscriptionQueue: Subscription[] = [];
 
     public getSubscriptionQueue = () => this.subscriptionQueue;
 
@@ -69,7 +69,7 @@ export class HttpService {
                 observer.complete();
             },
             error: err => {
-                errorService.httpError(err,request);
+                errorService.httpError(err, request);
                 errorService.checkConnection();
                 this.subscriptionQueue.splice(this.subscriptionQueue.indexOf(subscription), 1)
             },

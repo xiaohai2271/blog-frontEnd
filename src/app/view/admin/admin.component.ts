@@ -17,6 +17,17 @@ import {LocalStorageService} from '../../services/local-storage.service';
 })
 export class AdminComponent implements OnInit {
 
+    user: User;
+    isCollapsed: boolean = false;
+    infoDrawerVisible: boolean = false;
+    sayHelloContent: string;
+    editInfoModalVisible: boolean = false;
+    resetPwdModalVisible: boolean = false;
+    editInfoFormGroup: FormGroup;
+    resetPwdFormGroup: FormGroup;
+    noAvatarUrl = 'https://cdn.celess.cn/'
+    host: string
+
     constructor(public gUserService: GlobalUserService, private apiService: ApiService, private messageService: NzMessageService,
                 private router: Router, private localStorageService: LocalStorageService) {
         this.gUserService.watchUserInfo({
@@ -45,16 +56,6 @@ export class AdminComponent implements OnInit {
         })
     }
 
-    user: User;
-    isCollapsed: boolean = false;
-    infoDrawerVisible: boolean = false;
-    sayHelloContent: string;
-    editInfoModalVisible: boolean = false;
-    resetPwdModalVisible: boolean = false;
-    editInfoFormGroup: FormGroup;
-    resetPwdFormGroup: FormGroup;
-    noAvatarUrl = 'https://cdn.celess.cn/'
-    host: string
     showInfoDrawer = () => this.infoDrawerVisible = !this.infoDrawerVisible;
 
     logout() {
@@ -75,23 +76,6 @@ export class AdminComponent implements OnInit {
     uploadHeader = (file: NzUploadFile): object | Observable<{}> => {
         return {Authorization: this.localStorageService.getToken()}
     };
-
-    private initHelloWords() {
-        const hours = new Date().getHours();
-        if (hours < 6) {
-            this.sayHelloContent = `夜深了，注意早点休息哦！${this.user.displayName}`
-        } else if (hours < 10) {
-            this.sayHelloContent = `早上好呀！${this.user.displayName}`
-        } else if (hours < 14) {
-            this.sayHelloContent = `中午好呀！${this.user.displayName}`
-        } else if (hours < 19) {
-            this.sayHelloContent = `下午好呀！${this.user.displayName}`
-        } else if (hours < 22) {
-            this.sayHelloContent = `晚上好呀！${this.user.displayName}`
-        } else {
-            this.sayHelloContent = `时间不早了，注意休息哦！${this.user.displayName}`
-        }
-    }
 
     showEditInfoModal() {
         this.editInfoModalVisible = true;
@@ -140,6 +124,23 @@ export class AdminComponent implements OnInit {
         if (info.type === 'success' && info.file.response.code === 0) {
             const time = new Date().valueOf();
             this.gUserService.refreshUserInfo();
+        }
+    }
+
+    private initHelloWords() {
+        const hours = new Date().getHours();
+        if (hours < 6) {
+            this.sayHelloContent = `夜深了，注意早点休息哦！${this.user.displayName}`
+        } else if (hours < 10) {
+            this.sayHelloContent = `早上好呀！${this.user.displayName}`
+        } else if (hours < 14) {
+            this.sayHelloContent = `中午好呀！${this.user.displayName}`
+        } else if (hours < 19) {
+            this.sayHelloContent = `下午好呀！${this.user.displayName}`
+        } else if (hours < 22) {
+            this.sayHelloContent = `晚上好呀！${this.user.displayName}`
+        } else {
+            this.sayHelloContent = `时间不早了，注意休息哦！${this.user.displayName}`
         }
     }
 }

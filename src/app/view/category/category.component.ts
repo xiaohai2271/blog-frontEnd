@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../../api/api.service';
 import {Tag} from '../../class/Tag';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {NzMessageService} from 'ng-zorro-antd/message';
 import {PageList} from '../../class/HttpReqAndResp';
 import {Article} from '../../class/Article';
 import {ActivatedRoute} from '@angular/router';
@@ -15,18 +15,17 @@ import {Title} from '@angular/platform-browser';
 })
 export class CategoryComponent implements OnInit {
 
+    categoryList: Tag[] = [];
+    articleList: PageList<Article>;
+    name: string;
+    private category: Tag;
+
     constructor(private apiService: ApiService,
                 private nzMessageService: NzMessageService,
                 private activatedRoute: ActivatedRoute,
                 private location: Location,
                 private title: Title) {
     }
-
-    categoryList: Tag[] = [];
-    private category: Tag;
-    articleList: PageList<Article>;
-
-    name: string;
 
     ngOnInit() {
         this.name = this.activatedRoute.snapshot.paramMap.get('category');

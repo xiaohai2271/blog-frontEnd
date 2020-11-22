@@ -10,20 +10,18 @@ import {Title} from '@angular/platform-browser';
 })
 export class EmailVerifyComponent implements OnInit {
 
+    type: string = 'info';
+    message: string = '正在验证，请稍等';
+    desc: string = '';
+    private email: string;
+    private verifyId: string;
+
     constructor(private titleService: Title,
                 private router: Router,
                 public routerinfo: ActivatedRoute,
                 private apiService: ApiService) {
         titleService.setTitle('小海博客 | 邮箱验证');
     }
-
-    type: string = 'info';
-    message: string = '正在验证，请稍等';
-    desc: string = '';
-
-
-    private email: string;
-    private verifyId: string;
 
     ngOnInit(): void {
         this.email = this.routerinfo.snapshot.queryParams.email;

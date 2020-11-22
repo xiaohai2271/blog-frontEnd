@@ -1,15 +1,5 @@
-import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    Input,
-    OnChanges,
-    OnInit,
-    Output,
-    SimpleChanges,
-    ViewChild
-} from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
 
 @Component({
     selector: 'editable-tag',
@@ -40,15 +30,9 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 export class EditableTagComponent implements OnInit, OnChanges {
 
     private static instanceArray: EditableTagComponent[] = []
-
-    constructor(private modal: NzModalService) {
-        EditableTagComponent.instanceArray.push(this);
-    }
-
     inputVisible = false;
     inputValue = '';
     @ViewChild('inputElement', {static: false}) inputElement?: ElementRef;
-
     @Output() valueChange = new EventEmitter<{ value: string, originalValue: string, changed: boolean }>();
     @Input() color: string;
     @Input() showEditIcon: boolean;
@@ -62,12 +46,15 @@ export class EditableTagComponent implements OnInit, OnChanges {
     @Output() inEditStatus = new EventEmitter<void>();
     @Output() modalOK = new EventEmitter<{ value: string, originalValue: string, changed: boolean }>();
     @Output() modalCancel = new EventEmitter<{ value: string, originalValue: string, changed: boolean }>();
-
+    confirmModal?: NzModalRef;
     private tmpKey: any;
     private doubleClickInfo = {
         date: null,
     };
-    confirmModal?: NzModalRef;
+
+    constructor(private modal: NzModalService) {
+        EditableTagComponent.instanceArray.push(this);
+    }
 
     ngOnInit(): void {
         if (this.showEditIcon == null) {

@@ -1,21 +1,21 @@
 <div class="main">
     <div class="con">
-        <input type="text" [(ngModel)]="article.title" id="title" placeholder="文章标题">
-        <button nz-button nzType="primary" id="submit" (click)="articleSubmit()">提交</button>
+        <input [(ngModel)]="article.title" id="title" placeholder="文章标题" type="text">
+        <button (click)="articleSubmit()" id="submit" nz-button nzType="primary">提交</button>
     </div>
     <div id="vditor"></div>
 </div>
 
-<nz-modal [(nzVisible)]="modalVisible" [nzTitle]="title" [nzContent]="content" [nzFooter]="null"
-          (nzOnCancel)="modalVisible = false">
+<nz-modal (nzOnCancel)="modalVisible = false" [(nzVisible)]="modalVisible" [nzContent]="content" [nzFooter]="null"
+          [nzTitle]="title">
 
     <ng-template #title>
         <h3 style="text-align: center">文章发布</h3>
     </ng-template>
 
     <ng-template #content>
-        <c-publish-form [categoryList]="categoryList" [tagNacList]="tagNacList" [primaryData]="primaryData"
-                        (submitEvent)="publishArticle($event)">
+        <c-publish-form (submitEvent)="publishArticle($event)" [categoryList]="categoryList" [primaryData]="primaryData"
+                        [tagNacList]="tagNacList">
         </c-publish-form>
     </ng-template>
 

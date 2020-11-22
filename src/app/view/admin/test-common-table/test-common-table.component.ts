@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Data} from '../components/common-table/data';
 import {Article} from '../../../class/Article';
 import {RequestObj} from '../../../class/HttpReqAndResp';
@@ -24,7 +24,11 @@ summary:    a
 tags: [{id: 26, name: "脚本"}, {id: 27, name: "网课"}]
 title: "教你动手写一个刷课脚本"
 updateDateFormat: "2020-05-27 00:55:05"*/
+
     // @ViewChild('tag') tagTemp: TemplateRef<any>;
+
+    data: Data<Article>[];
+    req: RequestObj;
 
     constructor() {
         this.data = [
@@ -60,9 +64,6 @@ updateDateFormat: "2020-05-27 00:55:05"*/
             }
         ]
     }
-
-    data: Data<Article>[];
-    req: RequestObj;
 
     ngOnInit(): void {
         this.req = {

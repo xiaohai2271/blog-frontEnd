@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {NzMessageService} from 'ng-zorro-antd/message';
 import {ApiService} from '../../../api/api.service';
 import {RequestObj} from '../../../class/HttpReqAndResp';
 import {Comment, CommentReq} from '../../../class/Comment';
@@ -14,6 +14,19 @@ import {CommonTableComponent} from '../components/common-table/common-table.comp
     templateUrl: './admin-comment.component.html',
 })
 export class AdminCommentComponent implements OnInit {
+
+    request: RequestObj;
+    editInfo = {
+        id: null,
+        content: new CommentReq(null),
+    }
+    headData: Data<Comment>[];
+    modalData = {
+        visible: false,
+        comment: null
+    }
+    @ViewChild('editableTagComponent') editableTagComponent: EditableTagComponent;
+    @ViewChild('commonTableComponent') commonTableComponent: CommonTableComponent<Comment>;
 
     constructor(private apiService: ApiService, private  messageService: NzMessageService, private userService: GlobalUserService,
                 private title: Title) {
@@ -41,19 +54,6 @@ export class AdminCommentComponent implements OnInit {
             complete: () => null
         })
     }
-
-    request: RequestObj;
-    editInfo = {
-        id: null,
-        content: new CommentReq(null),
-    }
-    headData: Data<Comment>[];
-    modalData = {
-        visible: false,
-        comment: null
-    }
-    @ViewChild('editableTagComponent') editableTagComponent: EditableTagComponent;
-    @ViewChild('commonTableComponent') commonTableComponent: CommonTableComponent<Comment>;
 
     ngOnInit(): void {
         this.headData = [

@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {NzMessageService} from 'ng-zorro-antd/message';
 import {Title} from '@angular/platform-browser';
 import {Observable} from 'rxjs';
 import {ApiService} from '../../../api/api.service';
-import {PageList, RequestObj, Response} from '../../../class/HttpReqAndResp';
+import {RequestObj, Response} from '../../../class/HttpReqAndResp';
 import {UpdateInfo} from '../../../class/UpdateInfo';
 import {Data} from '../components/common-table/data';
 
@@ -14,9 +14,6 @@ import {Data} from '../components/common-table/data';
 export class AdminUpdateComponent implements OnInit {
 
 
-    constructor(private apiService: ApiService, private nzMessage: NzMessageService, private title: Title) {
-    }
-
     modalData = {
         visible: false,
         content: null,
@@ -25,6 +22,9 @@ export class AdminUpdateComponent implements OnInit {
     };
     headData: Data<UpdateInfo>[];
     request: RequestObj;
+
+    constructor(private apiService: ApiService, private nzMessage: NzMessageService, private title: Title) {
+    }
 
     ngOnInit(): void {
         this.title.setTitle('小海博客 | 更新信息管理')

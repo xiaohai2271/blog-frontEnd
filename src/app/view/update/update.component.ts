@@ -9,20 +9,20 @@ import {Title} from '@angular/platform-browser';
 })
 export class UpdateComponent implements OnInit {
 
-    constructor(private titleService: Title,
-                private apiService: ApiService) {
-        titleService.setTitle('小海博客 | 网站更新记录');
-    }
-
     lastUpdate: {
         lastUpdateTime: string;
         lastUpdateInfo: string;
         lastCommit: string;
         committerAuthor: string;
         committerDate: string;
-        commitUrl:string
-    } ;
+        commitUrl: string
+    };
     webUpdate: { id: number, info: string, time: string }[] = [];
+
+    constructor(private titleService: Title,
+                private apiService: ApiService) {
+        titleService.setTitle('小海博客 | 网站更新记录');
+    }
 
     ngOnInit() {
         this.apiService.lastestUpdate().subscribe(data => {

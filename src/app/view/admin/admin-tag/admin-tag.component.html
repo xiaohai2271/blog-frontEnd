@@ -1,14 +1,14 @@
 <div class="inner-content">
-    <nz-card nzTitle="" nzSize="small">
+    <nz-card nzSize="small" nzTitle="">
         <nz-tabset [nzTabBarExtraContent]="reload">
-            <nz-tab nzTitle="分类管理" (nzClick)="tabChanged('tag')">
+            <nz-tab (nzClick)="tabChanged('tag')" nzTitle="分类管理">
                 <div style="margin-bottom: 15px;width: 150px">
-                    <editable-tag [showBorder]="false"
-                                  [showEditIcon]="false"
-                                  [doubleClick]="false"
-                                  size="default"
+                    <editable-tag (valueChange)="addCategory($event)"
                                   [autoClear]="true"
-                                  (valueChange)="addCategory($event)"
+                                  [doubleClick]="false"
+                                  [showBorder]="false"
+                                  [showEditIcon]="false"
+                                  size="default"
                     >
                         <button nz-button>新增</button>
                     </editable-tag>
@@ -19,7 +19,7 @@
                               [template]="{name:{temp:nameTemplate}}">
                 </common-table>
             </nz-tab>
-            <nz-tab nzTitle="标签管理" (nzClick)="tabChanged('category')">
+            <nz-tab (nzClick)="tabChanged('category')" nzTitle="标签管理">
                 <common-table #tagCTComponent
                               [headData]="tagCTData.headData"
                               [request]="tagCTData.request"
@@ -30,15 +30,15 @@
     </nz-card>
 </div>
 <ng-template #reload>
-    <a (click)="getData()" title="刷新"><i nz-icon nzType="reload" nzTheme="outline"></i></a>
+    <a (click)="getData()" title="刷新"><i nz-icon nzTheme="outline" nzType="reload"></i></a>
 </ng-template>
 
-<ng-template #nameTemplate let-value="value" let-data="data">
+<ng-template #nameTemplate let-data="data" let-value="value">
     <editable-tag #editableTagComponent
+                  (modalOK)="textChange($event,data)"
                   [key]="data.id"
                   [showBorder]="false"
-                  [text]="value"
                   [showConfirmModal]="true"
-                  (modalOK)="textChange($event,data)">
+                  [text]="value">
     </editable-tag>
 </ng-template>

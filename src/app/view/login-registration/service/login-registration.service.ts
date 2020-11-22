@@ -5,8 +5,8 @@ import {Injectable} from '@angular/core';
 })
 export class LoginRegistrationService {
 
+    showModal: boolean = false;
+
     constructor() {
     }
-
-    showModal: boolean = false;
 }

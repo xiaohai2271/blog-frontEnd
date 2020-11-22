@@ -7,10 +7,10 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class CardDetailComponent implements OnInit {
 
+    @Input() title: string;
+
     constructor() {
     }
-
-    @Input() title: string;
 
     // @ContentChildren() c:T;
 

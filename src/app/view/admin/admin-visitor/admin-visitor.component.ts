@@ -11,11 +11,11 @@ import {Data} from '../components/common-table/data';
 })
 export class AdminVisitorComponent implements OnInit {
 
-    constructor(private apiService: ApiService, private title: Title) {
-    }
-
     headData: Data<Visitor>[];
     request: RequestObj
+
+    constructor(private apiService: ApiService, private title: Title) {
+    }
 
     ngOnInit(): void {
         this.title.setTitle('小海博客 | 访客信息管理')

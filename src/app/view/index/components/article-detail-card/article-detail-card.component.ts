@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Article} from '../../../../class/Article';
-import {ColorList} from '../../../../utils/color';
 
 @Component({
     selector: 'c-article-detail-card',
@@ -9,12 +8,12 @@ import {ColorList} from '../../../../utils/color';
 })
 export class ArticleDetailCardComponent implements OnInit {
 
-    constructor() {
-    }
-
     @Input() data: Article;
     @Input() showMediaArea: boolean;
     @Input() showTagArea: boolean;
+
+    constructor() {
+    }
 
     ngOnInit() {
         if (this.data == null || this.data.id == null) {

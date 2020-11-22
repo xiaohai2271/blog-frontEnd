@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {PageList} from '../../class/HttpReqAndResp';
 import {Article} from '../../class/Article';
 import {ApiService} from '../../api/api.service';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {NzMessageService} from 'ng-zorro-antd/message';
 import {Location} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {Title} from '@angular/platform-browser';
@@ -14,18 +14,17 @@ import {Title} from '@angular/platform-browser';
 })
 export class TagComponent implements OnInit {
 
+    tagList: { name: string, size: number } [] = [];
+    articleList: PageList<Article>;
+    name: string;
+    private tag: { name: string, size: number };
+
     constructor(private apiService: ApiService,
                 private nzMessageService: NzMessageService,
                 private location: Location,
                 private activatedRoute: ActivatedRoute,
                 private title: Title) {
     }
-
-    tagList: { name: string, size: number } [] = [];
-    private tag: { name: string, size: number };
-    articleList: PageList<Article>;
-
-    name: string;
 
     ngOnInit() {
         this.name = this.activatedRoute.snapshot.paramMap.get('tag');

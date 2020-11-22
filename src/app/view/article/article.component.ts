@@ -18,20 +18,11 @@ declare var $;
 })
 export class ArticleComponent implements OnInit {
 
-    constructor(private activatedRoute: ActivatedRoute,
-                private apiService: ApiService,
-                private userService: GlobalUserService,
-                private titleService: Title,
-                private router: Router) {
-        this.articleId = +activatedRoute.snapshot.paramMap.get('id');
-    }
-
     articleId: number;
     article: Article;
     copyRightUrl: string;
     user: User;
     submitting: boolean = false;
-
     comment: CommentReq;
     // 作为输入框@ 的提示
     name: string;
@@ -40,6 +31,14 @@ export class ArticleComponent implements OnInit {
     pid: number;
     content: string;
     @ViewChild('divElement') divElement: ElementRef;
+
+    constructor(private activatedRoute: ActivatedRoute,
+                private apiService: ApiService,
+                private userService: GlobalUserService,
+                private titleService: Title,
+                private router: Router) {
+        this.articleId = +activatedRoute.snapshot.paramMap.get('id');
+    }
 
     // private vditor: Vditor;
 

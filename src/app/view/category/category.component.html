@@ -3,9 +3,9 @@
 
     <div id="category">
         <ul *ngIf="categoryList.length">
-            <c-tag-tag *ngFor="let category of categoryList"
-                       [tag]="{name:category.name,size:category.articles.length}"
-                       (tagClick)="changeCategory(category)">
+            <c-tag-tag (tagClick)="changeCategory(category)"
+                       *ngFor="let category of categoryList"
+                       [tag]="{name:category.name,size:category.articles.length}">
 
             </c-tag-tag>
         </ul>
@@ -16,7 +16,7 @@
         <span style="font-weight: bolder;">{{name}}</span>
     </span>
 
-    <ul id="detail" *ngIf="articleList&&articleList.list.length">
+    <ul *ngIf="articleList&&articleList.list.length" id="detail">
         <c-article-detail-card *ngFor="let article of articleList.list"
                                [data]="article" [showMediaArea]="false" [showTagArea]="false">
         </c-article-detail-card>
