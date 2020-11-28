@@ -36,7 +36,7 @@ export class PublishFormComponent implements OnInit {
 
     ngOnInit(): void {
         this.formGroup = this.fb.group({
-            isUpdate: [true, Validators.required],
+            isUpdate: [false, Validators.required],
             type: [true, Validators.required],
             tagList: [null, Validators.required],
             tags: [null],
@@ -55,7 +55,7 @@ export class PublishFormComponent implements OnInit {
     }
 
     publishArticle() {
-        console.log(this.formGroup.value)
+        // console.log(this.formGroup.value)
         const formData = {
             id: this.formGroup.value.isUpdate ? this.primaryData?.id : null,
             type: this.formGroup.value.type,
