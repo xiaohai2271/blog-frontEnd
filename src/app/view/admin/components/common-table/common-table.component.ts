@@ -115,7 +115,7 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     showFieldSetting = () => this.settingModalVisible = true;
 
     cancel = () => this.settingModalVisible = false;
-    calculateVisibleFieldLength = () => this.filedData.filter(value => value.show).length;
+    calculateVisibleFieldLength = () => this.visibleFieldLength = this.filedData.filter(value => value.show).length;
 
     ok() {
         this.calculateVisibleFieldLength();
