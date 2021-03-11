@@ -12,7 +12,7 @@
 
 <ng-template #table>
     <ng-content></ng-content>
-    <nz-table (nzPageIndexChange)="getData()"
+    <nz-table (nzPageIndexChange)="getData($event)"
               [(nzPageIndex)]="dataList.pageNum"
               [nzData]="dataList.list"
               [nzLoading]="loading"

@@ -54,10 +54,10 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
         this.getData();
     }
 
-    getData = () => {
+    getData = (pageNumber?: number) => {
         this.loading = true;
-        const pageValue = this.dataList.pageNum ? this.dataList.pageNum : 1;
-        const countValue = this.dataList.pageSize ? this.dataList.pageSize : 10
+        const pageValue = pageNumber ? pageNumber : 1;
+        const countValue = this.dataList.pageSize ? this.dataList.pageSize : 10;
 
         this.request.queryParam.page = pageValue;
         this.request.queryParam.count = countValue;
