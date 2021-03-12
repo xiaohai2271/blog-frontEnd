@@ -12,13 +12,13 @@ import {Data} from '../components/common-table/data';
 export class AdminVisitorComponent implements OnInit {
 
     headData: Data<Visitor>[];
-    request: RequestObj
+    request: RequestObj;
 
     constructor(private apiService: ApiService, private title: Title) {
     }
 
     ngOnInit(): void {
-        this.title.setTitle('小海博客 | 访客信息管理')
+        this.title.setTitle('小海博客 | 访客信息管理');
         this.request = {
             path: '/admin/visitor/page',
             method: 'GET',
@@ -27,7 +27,7 @@ export class AdminVisitorComponent implements OnInit {
                 page: 10,
                 showLocation: true
             }
-        }
+        };
         this.headData = [
             {fieldValue: 'id', title: '主键', show: false, primaryKey: true},
             {fieldValue: 'date', title: '访问日期', show: true},
@@ -36,6 +36,6 @@ export class AdminVisitorComponent implements OnInit {
             {fieldValue: 'browserName', title: '浏览器', show: true},
             {fieldValue: 'browserVersion', title: '浏览器版本', show: true},
             {fieldValue: 'osname', title: '系统', show: true}
-        ]
+        ];
     }
 }

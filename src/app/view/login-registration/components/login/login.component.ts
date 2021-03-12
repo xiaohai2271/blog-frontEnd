@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
                         this.router.navigateByUrl(this.url);
                     } else {
                         // window.location.href = '/admin/';
-                        this.router.navigateByUrl('/admin')
+                        this.router.navigateByUrl('/admin');
                     }
                 }
             }

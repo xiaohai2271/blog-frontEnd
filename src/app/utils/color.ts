@@ -1,6 +1,6 @@
 export class Color {
     bgColor: string;
-    fontColor: string
+    fontColor: string;
 }
 
 export const ColorList: Color[] = [
@@ -13,23 +13,24 @@ export const ColorList: Color[] = [
     {bgColor: '#177cb0', fontColor: '#ffffff'}, // 靛青
 ];
 
-export const ColorListLength = ColorList.length
+export const ColorListLength = ColorList.length;
 
 /**
  * 获取一组随机颜色
+ *
  * @param count 数量
  */
 export function RandomColor(count: number = 1): Color[] {
     const map = new Map<number, number>();
-    ColorList.forEach((color, index) => map.set(index, 0))
+    ColorList.forEach((color, index) => map.set(index, 0));
     const colorArray: Color[] = [];
     const oneRandomColor = () => {
-        const minValue = Math.min.apply(null, Array.from(map.values()))
+        const minValue = Math.min.apply(null, Array.from(map.values()));
         const keys = Array.from(map.keys()).filter(key => map.get(key) === minValue);
         const keyIndex = Math.floor(Math.random() * keys.length);
         const index = keys[keyIndex];
         map.set(index, minValue + 1);
-        return ColorList[index]
+        return ColorList[index];
     };
     for (let i = 0; i < count; i++) {
         colorArray.push(oneRandomColor());

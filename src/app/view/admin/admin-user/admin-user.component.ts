@@ -20,7 +20,7 @@ export class AdminUserComponent implements OnInit {
         title: null,
         isEdit: false,
         resetPwd: false
-    }
+    };
     formGroup: FormGroup;
     headData: Data<User>[];
     request: RequestObj;
@@ -40,11 +40,11 @@ export class AdminUserComponent implements OnInit {
             next: data => this.user = data.result,
             error: null,
             complete: null
-        })
+        });
     }
 
     ngOnInit(): void {
-        this.title.setTitle('小海博客 | 用户管理')
+        this.title.setTitle('小海博客 | 用户管理');
         this.request = {
             path: '/admin/users',
             method: 'GET',
@@ -78,24 +78,24 @@ export class AdminUserComponent implements OnInit {
         this.apiService.deleteUser(id).subscribe({
             next: data => this.messageService.success('删除成功'),
             error: err => this.messageService.error(err.msg)
-        })
+        });
     }
 
     showModal(isEdit: boolean, data: User) {
         this.modalData.visible = true;
         this.modalData.isEdit = isEdit;
-        this.modalData.title = isEdit ? '编辑用户' : '查看用户'
+        this.modalData.title = isEdit ? '编辑用户' : '查看用户';
         this.formGroup.reset();
         this.formGroup.patchValue(data);
     }
 
     modalConfirm() {
-        this.modalData.visible = false
+        this.modalData.visible = false;
         this.apiService.adminUpdateUser(this.formGroup.value).subscribe({
             next: data => {
                 this.messageService.success('修改用户信息成功');
                 this.userService.refreshUserInfo();
             }
-        })
+        });
     }
 }

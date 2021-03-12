@@ -14,5 +14,5 @@ export class ApplyLinkReq {
     iconPath: string;
     linkUrl: string;
     name: string;
-    url: string
+    url: string;
 }

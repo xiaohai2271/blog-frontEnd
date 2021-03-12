@@ -14,7 +14,7 @@ import {NzTagModule} from 'ng-zorro-antd/tag';
 import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
 import {NzTypographyModule} from 'ng-zorro-antd/typography';
 import {FormsModule} from '@angular/forms';
-import {DragDropModule} from '@angular/cdk/drag-drop'
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
     declarations: [

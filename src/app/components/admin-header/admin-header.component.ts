@@ -12,9 +12,9 @@ export class AdminHeaderComponent implements OnInit {
     constructor(private userService: GlobalUserService) {
     }
 
-    user: User
-    @Output() infoClicked = new EventEmitter<void>()
-    noAvatarUrl = 'https://cdn.celess.cn/'
+    user: User;
+    @Output() infoClicked = new EventEmitter<void>();
+    noAvatarUrl = 'https://cdn.celess.cn/';
     logout = () => this.userService.logout();
     infoClickedEvent = () => this.infoClicked.emit();
 
@@ -23,7 +23,7 @@ export class AdminHeaderComponent implements OnInit {
             next: data => this.user = data.result,
             error: err => this.user = null,
             complete: null
-        })
+        });
     }
 
 }

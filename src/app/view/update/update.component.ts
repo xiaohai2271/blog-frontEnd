@@ -15,9 +15,9 @@ export class UpdateComponent implements OnInit {
         lastCommit: string;
         committerAuthor: string;
         committerDate: string;
-        commitUrl: string
+        commitUrl: string;
     };
-    webUpdate: { id: number, info: string, time: string }[] = [];
+    webUpdate: { id: number; info: string; time: string }[] = [];
 
     constructor(private titleService: Title,
                 private apiService: ApiService) {

@@ -27,7 +27,7 @@ export class AdminUpdateComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.title.setTitle('小海博客 | 更新信息管理')
+        this.title.setTitle('小海博客 | 更新信息管理');
         this.headData = [
             {fieldValue: 'id', show: false, title: '主键', primaryKey: true},
             {fieldValue: 'info', show: true, title: '更新内容'},
@@ -46,7 +46,7 @@ export class AdminUpdateComponent implements OnInit {
                 count: 1,
                 page: 10,
             }
-        }
+        };
     }
 
 
@@ -54,21 +54,21 @@ export class AdminUpdateComponent implements OnInit {
         this.apiService.deleteWebUpdateInfo(id).subscribe({
             next: data => this.nzMessage.success('删除成功'),
             error: err => this.nzMessage.error(err.msg)
-        })
+        });
     }
 
     confirm() {
         this.modalData.visible = false;
-        let observable: Observable<Response<UpdateInfo>>
+        let observable: Observable<Response<UpdateInfo>>;
         if (this.modalData.id) {
-            observable = this.apiService.updateWebUpdateInfo(this.modalData.id, this.modalData.content)
+            observable = this.apiService.updateWebUpdateInfo(this.modalData.id, this.modalData.content);
         } else {
-            observable = this.apiService.createWebUpdateInfo(this.modalData.content)
+            observable = this.apiService.createWebUpdateInfo(this.modalData.content);
         }
         observable.subscribe({
             next: data => this.nzMessage.success('操作成功'),
             error: err => this.nzMessage.error(err.msg)
-        })
+        });
     }
 
     showModal(data?: UpdateInfo) {

@@ -9,12 +9,12 @@ import {Router} from '@angular/router';
 })
 export class TagTagComponent implements OnInit {
 
-    @Input() tag: { name: string, size: number };
+    @Input() tag: { name: string; size: number };
     @Input() size: 'default' | 'large' = 'default';
     @Input() clickable: boolean; // default true
     @Input() enableCount: boolean; // default true
     @Output() tagClick = new EventEmitter();
-    randColor: { bgColor: string, fontColor: string };
+    randColor: { bgColor: string; fontColor: string };
 
     constructor(private router: Router) {
     }

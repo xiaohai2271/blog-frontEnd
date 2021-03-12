@@ -33,7 +33,7 @@ export class ApiService {
             path: '/admin/article/del',
             method: 'DELETE',
             queryParam: {articleID: id}
-        })
+        });
     }
 
     articles(pageNumber: number = 1, pageSize: number = 5) {
@@ -140,7 +140,7 @@ export class ApiService {
     }
 
     tagsNac() {
-        return this.httpService.Service<{ name: string, size: number }[]>({
+        return this.httpService.Service<{ name: string; size: number }[]>({
             path: '/tags/nac',
             method: 'GET'
         });
@@ -232,11 +232,11 @@ export class ApiService {
 
     counts() {
         return this.httpService.Service<{
-            articleCount: number,
-            visitorCount: number,
-            categoryCount: number,
-            tagCount: number,
-            commentCount: number
+            articleCount: number;
+            visitorCount: number;
+            categoryCount: number;
+            tagCount: number;
+            commentCount: number;
         }>({
             path: '/counts',
             method: 'GET'
@@ -394,7 +394,7 @@ export class ApiService {
             method: 'PUT',
             data: user,
             contentType: 'application/json'
-        })
+        });
     }
 
     deleteUser(id: number) {
@@ -418,7 +418,7 @@ export class ApiService {
         return this.httpService.Service<boolean>({
             path: `/emailStatus/${email}`,
             method: 'GET'
-        })
+        });
     }
 
     updateUserInfo(descStr: string, disPlayNameStr: string) {
@@ -491,14 +491,14 @@ export class ApiService {
     }
 
     webUpdate() {
-        return this.httpService.Service<{ id: number, info: string, time: string }[]>({
+        return this.httpService.Service<{ id: number; info: string; time: string }[]>({
             path: '/webUpdate',
             method: 'GET'
         });
     }
 
     webUpdatePage(pageSize: number = 10, pageNumber: number = 1) {
-        return this.httpService.Service<PageList<{ id: number, info: string, time: string }>>({
+        return this.httpService.Service<PageList<{ id: number; info: string; time: string }>>({
             path: '/webUpdate/pages',
             method: 'GET',
             queryParam: {
@@ -515,7 +515,7 @@ export class ApiService {
             lastCommit: string;
             committerAuthor: string;
             committerDate: string;
-            commitUrl: string
+            commitUrl: string;
         }>({
             path: '/lastestUpdate',
             method: 'GET'

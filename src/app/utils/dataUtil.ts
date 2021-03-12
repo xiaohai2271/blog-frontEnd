@@ -3,6 +3,7 @@ import {PageList} from '../class/HttpReqAndResp';
 
 /**
  * 判断 一个Page<any>[] 中是否存在一条已查询的数据
+ *
  * @param pageNum 页码
  * @param pageSize 单页数量
  * @param pageList 源数据
@@ -19,7 +20,7 @@ export function exist<T>(pageNum: number, pageSize: number, pageList: PageList<a
             const ob: Observable<PageList<T>> = new Observable(o => {
                 o.next(pageList[i]);
                 o.complete();
-            })
+            });
         }
     }
     return null;

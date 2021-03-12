@@ -9,16 +9,16 @@ import {Observable, of, Subscriber} from 'rxjs';
 export class ComponentStateService {
 
     constructor(private router: Router) {
-        this.watchRouterChange()
+        this.watchRouterChange();
     }
 
     visible = {
         header: true,
         footer: true,
         globalBackToTop: true
-    }
+    };
 
-    currentPath: string
+    currentPath: string;
     getCurrentRouterPath = () => this.currentPath;
 
     watchRouterChange() {
@@ -31,9 +31,9 @@ export class ComponentStateService {
             // lastIndexOf ==> 0/index
             const indexOf = path.lastIndexOf('/');
             const prefix = path.substr(0, indexOf === 0 ? path.length : indexOf);
-            this.dealWithPathChange(prefix)
+            this.dealWithPathChange(prefix);
             this.currentPath = prefix;
-            if (subscriber) subscriber.next(prefix)
+            if (subscriber) {subscriber.next(prefix);}
         });
         return ob;
     }
@@ -41,18 +41,18 @@ export class ComponentStateService {
     private dealWithPathChange(path) {
         // eslint-disable-next-line guard-for-in
         for (const visibleKey in this.visible) {
-            this.visible[visibleKey] = true
+            this.visible[visibleKey] = true;
         }
         switch (path) {
             case '/admin':
-                this.visible.header = false
-                this.visible.footer = false
-                this.visible.globalBackToTop = false
-                break
+                this.visible.header = false;
+                this.visible.footer = false;
+                this.visible.globalBackToTop = false;
+                break;
             case '/user':
             case '/write':
-                this.visible.footer = false
-                this.visible.globalBackToTop = false
+                this.visible.footer = false;
+                this.visible.globalBackToTop = false;
                 break;
 
             default:

@@ -62,7 +62,7 @@ updateDateFormat: "2020-05-27 00:55:05"*/
                     },
                 ]
             }
-        ]
+        ];
     }
 
     ngOnInit(): void {
@@ -73,7 +73,7 @@ updateDateFormat: "2020-05-27 00:55:05"*/
                 page: 1,
                 count: 10
             }
-        }
+        };
     }
 
 }

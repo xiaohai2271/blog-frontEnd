@@ -21,12 +21,12 @@ export class ErrorService {
     }
 
     private static HTTP_ERROR_COUNT: number = 0;
-    private readonly MAINTAIN_PAGE_PREFIX = '/maintain'
-    private readonly ADMIN_PAGE_PREFIX = '/admin'
+    private readonly MAINTAIN_PAGE_PREFIX = '/maintain';
+    private readonly ADMIN_PAGE_PREFIX = '/admin';
 
     public httpError(err: any, request: RequestObj) {
         if (!environment.production) {
-            console.log('error=>', err, request)
+            console.log('error=>', err, request);
         }
         ErrorService.HTTP_ERROR_COUNT++;
         // this.httpService.getSubscriptionQueue().map(a => a.unsubscribe())
@@ -34,8 +34,8 @@ export class ErrorService {
 
     public httpException(response: Response<any>, request: RequestObj) {
         if (!environment.production)
-            console.log('exception=>', response, request)
-        if (response.code === -1 && response.msg === '重复请求') return
+            {console.log('exception=>', response, request);}
+        if (response.code === -1 && response.msg === '重复请求') {return;}
         if (this.componentStateService.currentPath === this.ADMIN_PAGE_PREFIX) {
             this.notification.create('error', `请求失败<${response.code}>`, `${response.msg}`);
         }
@@ -62,16 +62,16 @@ export class ErrorService {
                 path: '/headerInfo',
                 method: 'GET',
                 url: environment.host + '/headerInfo'
-            }
+            };
             this.injector.get(HttpService).get(req).subscribe({
                 next: () => null,
                 error: () => {
                     if (this.componentStateService.currentPath !== this.MAINTAIN_PAGE_PREFIX) {
-                        this.router.navigateByUrl(this.MAINTAIN_PAGE_PREFIX)
+                        this.router.navigateByUrl(this.MAINTAIN_PAGE_PREFIX);
                     }
                     ErrorService.HTTP_ERROR_COUNT = 0;
                 }
-            })
+            });
         }
     }
 }

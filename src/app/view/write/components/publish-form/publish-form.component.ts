@@ -1,7 +1,7 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Category} from '../../../../class/Tag';
-import {ColorList} from '../../../../utils/color'
+import {ColorList} from '../../../../utils/color';
 
 @Component({
     selector: 'c-publish-form',
@@ -11,16 +11,16 @@ import {ColorList} from '../../../../utils/color'
 export class PublishFormComponent implements OnInit {
 
     @ViewChild('inputElement', {static: true}) tagInputElement: ElementRef;
-    @Input() tagNacList: { name: string, size: number }[];
+    @Input() tagNacList: { name: string; size: number }[];
     @Input() categoryList: Category[];
-    @Input() primaryData: { id: number, type: boolean, tags: string[], category: string, url?: string };
+    @Input() primaryData: { id: number; type: boolean; tags: string[]; category: string; url?: string };
     @Output() submitEvent = new EventEmitter<{
-        id: number,
-        type: boolean,
-        tags: string[],
-        category: string,
-        isUpdate: boolean,
-        url?: string
+        id: number;
+        type: boolean;
+        tags: string[];
+        category: string;
+        isUpdate: boolean;
+        url?: string;
     }>();
     formGroup: FormGroup;
     tagTmpList: string[] = [];
@@ -94,7 +94,7 @@ export class PublishFormComponent implements OnInit {
         this.formGroup.get('tagList').setValue(this.tagTmpList.length ? this.tagTmpList : null);
         this.formGroup.get('tagList').updateValueAndValidity();
         this.tagInputVisible = false;
-        this.editTagText = '新增'
+        this.editTagText = '新增';
     }
 
     // 点击tag切换
@@ -119,7 +119,11 @@ export class PublishFormComponent implements OnInit {
     articleTypeChanged() {
         this.formGroup.get(`url`).clearValidators();
         const type = this.formGroup.get(`type`).value;
-        this.formGroup.get(`url`).setValidators(type ? null : [Validators.required, Validators.pattern('^(https:\/\/|http:\/\/|)([\\w-]+\\.)+[\\w-]+(\\/[\\w-./?%&=]*)?$')]);
+        this.formGroup.get(`url`).setValidators(type ? null : [
+                Validators.required,
+                Validators.pattern('^(https:\/\/|http:\/\/|)([\\w-]+\\.)+[\\w-]+(\\/[\\w-./?%&=]*)?$')
+            ]
+        );
         this.formGroup.get(`url`).updateValueAndValidity();
     }
 }

@@ -23,24 +23,24 @@ export class GlobalUserService {
     private multicastArray: Observer<Response<User>>[] = [];
 
     watchUserInfo(observer: Observer<Response<User>>) {
-        if (this.userObserverArray.indexOf(observer) < 0) this.userObserverArray.push(observer);
+        if (this.userObserverArray.indexOf(observer) < 0) {this.userObserverArray.push(observer);}
         this.multicastArray = [...this.userObserverArray];
         let subscription: Subscription = null;
         const unsubscribe = () => {
             this.userObserverArray.splice(this.userObserverArray.indexOf(observer), 1);
             observer.complete();
-            if (subscription) subscription.unsubscribe();
+            if (subscription) {subscription.unsubscribe();}
         };
         if (this.lastRequestTime && Date.now() - this.lastRequestTime < 3000) {
             if (this.userInfo && this.multicastArray.length) {
-                this.broadcast()
+                this.broadcast();
                 this.lastRequestTime = Date.now();
             }
-            return {unsubscribe}
+            return {unsubscribe};
         }
         // 获取数据
         subscription = this.getUserInfoFromServer();
-        return {unsubscribe}
+        return {unsubscribe};
     }
 
     // 刷新用户信息
@@ -59,7 +59,7 @@ export class GlobalUserService {
                 // this.localStorageService.setUser(o.result);
                 // this.userObserver.next(o);
                 this.userInfo = o.result;
-                this.broadcast()
+                this.broadcast();
                 observer.next(o);
                 observer.complete();
             },
@@ -82,7 +82,7 @@ export class GlobalUserService {
         // 如果不需要返回消息也ok
         this.apiService.logout().subscribe(data => {
                 this.localStorageService.clear();
-                this.broadcast()
+                this.broadcast();
                 if (observer) {
                     observer.next(data);
                     observer.complete();
@@ -93,7 +93,7 @@ export class GlobalUserService {
                     observer.error(error);
                     observer.complete();
                 }
-            })
+            });
     }
 
     getUserInfoFromServer(observer?: Observer<Response<User>>) {
@@ -102,7 +102,7 @@ export class GlobalUserService {
                 this.lastRequestTime = Date.now();
                 this.userInfo = o.result;
                 // this.localStorageService.setUser(o.result);
-                this.broadcast()
+                this.broadcast();
                 if (observer) {
                     observer.next(o);
                     observer.complete();
@@ -118,12 +118,12 @@ export class GlobalUserService {
 
                 if (err.code === -1) {
                     // 请求重复
-                    return
+                    return;
                 }
                 // this.requested = false;
                 // this.localStorageService.removeToken();
-                this.multicastArray.forEach(ob => ob.next(new Response<User>(this.userInfo)))
-                this.multicastArray.forEach(ob => ob.error(err))
+                this.multicastArray.forEach(ob => ob.next(new Response<User>(this.userInfo)));
+                this.multicastArray.forEach(ob => ob.error(err));
                 this.multicastArray.splice(0, this.multicastArray.length);
 
             }
@@ -131,7 +131,7 @@ export class GlobalUserService {
     }
 
     private broadcast() {
-        this.multicastArray.forEach(ob => ob.next(new Response<User>(this.userInfo)))
+        this.multicastArray.forEach(ob => ob.next(new Response<User>(this.userInfo)));
         this.multicastArray.splice(0, this.multicastArray.length);
     }
 }
