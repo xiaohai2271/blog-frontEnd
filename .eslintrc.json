@@ -21,6 +21,18 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
+        "@typescript-eslint/naming-convention": [
+          "off"
+        ],
+        "prefer-arrow/prefer-arrow-functions": [
+          "off"
+        ],
+        "@typescript-eslint/member-ordering": [
+          "off"
+        ],
+        "@typescript-eslint/ban-types": [
+          "off"
+        ],
         "@angular-eslint/component-selector": [
           "off",
           {
