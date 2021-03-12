@@ -39,7 +39,7 @@ export class ComponentStateService {
     }
 
     private dealWithPathChange(path) {
-        // tslint:disable-next-line:forin
+        // eslint-disable-next-line guard-for-in
         for (const visibleKey in this.visible) {
             this.visible[visibleKey] = true
         }
