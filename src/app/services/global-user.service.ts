@@ -10,10 +10,6 @@ import {LocalStorageService} from './local-storage.service';
 })
 export class GlobalUserService {
 
-    constructor(private apiService: ApiService,
-                private localStorageService: LocalStorageService) {
-    }
-
     private lastRequestTime: number;
     private userInfo: User = null;
 
@@ -21,6 +17,9 @@ export class GlobalUserService {
     private userObserverArray: Observer<Response<User>>[] = [];
 
     private multicastArray: Observer<Response<User>>[] = [];
+    constructor(private apiService: ApiService,
+                private localStorageService: LocalStorageService) {
+    }
 
     watchUserInfo(observer: Observer<Response<User>>) {
         if (this.userObserverArray.indexOf(observer) < 0) {this.userObserverArray.push(observer);}

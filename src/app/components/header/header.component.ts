@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
 import {windowWidthChange} from '../../utils/util';
-import {ApiService} from '../../api/api.service';
 import {User} from '../../class/User';
 import {ComponentStateService} from '../../services/component-state.service';
 import {GlobalUserService} from '../../services/global-user.service';
@@ -12,6 +11,25 @@ import {GlobalUserService} from '../../services/global-user.service';
     styleUrls: ['./header.component.less']
 })
 export class HeaderComponent implements OnInit {
+    @Output() loginEvent = new EventEmitter();
+    @Output() registrationEvent = new EventEmitter();
+    @Input() userInfo: User;
+    size: 'large' | 'default';
+    currentPath: string;
+    noAvatarUrl = 'https://cdn.celess.cn/';
+
+    public pageList: {
+        path: string;
+        name: string;
+        icon: string;
+        iconType: 'outline' | 'fill' | 'twotone';
+        show: boolean;
+    }[];
+
+
+    public showList = true;
+    // css 样式中设置移动端最大宽度为910px 见src/app/global-variables.less
+    private readonly mobileMaxWidth = 940;
 
     constructor(private router: Router,
                 public componentStateService: ComponentStateService,
@@ -46,26 +64,6 @@ export class HeaderComponent implements OnInit {
         });
     }
 
-    @Output() loginEvent = new EventEmitter();
-    @Output() registrationEvent = new EventEmitter();
-    size: 'large' | 'default';
-    currentPath: string;
-    noAvatarUrl = 'https://cdn.celess.cn/';
-
-    public pageList: {
-        path: string;
-        name: string;
-        icon: string;
-        iconType: 'outline' | 'fill' | 'twotone';
-        show: boolean;
-    }[];
-
-
-    public showList = true;
-    // css 样式中设置移动端最大宽度为910px 见src/app/global-variables.less
-    private readonly mobileMaxWidth = 940;
-
-    @Input() userInfo: User;
 
     ngOnInit() {
     }
@@ -75,17 +73,6 @@ export class HeaderComponent implements OnInit {
         this.changeLoginButtonV();
     }
 
-    private changeLoginButtonV() {
-        this.pageList.forEach(e => {
-            if (e.name === '登录' || e.name === '注册') {
-                if (this.userInfo) {
-                    e.show = false;
-                } else {
-                    e.show = (this.showList && window.innerWidth < this.mobileMaxWidth);
-                }
-            }
-        });
-    }
 
     dealLink(path: string) {
         this.showList = window.innerWidth > this.mobileMaxWidth;
@@ -139,5 +126,18 @@ export class HeaderComponent implements OnInit {
     toAdminPage() {
         this.router.navigateByUrl('/admin');
     }
+
+    private changeLoginButtonV() {
+        this.pageList.forEach(e => {
+            if (e.name === '登录' || e.name === '注册') {
+                if (this.userInfo) {
+                    e.show = false;
+                } else {
+                    e.show = (this.showList && window.innerWidth < this.mobileMaxWidth);
+                }
+            }
+        });
+    }
+
 }
 

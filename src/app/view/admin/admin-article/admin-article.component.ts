@@ -14,9 +14,9 @@ import {Router} from '@angular/router';
 })
 export class AdminArticleComponent implements OnInit {
 
+    @ViewChild('commonTableComponent') private commonTableComponent: CommonTableComponent<Article>;
     request: RequestObj;
     headData: Data<Article>[];
-    @ViewChild('commonTableComponent') private commonTableComponent: CommonTableComponent<Article>;
 
     constructor(private apiService: ApiService, private nzMessage: NzMessageService, private title: Title,
                 private router: Router) {

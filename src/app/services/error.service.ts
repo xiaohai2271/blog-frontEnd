@@ -3,7 +3,7 @@ import {RequestObj, Response} from '../class/HttpReqAndResp';
 import {environment} from '../../environments/environment';
 import {Router} from '@angular/router';
 import {ComponentStateService} from './component-state.service';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
+import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {HttpService} from '../api/http/http.service';
 import {LocalStorageService} from './local-storage.service';
 
@@ -11,6 +11,9 @@ import {LocalStorageService} from './local-storage.service';
     providedIn: 'root'
 })
 export class ErrorService {
+    private static HTTP_ERROR_COUNT: number = 0;
+    private readonly MAINTAIN_PAGE_PREFIX = '/maintain';
+    private readonly ADMIN_PAGE_PREFIX = '/admin';
 
     constructor(/*private httpService: HttpService,*/
                 private router: Router,
@@ -19,10 +22,6 @@ export class ErrorService {
                 private notification: NzNotificationService,
                 private localStorageService: LocalStorageService) {
     }
-
-    private static HTTP_ERROR_COUNT: number = 0;
-    private readonly MAINTAIN_PAGE_PREFIX = '/maintain';
-    private readonly ADMIN_PAGE_PREFIX = '/admin';
 
     public httpError(err: any, request: RequestObj) {
         if (!environment.production) {
@@ -33,9 +32,12 @@ export class ErrorService {
     }
 
     public httpException(response: Response<any>, request: RequestObj) {
-        if (!environment.production)
-            {console.log('exception=>', response, request);}
-        if (response.code === -1 && response.msg === '重复请求') {return;}
+        if (!environment.production) {
+            console.log('exception=>', response, request);
+        }
+        if (response.code === -1 && response.msg === '重复请求') {
+            return;
+        }
         if (this.componentStateService.currentPath === this.ADMIN_PAGE_PREFIX) {
             this.notification.create('error', `请求失败<${response.code}>`, `${response.msg}`);
         }

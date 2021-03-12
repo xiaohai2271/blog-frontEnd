@@ -30,8 +30,6 @@ import {NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
 export class EditableTagComponent implements OnInit, OnChanges {
 
     private static instanceArray: EditableTagComponent[] = [];
-    inputVisible = false;
-    inputValue = '';
     @ViewChild('inputElement', {static: false}) inputElement?: ElementRef;
     @Output() valueChange = new EventEmitter<{ value: string; originalValue: string; changed: boolean }>();
     @Input() color: string;
@@ -46,6 +44,8 @@ export class EditableTagComponent implements OnInit, OnChanges {
     @Output() inEditStatus = new EventEmitter<void>();
     @Output() modalOK = new EventEmitter<{ value: string; originalValue: string; changed: boolean }>();
     @Output() modalCancel = new EventEmitter<{ value: string; originalValue: string; changed: boolean }>();
+    inputVisible = false;
+    inputValue = '';
     confirmModal?: NzModalRef;
     private tmpKey: any;
     private doubleClickInfo = {

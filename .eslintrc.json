@@ -27,9 +27,9 @@
         "prefer-arrow/prefer-arrow-functions": [
           "off"
         ],
-        "@typescript-eslint/member-ordering": [
-          "off"
-        ],
+//        "@typescript-eslint/member-ordering": [
+//          "on"
+//        ],
         "@typescript-eslint/ban-types": [
           "off"
         ],

@@ -15,11 +15,11 @@ import {Data} from '../components/common-table/data';
 })
 export class AdminLinkComponent implements OnInit {
 
+    @ViewChild('commonTableComponent') commonTableComponent: CommonTableComponent<Link>;
     modalVisible: boolean = false;
     modalTitle: string = '';
     formGroup: FormGroup;
     request: RequestObj;
-    @ViewChild('commonTableComponent') commonTableComponent: CommonTableComponent<Link>;
     headData: Data<Link>[];
 
     constructor(private apiService: ApiService, private messageService: NzMessageService, private title: Title) {

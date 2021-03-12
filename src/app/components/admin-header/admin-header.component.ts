@@ -8,13 +8,14 @@ import {User} from '../../class/User';
     styleUrls: ['./admin-header.component.less']
 })
 export class AdminHeaderComponent implements OnInit {
+    @Output() infoClicked = new EventEmitter<void>();
+    user: User;
+    noAvatarUrl = 'https://cdn.celess.cn/';
 
     constructor(private userService: GlobalUserService) {
     }
 
-    user: User;
-    @Output() infoClicked = new EventEmitter<void>();
-    noAvatarUrl = 'https://cdn.celess.cn/';
+
     logout = () => this.userService.logout();
     infoClickedEvent = () => this.infoClicked.emit();
 

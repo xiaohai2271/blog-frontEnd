@@ -15,23 +15,23 @@ import {Title} from '@angular/platform-browser';
 })
 export class RegistrationComponent implements OnInit {
 
+    @Output() regStatus = new EventEmitter<boolean>();
+    @Output() regAccount = new EventEmitter<LoginReq>();
+
+    imgCodeUrl: string;
+
+    imgCode: string;
+    email: string;
+
+    pwd: string;
+    submitting: boolean;
+
     constructor(private apiService: ApiService,
                 private  nzMessageService: NzMessageService,
                 private router: Router,
                 private title: Title) {
         this.title.setTitle('小海博客 | 注册');
     }
-
-    imgCodeUrl: string;
-
-    imgCode: string;
-
-    email: string;
-    pwd: string;
-
-    submitting: boolean;
-    @Output() regStatus = new EventEmitter<boolean>();
-    @Output() regAccount = new EventEmitter<LoginReq>();
 
     ngOnInit() {
         this.imgCodeUrl = environment.host + '/imgCode';

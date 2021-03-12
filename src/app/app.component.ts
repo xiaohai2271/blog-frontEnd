@@ -9,9 +9,9 @@ import {ComponentStateService} from './services/component-state.service';
     styleUrls: ['./app.component.less']
 })
 export class AppComponent {
+    @ViewChild('headerComponent') header: HeaderComponent;
     loginModal: boolean = false;
     regModal: boolean = false;
-    @ViewChild('headerComponent') header: HeaderComponent;
 
     constructor(public componentStateService: ComponentStateService) {
     }

@@ -15,6 +15,8 @@ import {CommonTableComponent} from '../components/common-table/common-table.comp
 })
 export class AdminCommentComponent implements OnInit {
 
+    @ViewChild('editableTagComponent') editableTagComponent: EditableTagComponent;
+    @ViewChild('commonTableComponent') commonTableComponent: CommonTableComponent<Comment>;
     request: RequestObj;
     editInfo = {
         id: null,
@@ -25,8 +27,6 @@ export class AdminCommentComponent implements OnInit {
         visible: false,
         comment: null
     };
-    @ViewChild('editableTagComponent') editableTagComponent: EditableTagComponent;
-    @ViewChild('commonTableComponent') commonTableComponent: CommonTableComponent<Comment>;
 
     constructor(private apiService: ApiService, private  messageService: NzMessageService, private userService: GlobalUserService,
                 private title: Title) {

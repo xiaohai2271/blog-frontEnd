@@ -15,6 +15,10 @@ import {EditableTagComponent} from '../components/editable-tag/editable-tag.comp
 })
 export class AdminTagComponent implements OnInit {
 
+    @ViewChild('categoryCTComponent', {static: true}) categoryCTComponent: CommonTableComponent<Category>;
+    @ViewChild('tagCTComponent', {static: true}) tagCTComponent: CommonTableComponent<Tag>;
+    @ViewChild('editableTagComponent') editableTagComponent: EditableTagComponent;
+
     categoryCTData: { headData: Data<Category>[]; commonTable: CommonTableComponent<Category>; request: RequestObj } = {
         headData: null,
         commonTable: null,
@@ -25,9 +29,6 @@ export class AdminTagComponent implements OnInit {
         commonTable: null,
         request: null
     };
-    @ViewChild('categoryCTComponent', {static: true}) categoryCTComponent: CommonTableComponent<Category>;
-    @ViewChild('tagCTComponent', {static: true}) tagCTComponent: CommonTableComponent<Tag>;
-    @ViewChild('editableTagComponent') editableTagComponent: EditableTagComponent;
     getData: any;
     private updateData: any;
 

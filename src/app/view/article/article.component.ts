@@ -18,6 +18,7 @@ declare let $;
 })
 export class ArticleComponent implements OnInit {
 
+    @ViewChild('divElement') divElement: ElementRef;
     articleId: number;
     article: Article;
     copyRightUrl: string;
@@ -30,7 +31,6 @@ export class ArticleComponent implements OnInit {
     avatarImgUrl: string;
     pid: number;
     content: string;
-    @ViewChild('divElement') divElement: ElementRef;
 
     constructor(private activatedRoute: ActivatedRoute,
                 private apiService: ApiService,

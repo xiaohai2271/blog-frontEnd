@@ -1,16 +1,15 @@
 import {Injectable} from '@angular/core';
-import {User} from '../class/User';
 
 @Injectable({
     providedIn: 'root'
 })
 export class LocalStorageService {
+    readonly place = 30 * 1000;
 
     constructor() {
     }
 
     // 30s
-    readonly place = 30 * 1000;
 
     getToken(): string {
         return localStorage.getItem('token');

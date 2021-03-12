@@ -11,7 +11,7 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 })
 export class CommonTableComponent<T> implements OnInit, OnChanges {
 
-    @Input() request: RequestObj;
+    @Output() pageInfo = new EventEmitter<{ page: number; pageSize: number }>();
     @Input() cardTitle: string | null;
     @Input() template: {
         [fieldValue: string]: {
@@ -19,14 +19,14 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
             param?: { [key: string]: string };
         };
     };
-    @Output() pageInfo = new EventEmitter<{ page: number; pageSize: number }>();
+    @Input() request: RequestObj;
+    @Input() private headData: Data<T>[];
     loading: boolean = true;
     dataList: PageList<T> = new PageList<T>();
     settingModalVisible: boolean = false;
     filedData: Data<T>[];
     changed: boolean = false;
     visibleFieldLength: number = 0;
-    @Input() private headData: Data<T>[];
 
     constructor(private httpService: HttpService) {
 
@@ -41,16 +41,22 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
         }
         this.calculateVisibleFieldLength();
 
-        if (!this.template) {this.template = {};}
+        if (!this.template) {
+            this.template = {};
+        }
         this.headData.forEach(dat => {
-            if (!dat.action) {return;}
+            if (!dat.action) {
+                return;
+            }
             dat.action.forEach(act => {
                 if (!act.hover) {
                     act.hover = () => null;
                 }
             });
         });
-        if (!this.request || !this.request.path) {return;}
+        if (!this.request || !this.request.path) {
+            return;
+        }
         this.getData();
     }
 
@@ -87,7 +93,9 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     getValue(index: number, fieldValue: string): string {
         let value = this.dataList.list[index];
         try {
-            for (const key of fieldValue.split('.')) {value = value[key];}
+            for (const key of fieldValue.split('.')) {
+                value = value[key];
+            }
         } catch (e) {
             // ignore
         }

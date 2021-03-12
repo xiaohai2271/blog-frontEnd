@@ -1,17 +1,12 @@
 import {Injectable} from '@angular/core';
 import {filter} from 'rxjs/operators';
 import {NavigationEnd, Router, RouterEvent} from '@angular/router';
-import {Observable, of, Subscriber} from 'rxjs';
+import {Observable, Subscriber} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ComponentStateService {
-
-    constructor(private router: Router) {
-        this.watchRouterChange();
-    }
-
     visible = {
         header: true,
         footer: true,
@@ -19,6 +14,12 @@ export class ComponentStateService {
     };
 
     currentPath: string;
+
+    constructor(private router: Router) {
+        this.watchRouterChange();
+    }
+
+
     getCurrentRouterPath = () => this.currentPath;
 
     watchRouterChange() {
@@ -33,7 +34,9 @@ export class ComponentStateService {
             const prefix = path.substr(0, indexOf === 0 ? path.length : indexOf);
             this.dealWithPathChange(prefix);
             this.currentPath = prefix;
-            if (subscriber) {subscriber.next(prefix);}
+            if (subscriber) {
+                subscriber.next(prefix);
+            }
         });
         return ob;
     }
