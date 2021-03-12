@@ -7,19 +7,19 @@ export class Data<T> {
     primaryKey?: boolean = false;
     isActionColumns?: boolean = false;
     template?: {
-        template: TemplateRef<any>,
+        template: TemplateRef<any>;
         keymap?: {
-            [value: string]: string
-        }
+            [value: string]: string;
+        };
     };
     // order?: number;
-    action ?: {
-        name: string,
-        color?: string,
-        order?: number,
-        fontSize?: string,
-        needConfirm?: boolean,
-        click: (data: T) => void,
+    action?: {
+        name: string;
+        color?: string;
+        order?: number;
+        fontSize?: string;
+        needConfirm?: boolean;
+        click: (data: T) => void;
         hover?: (data: T) => void | null;
-    }[] = []
+    }[] = [];
 }

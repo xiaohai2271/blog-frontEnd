@@ -26,12 +26,12 @@ export class WriteComponent implements OnInit, OnDestroy {
     public article: ArticleReq = new ArticleReq();
     userInfo: User;
     categoryList: Tag[];
-    tagNacList: { name: string, size: number }[];
+    tagNacList: { name: string; size: number }[];
     primaryData = null;
     // 发布新文章时，文章相同会被拦回 此处判断一下
     title: string;
     private lastShowTime: number;
-    private userInfoSub: { unsubscribe: () => void }
+    private userInfoSub: { unsubscribe: () => void };
 
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
@@ -101,7 +101,7 @@ export class WriteComponent implements OnInit, OnDestroy {
         this.article.category = e.category;
         this.article.url = e.url;
         this.article.id = e.id;
-        this.isUpdate = e.isUpdate
+        this.isUpdate = e.isUpdate;
 
         this.modalVisible = false;
 
@@ -169,8 +169,8 @@ export class WriteComponent implements OnInit, OnDestroy {
             next: data => {
                 this.article.category = data.result.category;
                 this.article.mdContent = data.result.mdContent;
-                const tags = []
-                data.result.tags.forEach(t => tags.push(t.name))
+                const tags = [];
+                data.result.tags.forEach(t => tags.push(t.name));
                 this.article.tags = tags;
                 this.article.type = data.result.original;
                 this.article.url = data.result.url;
@@ -184,7 +184,7 @@ export class WriteComponent implements OnInit, OnDestroy {
                     url: this.article.url,
                     id: this.article.id
                 };
-                this.vditor.setValue(this.article.mdContent)
+                this.vditor.setValue(this.article.mdContent);
             },
             error: e => {
                 if (e.code === 2010) {
@@ -227,7 +227,7 @@ export class WriteComponent implements OnInit, OnDestroy {
             upload: {
                 url: environment.host + '/fileUpload',
                 format: (files: File[], responseText: string) => {
-                    const data: Response<[{ originalFilename: string, host: string, path: string, success: boolean }]>
+                    const data: Response<[{ originalFilename: string; host: string; path: string; success: boolean }]>
                         = JSON.parse(responseText);
                     const result = {
                         msg: data.msg,
@@ -236,16 +236,15 @@ export class WriteComponent implements OnInit, OnDestroy {
                             errFiles: [],
                             succMap: {}
                         }
-                    }
+                    };
                     data.result.filter(value => value.success)
                         .forEach(value => result.data.succMap[value.originalFilename] = value.host + value.path);
                     data.result.filter(value => !value.success)
                         .forEach(value => result.data.errFiles.push(value.originalFilename));
                     return JSON.stringify(result);
                 },
-                setHeaders: () => {
-                    return {Authorization: this.localStorageService.getToken()}
-                }
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                setHeaders: () => ({Authorization: this.localStorageService.getToken()})
             },
             after: () => {
                 // 判断是更新文章还是恢复文章
@@ -258,6 +257,6 @@ export class WriteComponent implements OnInit, OnDestroy {
                     this.article = JSON.parse(localStorage.getItem('tmpArticle'));
                 }
             }
-        }
+        };
     }
 }

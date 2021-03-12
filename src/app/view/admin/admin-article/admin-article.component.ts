@@ -14,9 +14,9 @@ import {Router} from '@angular/router';
 })
 export class AdminArticleComponent implements OnInit {
 
+    @ViewChild('commonTableComponent') private commonTableComponent: CommonTableComponent<Article>;
     request: RequestObj;
-    headData: Data<Article>[]
-    @ViewChild('commonTableComponent') private commonTableComponent: CommonTableComponent<Article>
+    headData: Data<Article>[];
 
     constructor(private apiService: ApiService, private nzMessage: NzMessageService, private title: Title,
                 private router: Router) {
@@ -27,11 +27,11 @@ export class AdminArticleComponent implements OnInit {
                 page: 1,
                 count: 10
             }
-        }
+        };
     }
 
     ngOnInit(): void {
-        this.title.setTitle('小海博客 | 文章管理')
+        this.title.setTitle('小海博客 | 文章管理');
         this.headData = [
             {title: '主键', fieldValue: 'id', show: false, primaryKey: true},
             {title: '标题', fieldValue: 'title', show: true},
@@ -54,18 +54,18 @@ export class AdminArticleComponent implements OnInit {
                     {name: '编辑', color: '#2db7f5', click: (d) => this.router.navigateByUrl(`/write?id=${d.id}`)},
                 ]
             }
-        ]
+        ];
     }
 
     deleteArticle(article: Article) {
         this.apiService.deleteArticle(article.id).subscribe({
             next: data => {
-                this.nzMessage.success('删除成功')
+                this.nzMessage.success('删除成功');
                 this.commonTableComponent.getData();
             },
             error: err => {
-                this.nzMessage.error(err.msg)
+                this.nzMessage.error(err.msg);
             }
-        })
+        });
     }
 }

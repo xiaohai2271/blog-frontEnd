@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ColorList} from '../../../../utils/color';
+import {COLOR_LIST} from '../../../../utils/color';
 import {Router} from '@angular/router';
 
 @Component({
@@ -9,19 +9,19 @@ import {Router} from '@angular/router';
 })
 export class TagTagComponent implements OnInit {
 
-    @Input() tag: { name: string, size: number };
+    @Input() tag: { name: string; size: number };
     @Input() size: 'default' | 'large' = 'default';
     @Input() clickable: boolean; // default true
     @Input() enableCount: boolean; // default true
     @Output() tagClick = new EventEmitter();
-    randColor: { bgColor: string, fontColor: string };
+    randColor: { bgColor: string; fontColor: string };
 
     constructor(private router: Router) {
     }
 
     ngOnInit() {
-        const randomNumber = Math.floor(ColorList.length * Math.random());
-        this.randColor = ColorList[randomNumber];
+        const randomNumber = Math.floor(COLOR_LIST.length * Math.random());
+        this.randColor = COLOR_LIST[randomNumber];
         if (this.clickable == null) {
             this.clickable = true;
         }

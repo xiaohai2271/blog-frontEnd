@@ -7,9 +7,9 @@ import {User} from '../../class/User';
 import {Comment, CommentReq} from '../../class/Comment';
 import {PageList} from '../../class/HttpReqAndResp';
 import {GlobalUserService} from '../../services/global-user.service';
-import VditorPreview from 'vditor/dist/method.min'
+import VditorPreview from 'vditor/dist/method.min';
 
-declare var $;
+declare let $;
 
 @Component({
     selector: 'view-article',
@@ -18,6 +18,7 @@ declare var $;
 })
 export class ArticleComponent implements OnInit {
 
+    @ViewChild('divElement') divElement: ElementRef;
     articleId: number;
     article: Article;
     copyRightUrl: string;
@@ -30,7 +31,6 @@ export class ArticleComponent implements OnInit {
     avatarImgUrl: string;
     pid: number;
     content: string;
-    @ViewChild('divElement') divElement: ElementRef;
 
     constructor(private activatedRoute: ActivatedRoute,
                 private apiService: ApiService,
@@ -49,7 +49,7 @@ export class ArticleComponent implements OnInit {
             error: (err) => null,
             next: data => {
                 this.user = data.result;
-                if (data.result) this.avatarImgUrl = data.result.avatarImgUrl;
+                if (data.result) {this.avatarImgUrl = data.result.avatarImgUrl;}
             }
         });
         this.comment = new CommentReq(`article/${this.articleId}`);

@@ -46,7 +46,7 @@ export class AuthGuard implements CanActivate {
                 this.userInfo = data.result;
                 this.checkPath(observer);
             }
-        })
+        });
     }
 
 
@@ -60,7 +60,7 @@ export class AuthGuard implements CanActivate {
             case '/admin/visitor':
                 if (this.userInfo && this.userInfo.role !== 'admin') {
                     observer.next(false);
-                    if (this.visitCount === 1) this.router.navigateByUrl('/admin')
+                    if (this.visitCount === 1) {this.router.navigateByUrl('/admin');}
                     observer.complete();
                     return;
                 }

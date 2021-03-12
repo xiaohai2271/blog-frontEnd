@@ -15,11 +15,11 @@ import {Data} from '../components/common-table/data';
 })
 export class AdminLinkComponent implements OnInit {
 
+    @ViewChild('commonTableComponent') commonTableComponent: CommonTableComponent<Link>;
     modalVisible: boolean = false;
     modalTitle: string = '';
     formGroup: FormGroup;
     request: RequestObj;
-    @ViewChild('commonTableComponent') commonTableComponent: CommonTableComponent<Link>
     headData: Data<Link>[];
 
     constructor(private apiService: ApiService, private messageService: NzMessageService, private title: Title) {
@@ -27,12 +27,19 @@ export class AdminLinkComponent implements OnInit {
         this.formGroup = new FormGroup({
             id: new FormControl(null),
             name: new FormControl(null, [Validators.required]),
-            url: new FormControl(null, [Validators.required, Validators.pattern(/^(https:\/\/|http:\/\/|)([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/)]),
+            url: new FormControl(null, [
+                    Validators.required,
+                    Validators.pattern(/^(https:\/\/|http:\/\/|)([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/)
+                ]
+            ),
             open: new FormControl(null, [Validators.required]),
             desc: new FormControl(null, [Validators.maxLength(255)]),
-            iconPath: new FormControl(null, [Validators.pattern(/^(https:\/\/|http:\/\/|)([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/)]),
+            iconPath: new FormControl(null, [
+                    Validators.pattern(/^(https:\/\/|http:\/\/|)([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/)
+                ]
+            ),
             oper: new FormControl(null)
-        })
+        });
     }
 
     ngOnInit(): void {
@@ -43,7 +50,7 @@ export class AdminLinkComponent implements OnInit {
                 count: 10,
                 page: 1
             }
-        }
+        };
         this.headData = [
             {title: '主键', fieldValue: 'id', show: false, primaryKey: true},
             {title: '友链名称', fieldValue: 'name', show: true},
@@ -72,19 +79,19 @@ export class AdminLinkComponent implements OnInit {
                 this.messageService.error('删除失败');
             },
             complete: () => null,
-        })
+        });
     }
 
     showEdit(data: Link) {
         this.modalVisible = true;
         this.modalTitle = '编辑友链信息';
         this.formGroup.patchValue(data);
-        this.formGroup.controls.oper.setValue('edit')
+        this.formGroup.controls.oper.setValue('edit');
     }
 
     modalConfirm() {
         this.modalVisible = false;
-        const linkReq: Link = this.formGroup.value
+        const linkReq: Link = this.formGroup.value;
         const oper = this.formGroup.value.oper;
         let observable: Observable<Response<Link>>;
         if (oper === 'edit') {
@@ -97,13 +104,13 @@ export class AdminLinkComponent implements OnInit {
             next: data => this.messageService.success('操作成功'),
             error: err => this.messageService.error('操作失败,' + err.msg),
             complete: () => this.commonTableComponent.getData()
-        })
+        });
     }
 
     addLink() {
         this.modalVisible = true;
         this.modalTitle = '新增友链信息';
         this.formGroup.reset();
-        this.formGroup.controls.oper.setValue('add')
+        this.formGroup.controls.oper.setValue('add');
     }
 }

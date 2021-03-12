@@ -14,10 +14,10 @@ import {Title} from '@angular/platform-browser';
 })
 export class TagComponent implements OnInit {
 
-    tagList: { name: string, size: number } [] = [];
+    tagList: { name: string; size: number } [] = [];
     articleList: PageList<Article>;
     name: string;
-    private tag: { name: string, size: number };
+    private tag: { name: string; size: number };
 
     constructor(private apiService: ApiService,
                 private nzMessageService: NzMessageService,
@@ -56,7 +56,7 @@ export class TagComponent implements OnInit {
         });
     }
 
-    changeTag(tag: { name: string, size: number }) {
+    changeTag(tag: { name: string; size: number }) {
         if (this.name === tag.name) {
             return;
         }

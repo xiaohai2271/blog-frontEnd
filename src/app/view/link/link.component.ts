@@ -5,7 +5,7 @@ import {Title} from '@angular/platform-browser';
 import {ApiService} from '../../api/api.service';
 import {ApplyLinkReq, Link} from '../../class/Link';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Color, RandomColor} from '../../utils/color';
+import {Color, randomColor} from '../../utils/color';
 
 @Component({
     selector: 'view-link',
@@ -37,7 +37,7 @@ export class LinkComponent implements OnInit {
         this.apiService.links().subscribe({
             next: data => this.linkList = data.result,
             error: err => this.message.error(err.msg),
-            complete: () => this.colors = RandomColor(this.linkList.length)
+            complete: () => this.colors = randomColor(this.linkList.length)
         });
         this.applyFormGroup = this.fb.group({
             urlLinkProtocol: ['http://'],
@@ -55,7 +55,7 @@ export class LinkComponent implements OnInit {
                 this.applyFormGroup.patchValue({linkUrl: linkUrlData.replace(this.lastUrl, data)});
                 this.lastUrl = data;
             },
-        })
+        });
     }
 
     apply() {
@@ -69,7 +69,7 @@ export class LinkComponent implements OnInit {
                 this.message.success('提交成功，请稍等，即将为你处理');
                 this.loading = false;
                 this.showModal = false;
-                this.applyFormGroup.reset()
+                this.applyFormGroup.reset();
             },
             error: err => {
                 if (err.code === 7200) {
@@ -82,7 +82,7 @@ export class LinkComponent implements OnInit {
                             this.apiService.reapplyLink(key).subscribe({
                                 next: data1 => this.message.success('提交成功，请稍等，即将为你处理'),
                                 error: err1 => this.message.error('提交失败，原因：' + err.msg)
-                            })
+                            });
                         }
                     });
                 } else {
@@ -90,7 +90,7 @@ export class LinkComponent implements OnInit {
                 }
                 this.loading = false;
                 this.showModal = false;
-                this.applyFormGroup.reset()
+                this.applyFormGroup.reset();
             }
         });
     }

@@ -15,30 +15,30 @@ import {CommonTableComponent} from '../components/common-table/common-table.comp
 })
 export class AdminCommentComponent implements OnInit {
 
+    @ViewChild('editableTagComponent') editableTagComponent: EditableTagComponent;
+    @ViewChild('commonTableComponent') commonTableComponent: CommonTableComponent<Comment>;
     request: RequestObj;
     editInfo = {
         id: null,
         content: new CommentReq(null),
-    }
+    };
     headData: Data<Comment>[];
     modalData = {
         visible: false,
         comment: null
-    }
-    @ViewChild('editableTagComponent') editableTagComponent: EditableTagComponent;
-    @ViewChild('commonTableComponent') commonTableComponent: CommonTableComponent<Comment>;
+    };
 
     constructor(private apiService: ApiService, private  messageService: NzMessageService, private userService: GlobalUserService,
                 private title: Title) {
-        this.title.setTitle('小海博客 | 评论管理')
+        this.title.setTitle('小海博客 | 评论管理');
         this.userService.watchUserInfo({
             next: data => {
                 let pathStr;
                 if (data.result) {
                     if (data.result.role === 'admin') {
-                        pathStr = '/admin/comment/pagePath/*'
+                        pathStr = '/admin/comment/pagePath/*';
                     } else {
-                        pathStr = '/user/comment/pagePath/*'
+                        pathStr = '/user/comment/pagePath/*';
                     }
                     this.request = {
                         path: pathStr,
@@ -47,12 +47,12 @@ export class AdminCommentComponent implements OnInit {
                             page: 1,
                             count: 10
                         }
-                    }
+                    };
                 }
             },
             error: () => null,
             complete: () => null
-        })
+        });
     }
 
     ngOnInit(): void {
@@ -74,7 +74,7 @@ export class AdminCommentComponent implements OnInit {
                     {
                         name: '查看',
                         click: data => {
-                            this.modalData.visible = true
+                            this.modalData.visible = true;
                             this.modalData.comment = data;
                         }
                     },
@@ -88,13 +88,13 @@ export class AdminCommentComponent implements OnInit {
     deleteComment(data: Comment) {
         if (data.status === 3) {
             this.messageService.error('该数据已被删除');
-            return
+            return;
         }
         this.apiService.deleteComment(data.id).subscribe({
             next: () => this.messageService.success('删除评论成功'),
             error: err => this.messageService.error(err.msg),
             complete: () => this.commonTableComponent.getData()
-        })
+        });
     }
 
     edit() {
@@ -106,7 +106,7 @@ export class AdminCommentComponent implements OnInit {
                 this.messageService.success(err.msg);
             },
             complete: () => null
-        })
+        });
     }
 
     textChange(value: { value: string; originalValue: string; changed: boolean }, data: Comment) {
@@ -115,7 +115,7 @@ export class AdminCommentComponent implements OnInit {
             this.editInfo.content.pid = data.pid;
             this.editInfo.content.id = data.id;
             this.editInfo.content.content = value.value;
-            this.edit()
+            this.edit();
         }
     }
 }

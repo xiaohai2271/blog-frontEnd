@@ -25,8 +25,8 @@ export class AdminComponent implements OnInit {
     resetPwdModalVisible: boolean = false;
     editInfoFormGroup: FormGroup;
     resetPwdFormGroup: FormGroup;
-    noAvatarUrl = 'https://cdn.celess.cn/'
-    host: string
+    noAvatarUrl = 'https://cdn.celess.cn/';
+    host: string;
 
     constructor(public gUserService: GlobalUserService, private apiService: ApiService, private messageService: NzMessageService,
                 private router: Router, private localStorageService: LocalStorageService) {
@@ -34,8 +34,8 @@ export class AdminComponent implements OnInit {
                 complete: () => null,
                 error: (err) => null,
                 next: data => {
-                    this.user = data.result
-                    if (data.result) this.initHelloWords()
+                    this.user = data.result;
+                    if (data.result) {this.initHelloWords();}
                 }
             }
         );
@@ -53,29 +53,26 @@ export class AdminComponent implements OnInit {
                 Validators.required, Validators.minLength(6), Validators.maxLength(16), Validators.pattern(/^[\w_-]{6,16}$/),
                 this.checkSamePwd()
             ]),
-        })
+        });
     }
 
     showInfoDrawer = () => this.infoDrawerVisible = !this.infoDrawerVisible;
 
     logout() {
         this.gUserService.logout();
-        this.router.navigateByUrl('/')
+        this.router.navigateByUrl('/');
     }
 
     ngOnInit(): void {
         this.host = environment.host;
     }
 
-    checkSamePwd = () => {
-        return (control: AbstractControl): { [key: string]: any } | null => {
+    checkSamePwd = () => (control: AbstractControl): { [key: string]: any } | null => {
             const newPwd = this.resetPwdFormGroup && this.resetPwdFormGroup.value.newPwd;
             return control.value !== newPwd ? {pwdNotSame: true} : null;
         };
-    }
-    uploadHeader = (file: NzUploadFile): object | Observable<{}> => {
-        return {Authorization: this.localStorageService.getToken()}
-    };
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    uploadHeader = (file: NzUploadFile): any | Observable<{}> => ({Authorization: this.localStorageService.getToken()});
 
     showEditInfoModal() {
         this.editInfoModalVisible = true;
@@ -88,7 +85,7 @@ export class AdminComponent implements OnInit {
         const displayName = this.editInfoFormGroup.value.displayName;
         this.apiService.updateUserInfo(desc, displayName).subscribe({
             next: data => {
-                this.messageService.success('修改信息成功')
+                this.messageService.success('修改信息成功');
                 this.gUserService.refreshUserInfo();
             },
             error: err => {
@@ -111,13 +108,13 @@ export class AdminComponent implements OnInit {
             error: err => {
                 this.messageService.error('修改密码失败，' + err.msg);
             }
-        })
+        });
         this.resetPwdModalVisible = false;
     }
 
     showResetPwdModal() {
         this.resetPwdModalVisible = true;
-        this.infoDrawerVisible = false
+        this.infoDrawerVisible = false;
     }
 
     avatarUpload(info: any) {
@@ -130,17 +127,17 @@ export class AdminComponent implements OnInit {
     private initHelloWords() {
         const hours = new Date().getHours();
         if (hours < 6) {
-            this.sayHelloContent = `夜深了，注意早点休息哦！${this.user.displayName}`
+            this.sayHelloContent = `夜深了，注意早点休息哦！${this.user.displayName}`;
         } else if (hours < 10) {
-            this.sayHelloContent = `早上好呀！${this.user.displayName}`
+            this.sayHelloContent = `早上好呀！${this.user.displayName}`;
         } else if (hours < 14) {
-            this.sayHelloContent = `中午好呀！${this.user.displayName}`
+            this.sayHelloContent = `中午好呀！${this.user.displayName}`;
         } else if (hours < 19) {
-            this.sayHelloContent = `下午好呀！${this.user.displayName}`
+            this.sayHelloContent = `下午好呀！${this.user.displayName}`;
         } else if (hours < 22) {
-            this.sayHelloContent = `晚上好呀！${this.user.displayName}`
+            this.sayHelloContent = `晚上好呀！${this.user.displayName}`;
         } else {
-            this.sayHelloContent = `时间不早了，注意休息哦！${this.user.displayName}`
+            this.sayHelloContent = `时间不早了，注意休息哦！${this.user.displayName}`;
         }
     }
 }

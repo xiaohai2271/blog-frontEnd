@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {NzMessageService} from 'ng-zorro-antd/message';
 import {LoginReq} from '../../../../class/User';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LoginRegistrationService} from '../../service/login-registration.service';
@@ -13,6 +13,14 @@ import {GlobalUserService} from '../../../../services/global-user.service';
 })
 export class LoginComponent implements OnInit {
 
+    @Output() loginStatus = new EventEmitter<boolean>();
+    @Input() showSendEmail: boolean = true;
+
+    submitting: boolean = false;
+    loginReq: LoginReq = new LoginReq(null, true, null);
+
+    private url: string;
+
     constructor(private nzMessageService: NzMessageService,
                 private userService: GlobalUserService,
                 private activatedRoute: ActivatedRoute,
@@ -21,14 +29,6 @@ export class LoginComponent implements OnInit {
                 private title: Title) {
         this.title.setTitle('小海博客 | 登录 ');
     }
-
-    submitting: boolean = false;
-
-    loginReq: LoginReq = new LoginReq(null, true, null);
-    @Output() loginStatus = new EventEmitter<boolean>();
-    @Input() showSendEmail: boolean = true;
-
-    private url: string;
 
     ngOnInit() {
         this.url = this.activatedRoute.snapshot.queryParamMap.get('url');
@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
                         this.router.navigateByUrl(this.url);
                     } else {
                         // window.location.href = '/admin/';
-                        this.router.navigateByUrl('/admin')
+                        this.router.navigateByUrl('/admin');
                     }
                 }
             }

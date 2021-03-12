@@ -15,19 +15,20 @@ import {EditableTagComponent} from '../components/editable-tag/editable-tag.comp
 })
 export class AdminTagComponent implements OnInit {
 
-    categoryCTData: { headData: Data<Category>[], commonTable: CommonTableComponent<Category>, request: RequestObj } = {
+    @ViewChild('categoryCTComponent', {static: true}) categoryCTComponent: CommonTableComponent<Category>;
+    @ViewChild('tagCTComponent', {static: true}) tagCTComponent: CommonTableComponent<Tag>;
+    @ViewChild('editableTagComponent') editableTagComponent: EditableTagComponent;
+
+    categoryCTData: { headData: Data<Category>[]; commonTable: CommonTableComponent<Category>; request: RequestObj } = {
         headData: null,
         commonTable: null,
         request: null
-    }
-    tagCTData: { headData: Data<Category>[], commonTable: CommonTableComponent<Tag>, request: RequestObj } = {
+    };
+    tagCTData: { headData: Data<Category>[]; commonTable: CommonTableComponent<Tag>; request: RequestObj } = {
         headData: null,
         commonTable: null,
         request: null
-    }
-    @ViewChild('categoryCTComponent', {static: true}) categoryCTComponent: CommonTableComponent<Category>
-    @ViewChild('tagCTComponent', {static: true}) tagCTComponent: CommonTableComponent<Tag>
-    @ViewChild('editableTagComponent') editableTagComponent: EditableTagComponent
+    };
     getData: any;
     private updateData: any;
 
@@ -35,7 +36,7 @@ export class AdminTagComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.title.setTitle('小海博客 | 标签分类管理')
+        this.title.setTitle('小海博客 | 标签分类管理');
         this.categoryCTData = {
             commonTable: this.categoryCTComponent,
             headData: [
@@ -64,7 +65,7 @@ export class AdminTagComponent implements OnInit {
                     count: 1000
                 }
             }
-        }
+        };
         this.tagCTData = {
             commonTable: this.tagCTComponent,
             headData: [
@@ -87,7 +88,7 @@ export class AdminTagComponent implements OnInit {
                     count: 10
                 }
             }
-        }
+        };
         this.getData = this.categoryCTComponent.getData;
     }
 
@@ -96,29 +97,29 @@ export class AdminTagComponent implements OnInit {
         if (mode === 'tag') {
             this.apiService.deleteTag(id).subscribe({
                 next: data => {
-                    this.nzMessageService.success('删除成功')
+                    this.nzMessageService.success('删除成功');
                     this.tagCTComponent.getData();
                 },
                 complete: () => null,
                 error: err => this.nzMessageService.error(err.msg)
-            })
+            });
         } else if (mode === 'category') {
             this.apiService.deleteCategory(id).subscribe({
                 next: data => {
-                    this.nzMessageService.success('删除成功')
+                    this.nzMessageService.success('删除成功');
                     this.categoryCTComponent.getData();
                 },
                 complete: () => null,
                 error: err => this.nzMessageService.error(err.msg)
-            })
+            });
         }
     }
 
     addCategory($event: { value: string; originalValue: string; changed: boolean }) {
-        if (!$event.value || !$event.changed) return
+        if (!$event.value || !$event.changed) {return;}
         this.apiService.createCategory($event.value).subscribe({
             next: data => {
-                this.nzMessageService.success('新增成功')
+                this.nzMessageService.success('新增成功');
                 this.getData = this.categoryCTComponent.getData();
             },
             complete: () => null,
@@ -133,14 +134,14 @@ export class AdminTagComponent implements OnInit {
             this.updateData = this.apiService.updateTag;
         } else {
             this.getData = this.tagCTComponent.getData;
-            this.updateData = this.apiService.updateCategory
+            this.updateData = this.apiService.updateCategory;
         }
     }
 
     textChange(value: { value: string; originalValue: string; changed: boolean }, textData: Category | Tag) {
         this.updateData(textData.id, value.value).subscribe({
             next: data => {
-                this.nzMessageService.success('更新成功')
+                this.nzMessageService.success('更新成功');
                 this.tagCTComponent.getData();
                 this.categoryCTComponent.getData();
             },

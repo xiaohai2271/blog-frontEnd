@@ -23,14 +23,14 @@ export class IndexComponent implements OnInit {
     imgUrl: string;
     desc: string;
     articles: PageList<Article>;
-    tagNameAndNumber: { name: string, size: number }[];
+    tagNameAndNumber: { name: string; size: number }[];
     categoryList: Category[];
     counts: {
-        articleCount: number,
-        visitorCount: number,
-        categoryCount: number,
-        tagCount: number,
-        commentCount: number
+        articleCount: number;
+        visitorCount: number;
+        categoryCount: number;
+        tagCount: number;
+        commentCount: number;
     };
     lastestUpdate: {
         lastUpdateTime: string;
@@ -38,7 +38,7 @@ export class IndexComponent implements OnInit {
         lastCommit: string;
         committerAuthor: string;
         committerDate: string;
-        commitUrl: string
+        commitUrl: string;
     };
 
     constructor(private apiService: ApiService,

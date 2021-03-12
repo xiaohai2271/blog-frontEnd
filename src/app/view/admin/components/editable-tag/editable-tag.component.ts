@@ -29,11 +29,9 @@ import {NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
 })
 export class EditableTagComponent implements OnInit, OnChanges {
 
-    private static instanceArray: EditableTagComponent[] = []
-    inputVisible = false;
-    inputValue = '';
+    private static instanceArray: EditableTagComponent[] = [];
     @ViewChild('inputElement', {static: false}) inputElement?: ElementRef;
-    @Output() valueChange = new EventEmitter<{ value: string, originalValue: string, changed: boolean }>();
+    @Output() valueChange = new EventEmitter<{ value: string; originalValue: string; changed: boolean }>();
     @Input() color: string;
     @Input() showEditIcon: boolean;
     @Input() showBorder: boolean;
@@ -44,8 +42,10 @@ export class EditableTagComponent implements OnInit, OnChanges {
     @Input() autoClear: boolean;
     @Input() size: 'small' | 'default' | 'large';
     @Output() inEditStatus = new EventEmitter<void>();
-    @Output() modalOK = new EventEmitter<{ value: string, originalValue: string, changed: boolean }>();
-    @Output() modalCancel = new EventEmitter<{ value: string, originalValue: string, changed: boolean }>();
+    @Output() modalOK = new EventEmitter<{ value: string; originalValue: string; changed: boolean }>();
+    @Output() modalCancel = new EventEmitter<{ value: string; originalValue: string; changed: boolean }>();
+    inputVisible = false;
+    inputValue = '';
     confirmModal?: NzModalRef;
     private tmpKey: any;
     private doubleClickInfo = {
@@ -84,17 +84,17 @@ export class EditableTagComponent implements OnInit, OnChanges {
         if (this.doubleClick && doubleClick) {
             if (!this.doubleClickInfo.date) {
                 this.doubleClickInfo.date = new Date().getTime();
-                return
+                return;
             }
             if (new Date().getTime() - this.doubleClickInfo.date < 200) {
-                this.inEditStatus.emit()
+                this.inEditStatus.emit();
                 this.inputVisible = true;
                 setTimeout(() => this.inputElement?.nativeElement.focus(), 10);
             }
             this.doubleClickInfo.date = new Date().getTime();
         } else {
             this.inputVisible = true;
-            this.inEditStatus.emit()
+            this.inEditStatus.emit();
             setTimeout(() => this.inputElement?.nativeElement.focus(), 10);
         }
     }
@@ -105,7 +105,7 @@ export class EditableTagComponent implements OnInit, OnChanges {
             if (tag.key === this.tmpKey) {
                 tag.showInput(false);
             }
-        })
+        });
     }
 
 
@@ -114,8 +114,8 @@ export class EditableTagComponent implements OnInit, OnChanges {
             value: this.inputValue,
             originalValue: this.text,
             changed: this.inputValue !== this.text
-        }
-        this.valueChange.emit(value)
+        };
+        this.valueChange.emit(value);
         this.text = this.inputValue;
         this.inputValue = '';
         this.inputVisible = false;
@@ -128,7 +128,7 @@ export class EditableTagComponent implements OnInit, OnChanges {
             });
         }
         if (this.autoClear) {
-            this.text = null
+            this.text = null;
         }
     }
 

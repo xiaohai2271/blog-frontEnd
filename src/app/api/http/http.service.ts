@@ -20,12 +20,13 @@ export class HttpService {
 
     public getSubscriptionQueue = () => this.subscriptionQueue;
 
-    Service<T>(request: RequestObj) {
+    service<T>(request: RequestObj) {
         const errorService = this.injector.get(ErrorService);
         request.url = null;
         // 设置默认值
         request.contentType = request.contentType == null ? 'application/x-www-form-urlencoded' : request.contentType;
         request.header = {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             'Content-Type': request.contentType
         };
         const token = this.localStorageService.getToken();
@@ -62,7 +63,7 @@ export class HttpService {
                 }
                 if (o.body.code !== 0) {
                     observer.error(o.body);
-                    errorService.httpException(o.body, request)
+                    errorService.httpException(o.body, request);
                 } else {
                     observer.next(o.body);
                 }
@@ -71,7 +72,7 @@ export class HttpService {
             error: err => {
                 errorService.httpError(err, request);
                 errorService.checkConnection();
-                this.subscriptionQueue.splice(this.subscriptionQueue.indexOf(subscription), 1)
+                this.subscriptionQueue.splice(this.subscriptionQueue.indexOf(subscription), 1);
             },
             complete: () => this.subscriptionQueue.splice(this.subscriptionQueue.indexOf(subscription), 1)
         });
@@ -117,6 +118,7 @@ export class HttpService {
 
     /**
      * 验证并且处理拼接 URl
+     *
      * @param req Request
      */
     private checkUrl(req: RequestObj): string {

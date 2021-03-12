@@ -14,12 +14,12 @@ export class AdminDashboardComponent implements OnInit {
     logLoading: boolean = true;
     logText: string = null;
     counts: {
-        articleCount: number,
-        visitorCount: number,
-        categoryCount: number,
-        tagCount: number,
-        commentCount: number
-    } = {articleCount: 0, visitorCount: 0, categoryCount: 0, tagCount: 0, commentCount: 0}
+        articleCount: number;
+        visitorCount: number;
+        categoryCount: number;
+        tagCount: number;
+        commentCount: number;
+    } = {articleCount: 0, visitorCount: 0, categoryCount: 0, tagCount: 0, commentCount: 0};
     dayVisitCount: number = 0;
     userInfo: User = new User();
     private isRequested: boolean = false;
@@ -36,21 +36,21 @@ export class AdminDashboardComponent implements OnInit {
     getLog() {
         this.http.get('https://api.celess.cn/blog.log', {responseType: 'text'}).subscribe(data => {
             this.logText = data;
-            this.logLoading = false
+            this.logLoading = false;
         });
     }
 
     getCounts = () => this.apiService.counts().subscribe({
         next: data => this.counts = data.result
-    })
+    });
 
     getDayVisitCount = () => this.apiService.dayVisitCount().subscribe({
         next: data => this.dayVisitCount = data.result
-    })
+    });
 
     getUserInfo = () => this.userService.watchUserInfo({
         next: data => {
-            this.userInfo = data.result
+            this.userInfo = data.result;
             if (data.result && data.result.role === 'admin' && !this.isRequested) {
                 this.getLog();
                 this.getCounts();
@@ -60,5 +60,5 @@ export class AdminDashboardComponent implements OnInit {
         },
         error: () => null,
         complete: () => null
-    })
+    });
 }

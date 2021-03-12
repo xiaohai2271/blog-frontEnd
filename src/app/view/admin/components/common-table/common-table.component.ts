@@ -11,22 +11,22 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 })
 export class CommonTableComponent<T> implements OnInit, OnChanges {
 
-    @Input() request: RequestObj;
+    @Output() pageInfo = new EventEmitter<{ page: number; pageSize: number }>();
     @Input() cardTitle: string | null;
     @Input() template: {
         [fieldValue: string]: {
-            temp: TemplateRef<any>,
-            param?: { [key: string]: string }
-        }
+            temp: TemplateRef<any>;
+            param?: { [key: string]: string };
+        };
     };
-    @Output() pageInfo = new EventEmitter<{ page: number, pageSize: number }>();
+    @Input() request: RequestObj;
+    @Input() private headData: Data<T>[];
     loading: boolean = true;
     dataList: PageList<T> = new PageList<T>();
     settingModalVisible: boolean = false;
     filedData: Data<T>[];
     changed: boolean = false;
     visibleFieldLength: number = 0;
-    @Input() private headData: Data<T>[];
 
     constructor(private httpService: HttpService) {
 
@@ -37,20 +37,26 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
             this.filedData = this.cloneData(localStorage.getItem(this.request.path));
             this.changed = true;
         } else {
-            this.filedData = this.cloneData(this.headData)
+            this.filedData = this.cloneData(this.headData);
         }
         this.calculateVisibleFieldLength();
 
-        if (!this.template) this.template = {}
+        if (!this.template) {
+            this.template = {};
+        }
         this.headData.forEach(dat => {
-            if (!dat.action) return;
+            if (!dat.action) {
+                return;
+            }
             dat.action.forEach(act => {
                 if (!act.hover) {
                     act.hover = () => null;
                 }
-            })
+            });
         });
-        if (!this.request || !this.request.path) return
+        if (!this.request || !this.request.path) {
+            return;
+        }
         this.getData();
     }
 
@@ -65,15 +71,15 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
         //     page: pageValue,
         //     count: countValue
         // }
-        this.pageInfo.emit({page: pageValue, pageSize: countValue})
-        return this.httpService.Service<PageList<T>>(this.request).subscribe({
+        this.pageInfo.emit({page: pageValue, pageSize: countValue});
+        return this.httpService.service<PageList<T>>(this.request).subscribe({
             next: resp => {
                 this.dataList = resp.result;
-                setTimeout(() => this.loading = false, 10)
+                setTimeout(() => this.loading = false, 10);
             },
             error: err => this.loading = false
         });
-    }
+    };
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.request && !changes.request.isFirstChange()) {
@@ -87,7 +93,9 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     getValue(index: number, fieldValue: string): string {
         let value = this.dataList.list[index];
         try {
-            for (const key of fieldValue.split('.')) value = value[key]
+            for (const key of fieldValue.split('.')) {
+                value = value[key];
+            }
         } catch (e) {
             // ignore
         }
@@ -96,21 +104,21 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
 
     getContext = (fieldValue: string, index: number) => {
         const valueData = this.getValue(index, fieldValue);
-        let context: { value: string, originValue?: string, data: T };
+        let context: { value: string; originValue?: string; data: T };
         if (this.template[fieldValue].param) {
             context = {
                 value: this.template[fieldValue].param[valueData],
                 originValue: valueData,
                 data: this.dataList.list[index]
-            }
+            };
         } else {
             context = {
                 value: valueData,
                 data: this.dataList.list[index]
-            }
+            };
         }
         return context;
-    }
+    };
 
     showFieldSetting = () => this.settingModalVisible = true;
 
@@ -121,10 +129,10 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
         this.calculateVisibleFieldLength();
         this.settingModalVisible = !this.settingModalVisible;
         if (!this.changed) {
-            return
+            return;
         }
         this.dataList = JSON.parse(JSON.stringify(this.dataList));
-        localStorage.setItem(this.request.path, JSON.stringify(this.filedData))
+        localStorage.setItem(this.request.path, JSON.stringify(this.filedData));
         this.changed = true;
     }
 
@@ -138,7 +146,7 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
         this.filedData = this.cloneData(this.headData);
         this.changed = false;
         this.calculateVisibleFieldLength();
-    }
+    };
 
     cloneData = (source: Data<T>[] | string): Data<T>[] => {
         let dist: Data<T>[];
@@ -151,11 +159,11 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
         if (!action) {
             return dist;
         }
-        const del = dist.filter(value => value.isActionColumns).pop()
+        const del = dist.filter(value => value.isActionColumns).pop();
         dist.splice(dist.indexOf(del), 1);
         dist.push(action);
         return dist;
-    }
+    };
 
     /**
      * 字段编辑项被点击
@@ -169,5 +177,5 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
                 this.changed = true;
             }
         }
-    }
+    };
 }
