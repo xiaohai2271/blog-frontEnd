@@ -21,17 +21,26 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
-//        "@typescript-eslint/naming-convention": [
-//          "off"
-//        ],
+        //        "@typescript-eslint/naming-convention": [
+        //          "off"
+        //        ],
         "prefer-arrow/prefer-arrow-functions": [
           "off"
         ],
-//        "@typescript-eslint/member-ordering": [svn
-//          "on"
-//        ],
+        //        "@typescript-eslint/member-ordering": [svn
+        //          "on"
+        //        ],
         "@typescript-eslint/ban-types": [
-          "off"
+          "error",
+          {
+            "types": {
+              "Object": {
+                "message": "Use {} instead",
+                "fixWith": "{}"
+              },
+              "{}": false
+            }
+          }
         ],
         "@angular-eslint/component-selector": [
           "off",
