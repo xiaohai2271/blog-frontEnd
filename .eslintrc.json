@@ -21,15 +21,9 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
-        //        "@typescript-eslint/naming-convention": [
-        //          "off"
-        //        ],
         "prefer-arrow/prefer-arrow-functions": [
           "off"
         ],
-        //        "@typescript-eslint/member-ordering": [svn
-        //          "on"
-        //        ],
         "@typescript-eslint/ban-types": [
           "error",
           {
