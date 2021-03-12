@@ -72,7 +72,7 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
         //     count: countValue
         // }
         this.pageInfo.emit({page: pageValue, pageSize: countValue});
-        return this.httpService.Service<PageList<T>>(this.request).subscribe({
+        return this.httpService.service<PageList<T>>(this.request).subscribe({
             next: resp => {
                 this.dataList = resp.result;
                 setTimeout(() => this.loading = false, 10);

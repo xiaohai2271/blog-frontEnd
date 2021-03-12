@@ -1,7 +1,7 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Category} from '../../../../class/Tag';
-import {ColorList} from '../../../../utils/color';
+import {COLOR_LIST} from '../../../../utils/color';
 
 @Component({
     selector: 'c-publish-form',
@@ -32,7 +32,7 @@ export class PublishFormComponent implements OnInit {
     constructor(private fb: FormBuilder) {
     }
 
-    randomColor = () => this.color = ColorList.map(c => c.bgColor).sort(() => Math.floor(Math.random() * 2));
+    randomColor = () => this.color = COLOR_LIST.map(c => c.bgColor).sort(() => Math.floor(Math.random() * 2));
 
     ngOnInit(): void {
         this.formGroup = this.fb.group({

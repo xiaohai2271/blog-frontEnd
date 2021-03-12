@@ -5,7 +5,7 @@ import {Title} from '@angular/platform-browser';
 import {ApiService} from '../../api/api.service';
 import {ApplyLinkReq, Link} from '../../class/Link';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Color, RandomColor} from '../../utils/color';
+import {Color, randomColor} from '../../utils/color';
 
 @Component({
     selector: 'view-link',
@@ -37,7 +37,7 @@ export class LinkComponent implements OnInit {
         this.apiService.links().subscribe({
             next: data => this.linkList = data.result,
             error: err => this.message.error(err.msg),
-            complete: () => this.colors = RandomColor(this.linkList.length)
+            complete: () => this.colors = randomColor(this.linkList.length)
         });
         this.applyFormGroup = this.fb.group({
             urlLinkProtocol: ['http://'],
