@@ -20,12 +20,13 @@ export class HttpService {
 
     public getSubscriptionQueue = () => this.subscriptionQueue;
 
-    Service<T>(request: RequestObj) {
+    service<T>(request: RequestObj) {
         const errorService = this.injector.get(ErrorService);
         request.url = null;
         // 设置默认值
         request.contentType = request.contentType == null ? 'application/x-www-form-urlencoded' : request.contentType;
         request.header = {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             'Content-Type': request.contentType
         };
         const token = this.localStorageService.getToken();

@@ -71,6 +71,7 @@ export class AdminComponent implements OnInit {
             const newPwd = this.resetPwdFormGroup && this.resetPwdFormGroup.value.newPwd;
             return control.value !== newPwd ? {pwdNotSame: true} : null;
         };
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     uploadHeader = (file: NzUploadFile): any | Observable<{}> => ({Authorization: this.localStorageService.getToken()});
 
     showEditInfoModal() {

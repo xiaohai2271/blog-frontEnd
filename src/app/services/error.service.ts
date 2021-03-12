@@ -11,9 +11,9 @@ import {LocalStorageService} from './local-storage.service';
     providedIn: 'root'
 })
 export class ErrorService {
-    private static HTTP_ERROR_COUNT: number = 0;
-    private readonly MAINTAIN_PAGE_PREFIX = '/maintain';
-    private readonly ADMIN_PAGE_PREFIX = '/admin';
+    private static httpErrorCount: number = 0;
+    private readonly maintainPagePrefix = '/maintain';
+    private readonly adminPagePrefix = '/admin';
 
     constructor(/*private httpService: HttpService,*/
                 private router: Router,
@@ -27,7 +27,7 @@ export class ErrorService {
         if (!environment.production) {
             console.log('error=>', err, request);
         }
-        ErrorService.HTTP_ERROR_COUNT++;
+        ErrorService.httpErrorCount++;
         // this.httpService.getSubscriptionQueue().map(a => a.unsubscribe())
     }
 
@@ -38,7 +38,7 @@ export class ErrorService {
         if (response.code === -1 && response.msg === '重复请求') {
             return;
         }
-        if (this.componentStateService.currentPath === this.ADMIN_PAGE_PREFIX) {
+        if (this.componentStateService.currentPath === this.adminPagePrefix) {
             this.notification.create('error', `请求失败<${response.code}>`, `${response.msg}`);
         }
         /***
@@ -59,7 +59,7 @@ export class ErrorService {
 
     public checkConnection() {
         // The HTTP_ERROR_COUNT is start with 1 in this function
-        if (ErrorService.HTTP_ERROR_COUNT === 1) {
+        if (ErrorService.httpErrorCount === 1) {
             const req: RequestObj = {
                 path: '/headerInfo',
                 method: 'GET',
@@ -68,10 +68,10 @@ export class ErrorService {
             this.injector.get(HttpService).get(req).subscribe({
                 next: () => null,
                 error: () => {
-                    if (this.componentStateService.currentPath !== this.MAINTAIN_PAGE_PREFIX) {
-                        this.router.navigateByUrl(this.MAINTAIN_PAGE_PREFIX);
+                    if (this.componentStateService.currentPath !== this.maintainPagePrefix) {
+                        this.router.navigateByUrl(this.maintainPagePrefix);
                     }
-                    ErrorService.HTTP_ERROR_COUNT = 0;
+                    ErrorService.httpErrorCount = 0;
                 }
             });
         }

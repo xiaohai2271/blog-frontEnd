@@ -243,6 +243,7 @@ export class WriteComponent implements OnInit, OnDestroy {
                         .forEach(value => result.data.errFiles.push(value.originalFilename));
                     return JSON.stringify(result);
                 },
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 setHeaders: () => ({Authorization: this.localStorageService.getToken()})
             },
             after: () => {
