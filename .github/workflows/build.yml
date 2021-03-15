@@ -10,6 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      
+      - name: Sync to Gitee
+        uses: x-dr/sync-repo-to-gitee@master
+        env:
+            # 在 Settings->Secrets 配置 GITEE_KEY
+            SSH_KEY: ${{ secrets.GITEE_KEY }}
+        with:
+            # 注意替换为你的 GitHub 源仓库地址
+            github-repo: "git@github.com:xiaohai2271/blog-frontEnd.git"
+            # 注意替换为你的 Gitee 目标仓库地址
+            gitee-repo: "git@gitee.com:xiaohai2271/blog-frontEnd.git"
+          
       - name: Use Node.js 12.x
         uses: actions/setup-node@v1
         with:
@@ -26,7 +38,6 @@ jobs:
 
       - name: SCP
         uses: appleboy/scp-action@master
-
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
