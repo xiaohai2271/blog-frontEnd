@@ -46,7 +46,14 @@ export class LocalStorageService {
 
     getItem(key: string) {
         const item = localStorage.getItem(key);
-        return item ? Base64.decode(item) : null;
+        let decode;
+        try {
+            decode = Base64.decode(item);
+            return item ? decode : null;
+        } catch (e) {
+            localStorage.removeItem(key);
+            return item;
+        }
     }
 
     removeItem(key: string) {
