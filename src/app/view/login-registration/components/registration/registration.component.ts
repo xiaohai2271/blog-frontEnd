@@ -1,11 +1,12 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {environment} from '../../../../../environments/environment';
 import {ApiService} from '../../../../api/api.service';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {NzMessageService} from 'ng-zorro-antd/message';
 import {Router} from '@angular/router';
 import {RequestObj} from '../../../../class/HttpReqAndResp';
 import {LoginReq} from '../../../../class/User';
 import {Title} from '@angular/platform-browser';
+import {LocalStorageService} from '../../../../services/local-storage.service';
 
 @Component({
     selector: 'c-registration',
@@ -29,7 +30,8 @@ export class RegistrationComponent implements OnInit {
     constructor(private apiService: ApiService,
                 private  nzMessageService: NzMessageService,
                 private router: Router,
-                private title: Title) {
+                private title: Title,
+                private localStorageService: LocalStorageService) {
         this.title.setTitle('小海博客 | 注册');
     }
 
@@ -74,8 +76,8 @@ export class RegistrationComponent implements OnInit {
         this.apiService.verifyImgCode(this.imgCode).subscribe(data => {
                 // 验证成功  注册
                 this.apiService.registration(this.email, this.pwd).subscribe(regData => {
-                        localStorage.setItem('e', this.email);
-                        localStorage.setItem('p', this.pwd);
+                        this.localStorageService.setItem('e', this.email);
+                        this.localStorageService.setItem('p', this.pwd);
                         this.email = '';
                         this.pwd = '';
                         this.imgCode = '';

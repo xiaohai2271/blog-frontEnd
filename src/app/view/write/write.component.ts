@@ -119,7 +119,7 @@ export class WriteComponent implements OnInit, OnDestroy {
                 next: data => {
                     // TODO 成功
                     this.message.success('发布成功,即将转跳');
-                    localStorage.removeItem('tmpArticle');
+                    this.localStorageService.removeItem('tmpArticle');
 
                     setTimeout(() => {
                         this.router.navigateByUrl('article/' + data.result.id);
@@ -143,7 +143,7 @@ export class WriteComponent implements OnInit, OnDestroy {
             this.apiService.updateArticle(this.article).subscribe({
                 next: data => {
                     this.message.success('更新成功，即将转跳');
-                    localStorage.removeItem('tmpArticle');
+                    this.localStorageService.removeItem('tmpArticle');
                     setTimeout(() => {
                         this.router.navigateByUrl('article/' + data.result.id);
                     }, 2500);
@@ -253,8 +253,8 @@ export class WriteComponent implements OnInit, OnDestroy {
                     this.isUpdate = true;
                     this.getArticle();
                 }
-                if (!this.articleId && localStorage.getItem('tmpArticle')) {
-                    this.article = JSON.parse(localStorage.getItem('tmpArticle'));
+                if (!this.articleId && this.localStorageService.getItem('tmpArticle')) {
+                    this.article = JSON.parse(this.localStorageService.getItem('tmpArticle'));
                 }
             }
         };

@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {LoginRegistrationService} from '../../service/login-registration.service';
 import {Title} from '@angular/platform-browser';
 import {GlobalUserService} from '../../../../services/global-user.service';
+import {LocalStorageService} from '../../../../services/local-storage.service';
 
 @Component({
     selector: 'c-login',
@@ -26,16 +27,17 @@ export class LoginComponent implements OnInit {
                 private activatedRoute: ActivatedRoute,
                 private router: Router,
                 private loginRegistrationService: LoginRegistrationService,
-                private title: Title) {
+                private title: Title,
+                private localStorageService: LocalStorageService) {
         this.title.setTitle('小海博客 | 登录 ');
     }
 
     ngOnInit() {
         this.url = this.activatedRoute.snapshot.queryParamMap.get('url');
-        this.loginReq.email = localStorage.getItem('e');
-        this.loginReq.password = localStorage.getItem('p');
-        localStorage.removeItem('e');
-        localStorage.removeItem('p');
+        this.loginReq.email = this.localStorageService.getItem('e');
+        this.loginReq.password = this.localStorageService.getItem('p');
+        this.localStorageService.removeItem('e');
+        this.localStorageService.removeItem('p');
     }
 
     doLogin() {

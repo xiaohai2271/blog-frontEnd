@@ -3,6 +3,7 @@ import {Data} from './data';
 import {PageList, RequestObj} from '../../../../class/HttpReqAndResp';
 import {HttpService} from '../../../../api/http/http.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {LocalStorageService} from '../../../../services/local-storage.service';
 
 @Component({
     selector: 'common-table',
@@ -28,13 +29,14 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     changed: boolean = false;
     visibleFieldLength: number = 0;
 
-    constructor(private httpService: HttpService) {
+    constructor(private httpService: HttpService,
+                private localStorageService: LocalStorageService) {
 
     }
 
     ngOnInit(): void {
-        if (localStorage.getItem(this.request.path)) {
-            this.filedData = this.cloneData(localStorage.getItem(this.request.path));
+        if (this.localStorageService.getItem(this.request.path)) {
+            this.filedData = this.cloneData(this.localStorageService.getItem(this.request.path));
             this.changed = true;
         } else {
             this.filedData = this.cloneData(this.headData);
@@ -132,7 +134,7 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
             return;
         }
         this.dataList = JSON.parse(JSON.stringify(this.dataList));
-        localStorage.setItem(this.request.path, JSON.stringify(this.filedData));
+        this.localStorageService.setItem(this.request.path, JSON.stringify(this.filedData));
         this.changed = true;
     }
 
@@ -142,7 +144,7 @@ export class CommonTableComponent<T> implements OnInit, OnChanges {
     }
 
     reset = () => {
-        localStorage.removeItem(this.request.path);
+        this.localStorageService.removeItem(this.request.path);
         this.filedData = this.cloneData(this.headData);
         this.changed = false;
         this.calculateVisibleFieldLength();

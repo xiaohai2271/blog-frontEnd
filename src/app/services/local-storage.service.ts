@@ -39,6 +39,18 @@ export class LocalStorageService {
         return this.getToken() != null;
     }
 
+    setItem(key: string, value: any) {
+        localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    getItem(key: string) {
+        return localStorage.getItem(key);
+    }
+
+    removeItem(key: string) {
+        localStorage.removeItem(key);
+    }
+
     // setUser(user: User) {
     //     // TODO: 简单加个密
     //     localStorage.setItem('t', new Date().valueOf().toString());
