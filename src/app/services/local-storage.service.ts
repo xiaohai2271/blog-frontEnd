@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {Base64} from 'js-base64';
 
 @Injectable({
     providedIn: 'root'
@@ -12,27 +13,27 @@ export class LocalStorageService {
     // 30s
 
     getToken(): string {
-        const item = localStorage.getItem('token');
+        const item = this.getItem('token');
         if (!item) {
             return null;
         }
-        return 'Bearer ' + atob(item);
+        return 'Bearer ' + item;
     }
 
     setToken(token: string) {
         const t = new Date().valueOf().toString();
-        localStorage.setItem('t', btoa(t));
+        this.setItem('t', t);
         if (token.startsWith('Bearer')) {
             token = token.replace('Bearer', '');
         }
         if (token.startsWith('bearer')) {
             token = token.replace('bearer', '');
         }
-        localStorage.setItem('token', btoa(token));
+        this.setItem('token', token);
     }
 
     removeToken() {
-        localStorage.removeItem('token');
+        this.removeItem('token');
     }
 
     isLogin() {
@@ -40,11 +41,12 @@ export class LocalStorageService {
     }
 
     setItem(key: string, value: any) {
-        localStorage.setItem(key, JSON.stringify(value));
+        localStorage.setItem(key, Base64.encode(value));
     }
 
     getItem(key: string) {
-        return localStorage.getItem(key);
+        const item = localStorage.getItem(key);
+        return item ? Base64.decode(item) : null;
     }
 
     removeItem(key: string) {

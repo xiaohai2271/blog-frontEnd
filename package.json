@@ -22,6 +22,7 @@
     "@angular/router": "^11.0.2",
     "@angular/service-worker": "^11.0.2",
     "jquery": "^3.5.1",
+    "js-base64": "^3.6.0",
     "ng-zorro-antd": "^11.2.0",
     "rxjs": "^6.6.3",
     "tslib": "^2.0.3",
