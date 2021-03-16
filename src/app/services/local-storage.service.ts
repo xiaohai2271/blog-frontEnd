@@ -12,12 +12,23 @@ export class LocalStorageService {
     // 30s
 
     getToken(): string {
-        return localStorage.getItem('token');
+        const item = localStorage.getItem('token');
+        if (!item) {
+            return null;
+        }
+        return 'Bearer ' + atob(item);
     }
 
     setToken(token: string) {
-        localStorage.setItem('t', new Date().valueOf().toString());
-        localStorage.setItem('token', token);
+        const t = new Date().valueOf().toString();
+        localStorage.setItem('t', btoa(t));
+        if (token.startsWith('Bearer')) {
+            token = token.replace('Bearer', '');
+        }
+        if (token.startsWith('bearer')) {
+            token = token.replace('bearer', '');
+        }
+        localStorage.setItem('token', btoa(token));
     }
 
     removeToken() {
