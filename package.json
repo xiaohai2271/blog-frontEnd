@@ -59,6 +59,6 @@
     "@angular-eslint/schematics": "1.2.0",
     "@angular-eslint/template-parser": "1.2.0",
     "@typescript-eslint/eslint-plugin": "4.17.0",
-    "@typescript-eslint/parser": "4.17.0"
+    "@typescript-eslint/parser": "4.26.0"
   }
 }
