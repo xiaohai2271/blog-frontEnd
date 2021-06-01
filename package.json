@@ -26,7 +26,7 @@
     "ng-zorro-antd": "^11.2.0",
     "rxjs": "^6.6.3",
     "tslib": "^2.0.3",
-    "vditor": "~3.6.3",
+    "vditor": "~3.8.5",
     "zone.js": "^0.11.3"
   },
   "devDependencies": {
