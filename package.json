@@ -54,7 +54,7 @@
     "eslint-plugin-jsdoc": "35.4.1",
     "eslint-plugin-prefer-arrow": "1.2.3",
     "@angular-eslint/builder": "13.0.1",
-    "@angular-eslint/eslint-plugin": "12.6.1",
+    "@angular-eslint/eslint-plugin": "13.1.0",
     "@angular-eslint/eslint-plugin-template": "2.0.2",
     "@angular-eslint/schematics": "13.1.0",
     "@angular-eslint/template-parser": "13.0.1",
