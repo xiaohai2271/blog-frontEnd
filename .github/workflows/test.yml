@@ -17,9 +17,3 @@ jobs:
           node-version: '16.x'
       - run: npm install
       - run: npm run lint && npm run build
-
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v2.1.4
-        with:
-          name: devDist
-          path: ./dist/index/*
