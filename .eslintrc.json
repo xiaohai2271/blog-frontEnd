@@ -52,6 +52,7 @@
             "style": "camelCase"
           }
         ],
+
         "@typescript-eslint/explicit-member-accessibility": [
           "off",
           {
@@ -78,7 +79,9 @@
       "extends": [
         "plugin:@angular-eslint/template/recommended"
       ],
-      "rules": {}
+      "rules": {
+        "@angular-eslint/template/eqeqeq": "off"
+      }
     }
   ]
 }
