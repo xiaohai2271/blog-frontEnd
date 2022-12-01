@@ -20,16 +20,16 @@
 
     <div id="landr" *ngIf="!user">
         <nz-space>
-            <nz-space-item>
+            <template *nzSpaceItem>
                 <a routerLink="/user/login">
                     <button nz-button nzType="primary">登录</button>
                 </a>
-            </nz-space-item>
-            <nz-space-item>
+            </template>
+            <template *nzSpaceItem>
                 <a routerLink="/user/registration">
                     <button nz-button nzType="primary">注册</button>
                 </a>
-            </nz-space-item>
+            </template>
         </nz-space>
     </div>
 
