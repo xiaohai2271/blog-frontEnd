@@ -3,7 +3,7 @@ import {RequestObj, Response} from '../../../class/HttpReqAndResp';
 import {Link} from '../../../class/Link';
 import {ApiService} from '../../../api/api.service';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {Title} from '@angular/platform-browser';
 import {CommonTableComponent} from '../components/common-table/common-table.component';
@@ -18,27 +18,27 @@ export class AdminLinkComponent implements OnInit {
     @ViewChild('commonTableComponent') commonTableComponent: CommonTableComponent<Link>;
     modalVisible: boolean = false;
     modalTitle: string = '';
-    formGroup: FormGroup;
+    formGroup: UntypedFormGroup;
     request: RequestObj;
     headData: Data<Link>[];
 
     constructor(private apiService: ApiService, private messageService: NzMessageService, private title: Title) {
         this.title.setTitle('小海博客 | 友链管理');
-        this.formGroup = new FormGroup({
-            id: new FormControl(null),
-            name: new FormControl(null, [Validators.required]),
-            url: new FormControl(null, [
+        this.formGroup = new UntypedFormGroup({
+            id: new UntypedFormControl(null),
+            name: new UntypedFormControl(null, [Validators.required]),
+            url: new UntypedFormControl(null, [
                     Validators.required,
                     Validators.pattern(/^(https:\/\/|http:\/\/|)([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/)
                 ]
             ),
-            open: new FormControl(null, [Validators.required]),
-            desc: new FormControl(null, [Validators.maxLength(255)]),
-            iconPath: new FormControl(null, [
+            open: new UntypedFormControl(null, [Validators.required]),
+            desc: new UntypedFormControl(null, [Validators.maxLength(255)]),
+            iconPath: new UntypedFormControl(null, [
                     Validators.pattern(/^(https:\/\/|http:\/\/|)([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/)
                 ]
             ),
-            oper: new FormControl(null)
+            oper: new UntypedFormControl(null)
         });
     }
 

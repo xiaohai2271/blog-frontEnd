@@ -4,7 +4,7 @@ import {NzModalService} from 'ng-zorro-antd/modal';
 import {Title} from '@angular/platform-browser';
 import {ApiService} from '../../api/api.service';
 import {ApplyLinkReq, Link} from '../../class/Link';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {Color, randomColor} from '../../utils/color';
 
 @Component({
@@ -19,14 +19,14 @@ export class LinkComponent implements OnInit {
     link: Link;
     linkList: Link[];
     loading: boolean = false;
-    applyFormGroup: FormGroup;
+    applyFormGroup: UntypedFormGroup;
     colors: Color[];
     private lastUrl: string = '';
 
     constructor(private message: NzMessageService,
                 private titleService: Title,
                 private apiService: ApiService,
-                private fb: FormBuilder,
+                private fb: UntypedFormBuilder,
                 private modal: NzModalService) {
         titleService.setTitle('小海博客 | 友链');
     }

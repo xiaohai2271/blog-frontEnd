@@ -1,5 +1,5 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {Category} from '../../../../class/Tag';
 import {COLOR_LIST} from '../../../../utils/color';
 
@@ -22,14 +22,14 @@ export class PublishFormComponent implements OnInit {
         isUpdate: boolean;
         url?: string;
     }>();
-    formGroup: FormGroup;
+    formGroup: UntypedFormGroup;
     tagTmpList: string[] = [];
     tagInputVisible: boolean = false;
     tagListTouched: boolean = false;
     editTagText: string = '新增';
     color: string[] = [];
 
-    constructor(private fb: FormBuilder) {
+    constructor(private fb: UntypedFormBuilder) {
     }
 
     randomColor = () => this.color = COLOR_LIST.map(c => c.bgColor).sort(() => Math.floor(Math.random() * 2));

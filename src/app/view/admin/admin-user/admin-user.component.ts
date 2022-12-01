@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {Title} from '@angular/platform-browser';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {RequestObj} from '../../../class/HttpReqAndResp';
 import {ApiService} from '../../../api/api.service';
 import {User} from '../../../class/User';
@@ -21,20 +21,20 @@ export class AdminUserComponent implements OnInit {
         isEdit: false,
         resetPwd: false
     };
-    formGroup: FormGroup;
+    formGroup: UntypedFormGroup;
     headData: Data<User>[];
     request: RequestObj;
 
     constructor(private apiService: ApiService, private title: Title, private messageService: NzMessageService,
                 private userService: GlobalUserService) {
-        this.formGroup = new FormGroup({
-            id: new FormControl(null),
-            email: new FormControl(''),
-            displayName: new FormControl(''),
-            emailStatus: new FormControl(null),
-            desc: new FormControl(null),
-            role: new FormControl(null),
-            pwd: new FormControl(''),
+        this.formGroup = new UntypedFormGroup({
+            id: new UntypedFormControl(null),
+            email: new UntypedFormControl(''),
+            displayName: new UntypedFormControl(''),
+            emailStatus: new UntypedFormControl(null),
+            desc: new UntypedFormControl(null),
+            role: new UntypedFormControl(null),
+            pwd: new UntypedFormControl(''),
         });
         this.userService.watchUserInfo({
             next: data => this.user = data.result,

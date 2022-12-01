@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzUploadFile} from 'ng-zorro-antd/upload';
 import {Router} from '@angular/router';
@@ -23,8 +23,8 @@ export class AdminComponent implements OnInit {
     sayHelloContent: string;
     editInfoModalVisible: boolean = false;
     resetPwdModalVisible: boolean = false;
-    editInfoFormGroup: FormGroup;
-    resetPwdFormGroup: FormGroup;
+    editInfoFormGroup: UntypedFormGroup;
+    resetPwdFormGroup: UntypedFormGroup;
     noAvatarUrl = 'https://cdn.celess.cn/';
     host: string;
 
@@ -39,17 +39,17 @@ export class AdminComponent implements OnInit {
                 }
             }
         );
-        this.editInfoFormGroup = new FormGroup({
-            desc: new FormControl(),
-            displayName: new FormControl(),
-            email: new FormControl({value: null, disabled: true})
+        this.editInfoFormGroup = new UntypedFormGroup({
+            desc: new UntypedFormControl(),
+            displayName: new UntypedFormControl(),
+            email: new UntypedFormControl({value: null, disabled: true})
         });
-        this.resetPwdFormGroup = new FormGroup({
-            originPwd: new FormControl(null, [Validators.required]),
-            newPwd: new FormControl(null, [
+        this.resetPwdFormGroup = new UntypedFormGroup({
+            originPwd: new UntypedFormControl(null, [Validators.required]),
+            newPwd: new UntypedFormControl(null, [
                 Validators.required, Validators.minLength(6), Validators.maxLength(16), Validators.pattern(/^[\w_-]{6,16}$/)
             ]),
-            newPwdConfirm: new FormControl(null, [
+            newPwdConfirm: new UntypedFormControl(null, [
                 Validators.required, Validators.minLength(6), Validators.maxLength(16), Validators.pattern(/^[\w_-]{6,16}$/),
                 this.checkSamePwd()
             ]),
