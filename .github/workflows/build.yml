@@ -27,7 +27,7 @@ jobs:
         with:
           node-version: '16.x'
       - run: npm install
-      - run: npm run lint && npm run build:prod
+      - run: npm run lint && npm run build
       - run: cd dist/index/ && tar -cf index.tar ./* && mv index.tar ../../
 
       - name: Upload a Build Artifact
